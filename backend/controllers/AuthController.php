@@ -13,8 +13,20 @@ class AuthController {
     // ==========================
     // REGISTRO DE USUARIO
     // ==========================
-
     public function registrar($nombre, $email, $password){
+        
+        // Validaciones básicas
+        if (empty($nombre) || empty($email) || empty($password)) {
+            return "Todos los campos son obligatorios";
+        }
+        
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "Email no válido";
+        }
+        
+        if (strlen($password) < 6) {
+            return "La contraseña debe tener al menos 6 caracteres";
+        }
 
         $usuario = new Usuario($this->db);
 
@@ -22,8 +34,12 @@ class AuthController {
         $usuario->email = $email;
         $usuario->password = $password;
 
-        // rol usuario normal
-        $usuario->rol_id = 4;
+        // Obtener el ID del rol 'usuario' (rol normal)
+        $query = "SELECT id FROM roles WHERE nombre = 'usuario'";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $rol = $stmt->fetch(PDO::FETCH_ASSOC);
+        $usuario->rol_id = $rol['id'] ?? 4; // Si no encuentra, usa 4 como fallback
 
         // verificar si el email ya existe
         $stmt = $usuario->buscarPorEmail();
@@ -39,12 +55,14 @@ class AuthController {
         return "Error al registrar usuario";
     }
 
-
     // ==========================
     // LOGIN
     // ==========================
-
     public function login($email, $password){
+        
+        if (empty($email) || empty($password)) {
+            return "Email y contraseña son obligatorios";
+        }
 
         $usuario = new Usuario($this->db);
         $usuario->email = $email;
@@ -59,10 +77,17 @@ class AuthController {
         if(password_verify($password, $row['password'])){
 
             session_start();
-
             $_SESSION['usuario_id'] = $row['id'];
             $_SESSION['nombre'] = $row['nombre'];
-            $_SESSION['rol'] = $row['rol_id'];
+            $_SESSION['rol_id'] = $row['rol_id'];
+            
+            // Obtener nombre del rol para facilitar
+            $query = "SELECT nombre FROM roles WHERE id = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id", $row['rol_id']);
+            $stmt->execute();
+            $rol = $stmt->fetch(PDO::FETCH_ASSOC);
+            $_SESSION['rol_nombre'] = $rol['nombre'] ?? 'usuario';
 
             return "Login correcto";
 
@@ -71,17 +96,76 @@ class AuthController {
         }
     }
 
-
     // ==========================
     // LOGOUT
     // ==========================
-
     public function logout(){
-
         session_start();
         session_destroy();
-
         return "Sesion cerrada";
     }
 
+    // ==========================
+    // VERIFICAR PERMISOS POR ROL
+    // ==========================
+    public function tienePermiso($usuario_id, $accion_requerida) {
+        
+        if (!$usuario_id) return false;
+        
+        // Obtener el rol del usuario
+        $query = "SELECT r.nombre as rol_nombre, r.id as rol_id 
+                  FROM usuarios u 
+                  JOIN roles r ON u.rol_id = r.id 
+                  WHERE u.id = :usuario_id";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":usuario_id", $usuario_id);
+        $stmt->execute();
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$usuario) return false;
+        
+        $rol = $usuario['rol_nombre']; // 'admin', 'editor', 'autor', 'usuario'
+        
+        // Definir permisos por rol
+        $permisos = [
+            'admin' => [
+                'crear_usuario', 'editar_usuario', 'eliminar_usuario',
+                'crear_publicacion', 'editar_cualquier_publicacion', 'eliminar_cualquier_publicacion',
+                'aprobar_publicacion', 'rechazar_publicacion',
+                'gestionar_categorias', 'ver_estadisticas', 'moderar_comentarios',
+                'publicar_directo', 'ver_todas_publicaciones'
+            ],
+            'editor' => [
+                'ver_publicaciones_pendientes', 'aprobar_publicacion', 'rechazar_publicacion',
+                'editar_cualquier_publicacion', 'publicar_publicacion',
+                'ver_estadisticas', 'moderar_comentarios',
+                'publicar_directo', 'ver_todas_publicaciones'
+            ],
+            'autor' => [
+                'crear_publicacion', 'editar_mis_publicaciones', 'eliminar_mis_publicaciones',
+                'ver_mis_publicaciones', 'subir_imagenes'
+            ],
+            'usuario' => [
+                'ver_publicaciones_publicadas', 'comentar', 'dar_like'
+            ]
+        ];
+        
+        return in_array($accion_requerida, $permisos[$rol] ?? []);
+    }
+    
+    // ==========================
+    // OBTENER ROL DEL USUARIO ACTUAL
+    // ==========================
+    public function obtenerRolActual() {
+        session_start();
+        if (!isset($_SESSION['usuario_id'])) {
+            return null;
+        }
+        
+        return [
+            'id' => $_SESSION['rol_id'],
+            'nombre' => $_SESSION['rol_nombre']
+        ];
+    }
 }

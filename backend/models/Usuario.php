@@ -38,7 +38,6 @@ class Usuario {
         return $stmt->execute();
     }
 
-
     // =============================
     // Buscar usuario por email
     // =============================
@@ -87,5 +86,20 @@ class Usuario {
         
         return $stmt;
     }
+    
+    // =============================
+    // Actualizar último acceso
+    // =============================
+    public function actualizarUltimoAcceso($usuario_id) {
+        $query = "UPDATE " . $this->table . " 
+                  SET ultimo_acceso = NOW() 
+                  WHERE id = :id";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id", $usuario_id);
+        
+        return $stmt->execute();
+    }
 
-}   
+} // <-- ESTA ES LA ÚNICA LLAVE DE CIERRE DE LA CLASE
+?>
