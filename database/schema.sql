@@ -101,4 +101,5 @@ CREATE TABLE comentarios (
 INSERT INTO roles (nombre) VALUES
 ('admin'),
 ('editor'),
-('autor');
+('autor'),
+('usuario');

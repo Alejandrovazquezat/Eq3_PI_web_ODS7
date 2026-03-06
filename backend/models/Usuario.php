@@ -59,6 +59,7 @@ class Usuario {
     // =============================
     // Obtener usuarios por rol
     // =============================
+    
     public function obtenerPorRol($rol_id) {
         $query = "SELECT id, nombre, email, fecha_creacion 
                   FROM " . $this->table . " 
