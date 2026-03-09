@@ -22,10 +22,15 @@ Base de datos relacional.
 
 Tecnologías Utilizadas:
 HTML5
+
 CSS
+
 JavaScript
+
 PHP
+
 MySQL
+
 Git y GitHub
 
 Arquitectura
@@ -34,7 +39,7 @@ Frontend → Backend → Base de Datos
 
 Instalación:
 
-Clonar repositorio: git clone https://github.com/usuario/proyecto.git
+Clonar repositorio: git clone https://github.com/Alejandrovazquezat/Eq3_PI_web_ODS7.git
 
 Colocar el proyecto en htdocs (XAMPP/Laragon).
 
@@ -46,17 +51,18 @@ Ejecutar en el navegador: http://localhost/proyecto
 
 Estructura General
 /project
-├── app/
+├── backend/
 │   ├── controllers/
 │   ├── models/
-│   └── views/
-├── config/
+│   └── config/
+├── docs/
 ├── assets/
 └── database/
 
 Estado del Proyecto: En desarrollo
 Proyecto desarrollado por estudiantes de Ingeniería de Software — Universidad de Colima.
 
+Equipo 3:
 Carlos Arturo Argüellez Ruiz
 Jesús Enrique Ibarra Figueroa
 Alan Yakxel Juárez Cano
