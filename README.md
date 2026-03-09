@@ -12,7 +12,7 @@ Diseñar e implementar una plataforma web que permita la creación y gestión de
 
 
 
-![Página principal]("C:\Users\diego\OneDrive\Pictures\Screenshots\inicio_PI_web.png".png)
+![Página principal]("assets\inicio_PI_web.png".png)
 
 Funcionalidades: 
 
