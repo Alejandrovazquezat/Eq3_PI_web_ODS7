@@ -62,9 +62,13 @@ Estructura General
 Estado del Proyecto: En desarrollo
 Proyecto desarrollado por estudiantes de Ingeniería de Software — Universidad de Colima.
 
-Equipo 3:
+Equipo 3: 
 Carlos Arturo Argüellez Ruiz
+
 Jesús Enrique Ibarra Figueroa
+
 Alan Yakxel Juárez Cano
+
 Fernando Franco Juárez Lara
+
 Diego Alejandro Vázquez Atanacio
