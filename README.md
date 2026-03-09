@@ -21,7 +21,8 @@ Panel administrativo.
 Base de datos relacional.
 
 Tecnologías Utilizadas:
-HTML5
+
+HTML
 
 CSS
 
@@ -63,6 +64,7 @@ Estado del Proyecto: En desarrollo
 Proyecto desarrollado por estudiantes de Ingeniería de Software — Universidad de Colima.
 
 Equipo 3: 
+
 Carlos Arturo Argüellez Ruiz
 
 Jesús Enrique Ibarra Figueroa
