@@ -1,20 +1,64 @@
-# Plataforma de Publicación Digital – ODS 7
+Plataforma Web de Publicación Digital — Energía Sustentable
+Descripción
 
-Proyecto Integrador – Ingeniería de Software
+Este proyecto consiste en el desarrollo de una plataforma web de publicación y gestión de contenidos digitales enfocada en la difusión de información sobre energías renovables y el Objetivo de Desarrollo Sostenible 7 (Energía asequible y no contaminante).
 
-## Descripción
-Plataforma web de gestión de contenidos que permite crear,
-administrar y publicar artículos, noticias y recursos multimedia.
+La aplicación funciona como un CMS básico que permite crear, administrar y publicar contenidos mediante un sistema de roles y control de acceso.
 
-## Tecnologías
-- HTML
-- CSS
-- JavaScript
-- Base de datos SQL
-- Servicios web
+Proyecto desarrollado como parte del Proyecto Integrador de Ingeniería de Software — Universidad de Colima.
 
-## Roles del sistema
-- Administrador
-- Editor
-- Autor
-- Visitante
+Objetivo:
+Diseñar e implementar una plataforma web que permita la creación y gestión de contenidos digitales aplicando principios de ingeniería de software, programación orientada a objetos y arquitectura cliente-servidor.
+
+Funcionalidades: 
+
+Registro e inicio de sesión de usuarios.
+Control de acceso por roles (Administrador, Editor, Autor y Visitante).
+CRUD de publicaciones.
+Organización por categorías.
+Sistema de “Me gusta.
+Panel administrativo.
+Base de datos relacional.
+
+Tecnologías Utilizadas:
+HTML5
+CSS
+JavaScript
+PHP
+MySQL
+Git y GitHub
+
+Arquitectura
+Frontend → Backend → Base de Datos
+ HTML/CSS/JS     PHP        MySQL
+
+Instalación:
+
+Clonar repositorio: git clone https://github.com/usuario/proyecto.git
+
+Colocar el proyecto en htdocs (XAMPP/Laragon).
+
+Crear base de datos: plataforma_contenidos
+
+Configurar credenciales en: config/database.php
+
+Ejecutar en el navegador: http://localhost/proyecto
+
+Estructura General
+/project
+├── app/
+│   ├── controllers/
+│   ├── models/
+│   └── views/
+├── config/
+├── assets/
+└── database/
+
+Estado del Proyecto: En desarrollo
+Proyecto desarrollado por estudiantes de Ingeniería de Software — Universidad de Colima.
+
+Carlos Arturo Argüellez Ruiz
+Jesús Enrique Ibarra Figueroa
+Alan Yakxel Juárez Cano
+Fernando Franco Juárez Lara
+Diego Alejandro Vázquez Atanacio
