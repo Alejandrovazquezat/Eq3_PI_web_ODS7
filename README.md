@@ -45,7 +45,7 @@ HTML/CSS/JS     PHP        MySQL
 1. Clonar repositorio:
    git clone https://github.com/Alejandrovazquezat/Eq3_PI_web_ODS7.git
 
-2. Colocar el proyecto en htdocs (XAMPP/Laragon).
+2. Colocar el proyecto en htdocs (XAMPP).
 
 3. Crear base de datos: plataforma_contenidos
 
