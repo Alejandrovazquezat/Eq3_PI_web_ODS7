@@ -1,5 +1,6 @@
-Plataforma Web de Publicación Digital — Energía Sustentable
-Descripción
+# Plataforma Web de Publicación Digital — Energía Sustentable
+
+## Descripción
 
 Este proyecto consiste en el desarrollo de una plataforma web de publicación y gestión de contenidos digitales enfocada en la difusión de información sobre energías renovables y el Objetivo de Desarrollo Sostenible 7 (Energía asequible y no contaminante).
 
@@ -7,54 +8,53 @@ La aplicación funciona como un CMS básico que permite crear, administrar y pub
 
 Proyecto desarrollado como parte del Proyecto Integrador de Ingeniería de Software — Universidad de Colima.
 
-Objetivo:
+## Objetivo
+
 Diseñar e implementar una plataforma web que permita la creación y gestión de contenidos digitales aplicando principios de ingeniería de software, programación orientada a objetos y arquitectura cliente-servidor.
 
 <p align="center">
   <img src="assets/inicio_PI_web.png" width="700">
 </p>
 
-Funcionalidades: 
+## Funcionalidades
 
-Registro e inicio de sesión de usuarios.
-Control de acceso por roles (Administrador, Editor, Autor y Visitante).
-CRUD de publicaciones.
-Organización por categorías.
-Sistema de “Me gusta.
-Panel administrativo.
-Base de datos relacional.
+- Registro e inicio de sesión de usuarios.
+- Control de acceso por roles (Administrador, Editor, Autor y Visitante).
+- CRUD de publicaciones.
+- Organización por categorías.
+- Sistema de "Me gusta".
+- Panel administrativo.
+- Base de datos relacional.
 
-Tecnologías Utilizadas:
+## Tecnologías Utilizadas
 
-HTML
+- HTML
+- CSS
+- JavaScript
+- PHP
+- MySQL
+- Git y GitHub
 
-CSS
+## Arquitectura
 
-JavaScript
+Frontend -> Backend -> Base de Datos
+HTML/CSS/JS     PHP        MySQL
 
-PHP
+## Instalación
 
-MySQL
+1. Clonar repositorio:
+   git clone https://github.com/Alejandrovazquezat/Eq3_PI_web_ODS7.git
 
-Git y GitHub
+2. Colocar el proyecto en htdocs (XAMPP/Laragon).
 
-Arquitectura
-Frontend → Backend → Base de Datos
- HTML/CSS/JS     PHP        MySQL
+3. Crear base de datos: plataforma_contenidos
 
-Instalación:
+4. Configurar credenciales en: config/database.php
 
-Clonar repositorio: git clone https://github.com/Alejandrovazquezat/Eq3_PI_web_ODS7.git
+5. Ejecutar en el navegador: http://localhost/proyecto
 
-Colocar el proyecto en htdocs (XAMPP/Laragon).
+## Estructura General
 
-Crear base de datos: plataforma_contenidos
-
-Configurar credenciales en: config/database.php
-
-Ejecutar en el navegador: http://localhost/proyecto
-
-Estructura General
 /project
 ├── backend/
 │   ├── controllers/
@@ -64,17 +64,18 @@ Estructura General
 ├── assets/
 └── database/
 
-Estado del Proyecto: En desarrollo
+## Estado del Proyecto
+
+En desarrollo
+
+## Equipo de Desarrollo
+
 Proyecto desarrollado por estudiantes de Ingeniería de Software — Universidad de Colima.
 
-Equipo 3: 
+### Equipo 3:
 
-Carlos Arturo Argüellez Ruiz
-
-Jesús Enrique Ibarra Figueroa
-
-Alan Yakxel Juárez Cano
-
-Fernando Franco Juárez Lara
-
-Diego Alejandro Vázquez Atanacio
+- Carlos Arturo Argüellez Ruiz
+- Jesús Enrique Ibarra Figueroa
+- Alan Yakxel Juárez Cano
+- Fernando Franco Juárez Lara
+- Diego Alejandro Vázquez Atanacio
