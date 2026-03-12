@@ -55,8 +55,6 @@ HTML/CSS/JS     PHP        MySQL
 
 ## Estructura General
 
-## Estructura General
-
 - /project
 - ├── backend/
 - │   ├── controllers/
@@ -66,15 +64,10 @@ HTML/CSS/JS     PHP        MySQL
 - ├── assets/
 - └── database/
 
-## Estado del Proyecto
+## Estado del Proyecto: En desarrollo
+## Equipo de Desarrollo:
 
-En desarrollo
-
-## Equipo de Desarrollo
-
-Proyecto desarrollado por estudiantes de Ingeniería de Software — Universidad de Colima.
-
-### Equipo 3:
+- Equipo 3:
 
 - Carlos Arturo Argüellez Ruiz
 - Jesús Enrique Ibarra Figueroa
