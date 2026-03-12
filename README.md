@@ -10,9 +10,9 @@ Proyecto desarrollado como parte del Proyecto Integrador de Ingeniería de Softw
 Objetivo:
 Diseñar e implementar una plataforma web que permita la creación y gestión de contenidos digitales aplicando principios de ingeniería de software, programación orientada a objetos y arquitectura cliente-servidor.
 
-
-
-![Página principal](assets\inicio_PI_web.png.png)
+<p align="center">
+  <img src="assets/inicio_PI_web.png" width="700">
+</p>
 
 Funcionalidades: 
 
