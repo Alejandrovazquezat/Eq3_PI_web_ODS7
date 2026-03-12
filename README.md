@@ -55,14 +55,16 @@ HTML/CSS/JS     PHP        MySQL
 
 ## Estructura General
 
-/project
-├── backend/
-│   ├── controllers/
-│   ├── models/
-│   └── config/
-├── docs/
-├── assets/
-└── database/
+## Estructura General
+
+- /project
+- ├── backend/
+- │   ├── controllers/
+- │   ├── models/
+- │   └── config/
+- ├── docs/
+- ├── assets/
+- └── database/
 
 ## Estado del Proyecto
 
