@@ -1,6 +1,6 @@
-# Plataforma Web de Publicación Digital — Energía Sustentable
+# Redrenovable
 
-## Descripción
+## Descripción:
 
 Este proyecto consiste en el desarrollo de una plataforma web de publicación y gestión de contenidos digitales enfocada en la difusión de información sobre energías renovables y el Objetivo de Desarrollo Sostenible 7 (Energía asequible y no contaminante).
 
@@ -53,7 +53,7 @@ HTML/CSS/JS     PHP        MySQL
 
 5. Ejecutar en el navegador: http://localhost/proyecto
 
-## Estructura General
+## Estructura General:
 
 - /project
 - ├── backend/
