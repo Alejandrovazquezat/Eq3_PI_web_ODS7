@@ -51,7 +51,7 @@ CREATE TABLE publicaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
     contenido TEXT NOT NULL,
-    imagen VARCHAR(255),
+    imagen LONGBLOB,
     estado ENUM('borrador','pendiente','publicado','rechazado') DEFAULT 'borrador',
 
     usuario_id INT NOT NULL,
