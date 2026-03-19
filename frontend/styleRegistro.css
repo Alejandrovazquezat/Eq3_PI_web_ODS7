@@ -1,0 +1,92 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial;
+}
+
+body{
+    height: 100vh;
+}
+
+.conteiner{
+    display: flex;
+    height: 100vh;
+    flex-direction: row-reverse;
+}
+
+/* PANEL IZQUIERDO (FORMULARIO) */
+
+.right{
+    width: 40%;
+    background-color: aliceblue;
+    display: flex;
+    padding: 80px;
+    flex-direction: column;
+    
+}
+
+.right h2{
+    font-size: 35px;
+    margin-right: 50px;
+    margin-top: 25px;
+}
+
+label{
+margin-top:35px;
+font-size: 25px;
+}
+
+input[type="text"],input[type="email"], input[type="password"]{
+width:100%;
+padding:15px;
+border:none;
+border-radius:30px;
+margin-top:8px;
+background:#56c5c7;
+outline:none;
+}
+
+button{
+margin-top:30px;
+padding:15px;
+border:none;
+border-radius:30px;
+background:#071243;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+button:hover{
+    background-color: #56c5c7;
+}
+
+/* PANEL IZQUIERDO */
+.left{
+width:60%;
+background:linear-gradient(180deg,#3b3bb3,#02011b);
+color:white;
+display:flex;
+flex-direction:column;
+align-items: center;
+position: relative;
+}
+
+.welcome h1{
+font-size: 80px;
+text-align: center;
+margin-top: 30%;
+}
+
+.welcome p{
+margin-top:30px;
+font-size:22px;
+text-align: center;
+}
+
+.footer{
+position: absolute;
+bottom:20px;
+font-size:14px;
+opacity:0.8;
+}
