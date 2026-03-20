@@ -1,0 +1,110 @@
+:root {
+    --bg-main: #ffffff;          /* Fondo blanco */
+    --sidebar-bg: #f8fafc;       /* Gris-azul muy tenue para sidebar */
+    --primary-blue: #0056b3;     /* Azul para acentos y títulos */
+    --text-dark: #1e293b;        /* Azul oscuro para texto principal */
+    --text-light: #64748b;       /* Gris azulado para etiquetas */
+    --border: #e2e8f0;           /* Color de bordes */
+    --green: #16a34a;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-dark);
+    display: flex;
+}
+
+/* Sidebar Rediseñada */
+.sidebar {
+    width: 280px;
+    background: var(--sidebar-bg);
+    height: 100vh;
+    border-right: 1px solid var(--border);
+    position: fixed;
+    padding: 30px 20px;
+    box-sizing: border-box;
+}
+
+.logo-box {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo-box img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.logo-name {
+    color: var(--primary-blue);
+    font-size: 1.3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.nav-link {
+    display: block;
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 14px 18px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.nav-link:hover, .nav-link.active {
+    background: #e0f2fe;
+    color: var(--primary-blue);
+}
+
+/* Estructura Main */
+.main {
+    margin-left: 280px;
+    padding: 50px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+h1, h2 { color: var(--primary-blue); margin-top: 0; }
+
+/* Tablas */
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th { text-align: left; padding: 15px; color: var(--primary-blue); font-size: 0.85rem; border-bottom: 2px solid var(--border); }
+td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+
+/* Formularios */
+label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.8rem; color: var(--text-light); }
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 25px;
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+.btn-blue {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+}
