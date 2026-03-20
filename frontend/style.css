@@ -1,0 +1,134 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+height:100vh;
+}
+
+.container{
+display:flex;
+height:100vh;
+}
+
+/* PANEL IZQUIERDO */
+
+.left{
+width:35%;
+background:#e6e6e6;
+padding:60px;
+display:flex;
+flex-direction:column;
+}
+
+.logotipo{
+    width: 100px;
+    margin-top: 10px;
+    margin-left: 150px;
+}
+
+.left h2{
+font-size:50px;
+margin-left: 50px;
+}
+
+label{
+margin-top:15px;
+}
+
+input[type="email"],
+input[type="password"]{
+
+width:100%;
+padding:15px;
+border:none;
+border-radius:30px;
+margin-top:5px;
+background:#56c5c7;
+outline:none;
+}
+
+/*.remember{
+margin-top:15px;
+display:flex;
+align-items:center;
+gap:8px;
+}*/
+
+button{
+border:none;
+margin-top:25px;
+padding: 15px;
+border-radius:30px;
+background:#071243;
+color:white;
+font-size:20px;
+cursor:pointer;
+}
+button:hover{
+    background-color: #56c5c7;
+}
+
+.links{
+margin-top:10px;
+display:flex;
+justify-content:space-between;
+font-size:16px;
+}
+
+.links a{
+text-decoration:none;
+color:blueviolet;
+}
+
+.links:hover{
+    color: red;
+}
+
+
+/* PANEL DERECHO */
+
+.right{
+width:65%;
+    background: linear-gradient(
+        rgba(59,59,179,0.7),
+        rgba(2,1,27,0.9)
+    ), url("image/Fondo.png");
+    
+    background-size: cover;
+    background-position: center;
+
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items: center;
+    position: relative;
+}
+
+/*.equipoTrabajo{
+    width: 50%;
+    margin-top: 50px;
+    margin-left: 0px;
+}*/
+
+.welcome h1{
+font-size: 90px;
+text-align: center;
+}
+
+.welcome p{
+margin-top:30px;
+font-size:22px;
+text-align: center;
+}
+
+.footer{
+position: absolute;
+bottom:20px;
+font-size:14px;
+opacity:0.8;
+}
