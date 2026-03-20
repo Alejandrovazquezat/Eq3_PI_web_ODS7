@@ -1,0 +1,88 @@
+/* --- RESET BÁSICO --- */
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+:root {
+    --color-primario: #055220;
+    --color-oscuro: #1e293b;
+    --texto-oscuro: #334155;
+    --blanco: #ffffff;
+    --fondo-suave: #f8fafc;
+}
+
+body {
+    background-color: var(--fondo-suave);
+    color: var(--texto-oscuro);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.color-primario { color: var(--color-primario); }
+
+/* --- BARRA DE NAVEGACIÓN --- */
+.navbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 5%; background-color: var(--blanco);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    position: sticky; top: 0; z-index: 1000;
+}
+
+.logo { display: flex; align-items: center; gap: 10px; }
+.img-logo { width: 40px; height: 40px; border-radius: 8px; background: #e2e8f0; object-fit: contain; }
+
+.nav-links { list-style: none; display: flex; gap: 25px; }
+.nav-links a { text-decoration: none; color: var(--texto-oscuro); font-weight: 500; transition: 0.3s; }
+.nav-links a:hover { color: var(--color-primario); }
+
+.nav-auth { display: flex; gap: 15px; }
+.btn-login, .btn-registro { text-decoration: none; padding: 8px 20px; border-radius: 6px; font-weight: 600; transition: 0.3s; }
+.btn-login { color: var(--texto-oscuro); border: 1px solid transparent; }
+.btn-login:hover { background-color: #f1f5f9; }
+.btn-registro { background-color: var(--color-primario); color: var(--blanco); border: none; }
+.btn-registro:hover { background-color: #055220; }
+
+/* --- CONTENIDO PRINCIPAL --- */
+.main-content {
+    flex: 1;
+    padding: 60px 5%;
+    text-align: center;
+}
+
+.main-content h1, .main-content h2 {
+    color: var(--color-oscuro);
+    margin-bottom: 20px;
+}
+
+/* Formularios */
+form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--texto-oscuro);
+}
+
+form input:focus, form textarea:focus {
+    outline: none;
+    border-color: var(--color-primario) !important;
+    box-shadow: 0 0 5px rgba(37, 99, 235, 0.3);
+}
+
+/* --- FOOTER --- */
+.footer {
+    background-color: var(--color-oscuro);
+    color: #cbd5e1; padding: 40px 5% 20px; text-align: center;
+}
+.footer-container { margin-bottom: 20px; }
+.footer-links-box a { color: #cbd5e1; text-decoration: none; margin: 0 10px; transition: 0.3s; }
+.footer-links-box a:hover { color: var(--color-primario); }
+.footer-bottom { border-top: 1px solid #334155; padding-top: 20px; font-size: 0.85rem; }
+
+/* --- DISEÑO RESPONSIVE (CELULARES) --- */
+@media (max-width: 768px) {
+    .navbar { flex-direction: column; gap: 15px; padding: 20px; }
+    .nav-links { flex-direction: column; text-align: center; gap: 15px; width: 100%; }
+    .nav-auth { width: 100%; justify-content: center; }
+}
