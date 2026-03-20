@@ -1,0 +1,249 @@
+#cont{
+  display: flex;
+    justify-content: center; /* Centra las cartas horizontalmente */
+    align-content: flex-start; /* Alinea las filas al principio para el scroll */
+    flex-wrap: wrap;         /* Permite que las cartas bajen al siguiente nivel */
+    gap: 20px;
+    padding: 20px;
+    /* Dimensiones fijas solicitadas */
+    width: 1800px;
+    height: 900px;
+    /* Centrado del contenedor en la pantalla */
+    margin: 0 auto; 
+    /* Habilitar el scroll interno */
+    overflow-y: auto; 
+    overflow-x: hidden; /* Evita el scroll horizontal innecesario */
+}
+#cartas{
+    background-color: aqua;
+    border-radius: 10px; 
+    height: 500px; 
+    width: 350px; 
+    border: solid black 1px;
+    flex-shrink: 0;
+}
+
+#cartas img{
+    height: 200px; 
+    width: auto;
+    max-width: 300px; 
+    display: block; 
+    margin: 20px auto;
+}
+#cont_cartas_info{
+    height: 250px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    
+    text-align: center;
+
+    overflow: auto;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+#cartas_info{
+    height: 200px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    
+    text-align: center;
+
+    overflow: auto;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+
+/* ESTO ES LO QUE CAMBIA: Usamos la clase para que afecte a todos */
+.check_modal {
+  display: none; /* Oculta el checkbox */
+}
+
+.modal {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7); /* Un poco más oscuro para resaltar */
+  transition: all 500ms ease;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 9999; /* Asegura que esté arriba de todo */
+  
+}
+
+/* Selector corregido: usamos la clase .check_modal */
+.check_modal:checked ~ .modal {
+  opacity: 1;
+  visibility: visible;
+}
+
+.contenedor {
+  height: 700px ; 
+  width: 900px;
+  margin: auto;
+  background: linear-gradient(#fff200, #dfd85f);
+  box-shadow: 1px 7px 25px rgba(0, 0, 0, 0.6);
+  transition: all 500ms ease;
+  position: relative;
+  transform: translateY(-30%);
+  border-radius: 5px;
+  overflow-y: auto; /* Permite scroll si el contenido es largo */
+}
+
+/* Animación corregida */
+.check_modal:checked ~ .modal .contenedor {
+  transform: translateY(0%);
+}
+
+/* Botón cerrar dentro del modal */
+.contenedor .lbl_modal#lab {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  font-weight: bold;
+  
+}
+
+
+#lab{
+    background-color: rgb(4, 4, 132);
+    font-size: 25px;
+    border: solid black 1px;
+    border-radius: 10px;
+}
+
+.lbl_modal {
+  background: #fff;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+/* partes del model */
+.c_hedar{
+  width: 100%;
+  height: 160px;
+  top: 1px;
+  overflow: hidden;
+}
+#c_acomodo{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+}
+
+.m_acomodo{
+  display: flex;
+}
+
+.m_main{
+  width: 50%;
+  height: 550px;
+  margin-top: auto;
+}
+
+.m_aside{
+  width: 50%;
+  height: 550px;
+  margin-top: auto;
+  margin-left: auto;  
+}
+
+#m_info{
+    height: 300px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    overflow: auto;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+#m_img{
+    height: auto; 
+    width: 300px; 
+    display: block; 
+    margin: 20px auto;
+}
+
+#m_like{
+  width: 100%;
+  height: 100px;
+  margin-top: auto;
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+}
+
+#m_comentario_for{
+  width: 100%;
+  height: 90px;
+  margin-top: auto;
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+}
+
+#m_cometarios{
+    height: 270px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    overflow: auto;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+
+
+/*like*/
+/* 1. Escondemos el checkbox original */
+.input-oculto {
+    display: none;
+}
+
+/* 2. Estilo del corazón apagado (gris) */
+.corazon-label {
+    cursor: pointer;
+    font-size: 40px;
+    color: #bbb; /* Gris */
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none; /* Evita que se seleccione el texto al hacer clic rápido */
+}
+
+/* 3. El efecto cuando pasas el mouse */
+.corazon-label:hover {
+    transform: scale(1.2);
+    color: #ffb3b3;
+}
+
+/* 4. LA MAGIA: Cuando el checkbox está marcado, el corazón se pone rojo */
+.input-oculto:checked + .corazon-label .icono-like {
+    color: #e74c3c; /* Rojo intenso */
+    text-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+}
+
+/* Estilo para el número de likes */
+.numero {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
