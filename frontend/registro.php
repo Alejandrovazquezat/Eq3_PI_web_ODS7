@@ -12,16 +12,18 @@
         <!---PANEL DERECHO (FORMULARIO) --->
         <div class="right">
 
+            <div style="text-align: center;">
             <h2>REGISTRO</h2>
+            </div>
             <form id="registro" action="registro.php" method="POST">
 
-                <label for="text">Nombre de usuario</label>
+                <label for="text">Nombre de usuario:</label>
                 <input type="text" id="user" name="user" required>
 
-                <label for="email">Correo electronico</label>
+                <label for="email">Correo electronico:</label>
                 <input type="email" id="email" name="email" placeholder="ejemplo@email.com" required>
 
-                <label for="password">Contraseña</label>
+                <label for="password">Contraseña:</label>
                 <input type="password" id="password" name="password" minlength="6" required>
 
                 <button type="submit">Registrarse</button>

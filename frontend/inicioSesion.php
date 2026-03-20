@@ -18,10 +18,10 @@
 
         <form id="loginForm" action="login.php" method="POST">
 
-            <label>Correo Electronico</label>
+            <label>Correo Electronico:</label>
             <input type="email" name="email" required>
 
-            <label>Contraseña</label>
+            <label>Contraseña:</label>
             <input type="password" name="password" required>
 
             <!---<div class="remember">
@@ -45,6 +45,7 @@
 
     <!-- PANEL DERECHO -->
     <div class="right">
+    <!--<img src="image/EquipodetrabajoPaneles.png" class="equipoTrabajo" alt="EquipoTrabajo">-->
 
         <div class="welcome">
             <h1>Bienvenido a<br>Redrenovable!!</h1>

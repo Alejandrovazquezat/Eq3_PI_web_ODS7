@@ -18,7 +18,7 @@ function validarUsuario($email,$password){
 
 if(validarUsuario($email,$password)){
 
-    echo "Login correcto";
+    echo "inicio exitoso";
 
 }else{
 
