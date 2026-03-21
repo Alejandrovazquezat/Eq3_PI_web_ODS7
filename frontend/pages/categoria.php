@@ -1,0 +1,131 @@
+<?php
+session_start();
+
+$categoria_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$categoria_nombre = '';
+$categoria_descripcion = '';
+$publicaciones = [];
+
+try {
+    $db = new PDO("mysql:host=localhost;dbname=plataforma_contenidos", "root", "");
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    // Obtener información de la categoría
+    $stmt = $db->prepare("SELECT id, nombre, descripcion FROM categorias WHERE id = :id");
+    $stmt->bindParam(':id', $categoria_id);
+    $stmt->execute();
+    $categoria = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($categoria) {
+        $categoria_nombre = $categoria['nombre'];
+        $categoria_descripcion = $categoria['descripcion'];
+        
+        // Obtener publicaciones de esta categoría (solo publicadas)
+        $stmt = $db->prepare("SELECT p.*, u.nombre as autor 
+                              FROM publicaciones p 
+                              JOIN usuarios u ON p.usuario_id = u.id 
+                              WHERE p.categoria_id = :categoria_id AND p.estado = 'publicado'
+                              ORDER BY p.fecha_creacion DESC");
+        $stmt->bindParam(':categoria_id', $categoria_id);
+        $stmt->execute();
+        $publicaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        $error = "Categoría no encontrada";
+    }
+    
+} catch (PDOException $e) {
+    $error = "Error: " . $e->getMessage();
+}
+
+// Si no hay categoría, redirigir
+if (!$categoria && !isset($error)) {
+    header("Location: categorias.php");
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title><?= htmlspecialchars($categoria_nombre) ?> - Redrenovable</title>
+    <link rel="stylesheet" href="../css/navbar-style.css">
+    <link rel="stylesheet" href="../css/categoria-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .publicacion-imagen {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .publicacion-imagen img {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body style="background-color: #f1f5f9;">
+
+    <?php include 'navbar.php'; ?>
+
+    <main class="publicaciones-container">
+        
+        <a href="categorias.php" class="volver">
+            <i class="fas fa-arrow-left"></i> Volver a categorías
+        </a>
+        
+        <?php if (isset($error)): ?>
+            <div style="background: #fee2e2; color: #ef4444; padding: 20px; border-radius: 10px; text-align: center;">
+                <i class="fas fa-exclamation-triangle"></i> <?= $error ?>
+            </div>
+        <?php else: ?>
+        
+            <div class="titulo-categoria">
+                <i class="fas fa-tag"></i> <?= htmlspecialchars($categoria_nombre) ?>
+                <?php if ($categoria_descripcion): ?>
+                    <p style="font-size: 1rem; color: #64748b; margin-top: 10px;"><?= htmlspecialchars($categoria_descripcion) ?></p>
+                <?php endif; ?>
+            </div>
+            
+            <?php if (count($publicaciones) > 0): ?>
+                <?php foreach($publicaciones as $pub): ?>
+                <div class="publicacion-card">
+                    
+                    <?php if($pub['imagen']): ?>
+                    <div class="publicacion-imagen">
+                        <img src="data:image/jpeg;base64,<?= base64_encode($pub['imagen']) ?>" alt="Imagen de publicación">
+                    </div>
+                    <?php endif; ?>
+                    
+                    <h2 class="publicacion-titulo"><?= htmlspecialchars($pub['titulo']) ?></h2>
+                    <div class="publicacion-meta">
+                        <i class="fas fa-user"></i> <?= htmlspecialchars($pub['autor']) ?> &nbsp;|&nbsp;
+                        <i class="fas fa-calendar"></i> <?= date('d/m/Y', strtotime($pub['fecha_creacion'])) ?>
+                    </div>
+                    <div class="publicacion-contenido">
+                        <?= nl2br(htmlspecialchars($pub['contenido'])) ?>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="sin-publicaciones">
+                    <i class="fas fa-folder-open"></i>
+                    <h3>No hay publicaciones en esta categoría aún</h3>
+                    <p>Sé el primero en compartir contenido sobre <?= htmlspecialchars($categoria_nombre) ?></p>
+                    <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
+                        <a href="../admin/crear_publicacion.php" style="display: inline-block; margin-top: 20px; background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none;">
+                            <i class="fas fa-plus"></i> Crear publicación
+                        </a>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+            
+        <?php endif; ?>
+        
+    </main>
+
+    <?php include 'footer.php'; ?>
+
+</body>
+</html>

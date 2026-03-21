@@ -1,0 +1,107 @@
+/* ============================================ */
+/* ESTILOS PARA CATEGORIA.PHP */
+/* ============================================ */
+
+.publicaciones-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.publicacion-card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s ease;
+}
+
+.publicacion-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.publicacion-titulo {
+    font-size: 1.5rem;
+    color: #0f172a;
+    margin-bottom: 10px;
+}
+
+.publicacion-meta {
+    color: #64748b;
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.publicacion-meta i {
+    margin-right: 5px;
+}
+
+.publicacion-contenido {
+    color: #334155;
+    line-height: 1.6;
+}
+
+.volver {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.volver:hover {
+    text-decoration: underline;
+}
+
+.titulo-categoria {
+    color: #0f172a;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+.titulo-categoria i {
+    margin-right: 10px;
+    color: #3b82f6;
+}
+
+/* Mensaje cuando no hay publicaciones */
+.sin-publicaciones {
+    text-align: center;
+    padding: 60px;
+    background: white;
+    border-radius: 16px;
+}
+
+.sin-publicaciones i {
+    font-size: 4rem;
+    color: #cbd5e1;
+    margin-bottom: 20px;
+}
+
+.sin-publicaciones h3 {
+    margin-top: 20px;
+    color: #475569;
+}
+
+.sin-publicaciones p {
+    color: #64748b;
+    margin-top: 10px;
+}
+
+.publicacion-imagen {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.publicacion-imagen img {
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 1px solid #e2e8f0;
+}

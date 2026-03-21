@@ -17,9 +17,9 @@ height:100vh;
 /* PANEL IZQUIERDO */
 
 .left{
-width:35%;
+width: 40%;
 background:#e6e6e6;
-padding:60px;
+padding:80px;
 display:flex;
 flex-direction:column;
 }
@@ -46,7 +46,7 @@ width:100%;
 padding:15px;
 border:none;
 border-radius:30px;
-margin-top:5px;
+margin: top 10px;   
 background:#56c5c7;
 outline:none;
 }
@@ -60,16 +60,16 @@ gap:8px;
 
 button{
 border:none;
-margin-top:25px;
+margin-top:30px;
 padding: 15px;
-border-radius:30px;
+border-radius:40px;
 background:#071243;
 color:white;
 font-size:20px;
 cursor:pointer;
 }
 button:hover{
-    background-color: #56c5c7;
+    background-color: #033f70;
 }
 
 .links{
@@ -85,7 +85,7 @@ color:blueviolet;
 }
 
 .links:hover{
-    color: red;
+    color: blue;
 }
 
 
@@ -101,7 +101,7 @@ width:65%;
     background-size: cover;
     background-position: center;
 
-    color:white;
+    color:rgb(255, 255, 255);
     display:flex;
     flex-direction:column;
     justify-content:center;

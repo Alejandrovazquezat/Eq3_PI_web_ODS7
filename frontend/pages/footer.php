@@ -1,15 +1,15 @@
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-info">
-            <h3>Plataforma ODS7</h3>
-            <p>Garantizar el acceso a una energía asequible, segura, sostenible y moderna para todos.</p>
+            <h3>Redrenovable</h3>
+            <p>Plataforma web de publicación y gestión de contenidos digitales enfocada en información sobre energías asequibles y no contaminantes.</p>
         </div>
         <div class="footer-links-box">
-            <p><strong>Contacto:</strong> info@plataformaods7.com | Tel: +52 314 123 4567</p>
-            <p><strong>Desarrollado por:</strong> Fernando Juárez y Equipo</p>
+            <p><strong>Contacto:</strong> dvazquez@ucol.mx</p>
+            <p><strong>Desarrollado por:</strong> Equipo 3</p>
         </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; <?php echo date("Y"); ?> Plataforma ODS7. Todos los derechos reservados.</p>
+        <p>&copy; <?php echo date("Y"); ?> Redrenovable. Todos los derechos reservados.</p>
     </div>
 </footer>
