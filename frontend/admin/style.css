@@ -1,10 +1,10 @@
 :root {
     --bg-main: #ffffff;          /* Fondo blanco */
-    --sidebar-bg: #f8fafc;       /* Gris-azul muy tenue para sidebar */
+    --sidebar-bg: #c6d4e6;       /* Gris-azul muy tenue para sidebar */
     --primary-blue: #0056b3;     /* Azul para acentos y títulos */
     --text-dark: #1e293b;        /* Azul oscuro para texto principal */
     --text-light: #64748b;       /* Gris azulado para etiquetas */
-    --border: #e2e8f0;           /* Color de bordes */
+    --border: #585858;           /* Color de bordes */
     --green: #16a34a;
 }
 

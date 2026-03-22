@@ -14,10 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
 
     try {
-        $db = new PDO('sqlite:../../database.sqlite');
+        // Cambiar a MySQL
+        $db = new PDO("mysql:host=localhost;dbname=plataforma_contenidos", "root", "");
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt = $db->prepare("SELECT * FROM usuarios WHERE email = :email");
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -26,13 +27,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['logueado'] = true;
             $_SESSION['nombre_usuario'] = $user['nombre'];
             $_SESSION['user_id'] = $user['id'];
+            $_SESSION['rol_id'] = $user['rol_id']; // Guardar rol para después
             header("Location: index.php");
             exit;
         } else {
-            $mensaje = "<div style='background: #fee2e2; color: #2f6a93; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Correo o contraseña incorrectos.</div>";
+            $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Correo o contraseña incorrectos.</div>";
         }
     } catch (Exception $e) {
-        $mensaje = "<div style='background: #fee2e2; color: #2f6a93; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Error al conectar con la base de datos.</div>";
+        $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Error al conectar con la base de datos: " . $e->getMessage() . "</div>";
     }
 }
 ?>
@@ -50,44 +52,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- PANEL IZQUIERDO -->
     <div class="left">
-    <div style="text-align: center;">
-        <h2>Iniciar Sesión</h2>
-    </div>
-    
-    <img src="../image/LogotipoSinfondo.png" class="logotipo" alt="Logotipo">
-
-    <?php echo $mensaje; ?>
-
-    <form method="POST">
-        <label>Correo Electrónico:</label>
-        <input type="email" name="email" required>
-    
-        <label>Contraseña:</label>
-        <input type="password" name="password" required>
-
-        <div style="text-align: center; margin-top: 20px;">
-            <button type="submit">Iniciar Sesión</button>
+        <div style="text-align: center;">
+            <h2>Iniciar Sesión</h2>
         </div>
-    </form>
+        
+        <img src="../image/LogotipoSinfondo.png" class="logotipo" alt="Logotipo">
 
-    <div class="crearCuenta" style="margin-top: 20px; text-align: left;">
-        <a href="registro.php">Crear cuenta</a>
-    </div>
+        <?php echo $mensaje; ?>
+
+        <form method="POST">
+            <label>Correo Electrónico:</label>
+            <input type="email" name="email" required>
+        
+            <label>Contraseña:</label>
+            <input type="password" name="password" required>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button type="submit">Iniciar Sesión</button>
+            </div>
+        </form>
+
+        <div class="crearCuenta" style="margin-top: 20px; text-align: center;">
+            <a href="registro.php">Crear cuenta</a>
+        </div>
     </div>
 
     <!-- PANEL DERECHO -->
     <div class="right" style="background-image: url('../image/EquipodetrabajoPaneles.png'); background-size: cover; background-position: center; position: relative;">
-    
-    
-    <div class="welcome" style="position: relative; z-index: 2; text-align: center; color: white; padding: 20px;">
-        <h1>Bienvenido a<br>Redrenovable!!</h1>
-        <p>Ingresa tus datos correspondientes en las casillas</p>
+        <div class="welcome" style="position: relative; z-index: 2; text-align: center; color: white; padding: 20px;">
+            <h1>Bienvenido a<br>Redrenovable!!</h1>
+            <p>Ingresa tus datos correspondientes en las casillas</p>
+        </div>
+        
+        <div class="footer" style="position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; z-index: 2; color: white; font-size: 0.8rem;">
+            2026 redrenovable.com todos los derechos en ISO 994
+        </div>
     </div>
-    
-    <div class="footer" style="position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; z-index: 2; color: white; font-size: 0.8rem;">
-        2026 redrenovable.com todos los derechos en ISO 994
-    </div>
-</div>
 </div>
 
 </body>

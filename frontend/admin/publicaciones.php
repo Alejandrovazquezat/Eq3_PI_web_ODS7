@@ -19,7 +19,7 @@ $pubs = $db->query("SELECT p.*, u.nombre as autor, c.nombre as categoria
 </head>
 <body>
     <div class="sidebar">
-        <div class="logo-box" onclick="window.location.href='../../pages/index.php'" style="cursor: pointer;">
+        <div class="logo-box" onclick="window.location.href='../../frontend/pages/index.php'" style="cursor: pointer;">
             <img src="../image/LogotipoSinfondo.png" alt="Logo">
             <div class="logo-name">RedRenovable</div>
         </div>

@@ -28,7 +28,7 @@ try {
 
     <div class="hero-categorias">
         <h1><i class="fas fa-tags"></i> Categorías</h1>
-        <p>Explora publicaciones por tema de interés</p>
+        <p>Explora las categorías disponibles</p>
     </div>
 
     <main class="categorias-container">

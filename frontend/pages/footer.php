@@ -5,7 +5,7 @@
             <p>Plataforma web de publicación y gestión de contenidos digitales enfocada en información sobre energías asequibles y no contaminantes.</p>
         </div>
         <div class="footer-links-box">
-            <p><strong>Contacto:</strong> dvazquez@ucol.mx</p>
+            <p><strong>Contacto:</strong> dvazquez52@ucol.mx</p>
             <p><strong>Desarrollado por:</strong> Equipo 3</p>
         </div>
     </div>
