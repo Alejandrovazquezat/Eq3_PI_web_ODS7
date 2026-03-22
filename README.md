@@ -12,65 +12,115 @@ Proyecto desarrollado como parte del Proyecto Integrador de Ingeniería de Softw
 
 Diseñar e implementar una plataforma web que permita la creación y gestión de contenidos digitales aplicando principios de ingeniería de software, programación orientada a objetos y arquitectura cliente-servidor.
 
-<p align="center">
-  <img src="assets/inicio_PI_web.png" width="700">
-</p>
+## Funcionalidades Implementadas
 
-## Funcionalidades
-
-- Registro e inicio de sesión de usuarios.
-- Control de acceso por roles (Administrador, Editor, Autor y Visitante).
-- CRUD de publicaciones.
-- Organización por categorías.
-- Sistema de "Me gusta".
-- Panel administrativo.
-- Base de datos relacional.
+- Registro e inicio de sesión de usuarios con autenticación segura
+- Control de acceso por roles (Administrador, Editor, Autor y Visitante)
+- CRUD completo de publicaciones con soporte para imágenes
+- Organización de contenidos por categorías
+- Panel de administración con gestión de usuarios
+- Cambio de roles y eliminación de usuarios desde el panel admin
+- Filtro de usuarios por rol
+- Menú desplegable con opciones de usuario
+- Página principal con publicaciones destacadas en grid horizontal y lista vertical infinita
+- Visualización de publicaciones por categoría
+- Base de datos relacional con almacenamiento de imágenes en BLOB
 
 ## Tecnologías Utilizadas
 
-- HTML
-- CSS
+- HTML5
+- CSS3
 - JavaScript
-- PHP
+- PHP 8.0
 - MySQL
 - Git y GitHub
+- XAMPP
 
-## Arquitectura
-
-Frontend -> Backend -> Base de Datos
-HTML/CSS/JS     PHP        MySQL
-
-## Instalación
-
-1. Clonar repositorio:
-   git clone https://github.com/Alejandrovazquezat/Eq3_PI_web_ODS7.git
-
-2. Colocar el proyecto en htdocs (XAMPP).
-
-3. Crear base de datos: plataforma_contenidos
-
-4. Configurar credenciales en: config/database.php
-
-5. Ejecutar en el navegador: http://localhost/proyecto
-
-## Estructura General:
-
-- /project
+## Estructura del Proyecto
+- Eq3_PI_web_ODS7/
+- ├── frontend/
+- │ ├── admin/ # Panel de administración
+- │ │ ├── dashboard.php
+- │ │ ├── usuarios.php
+- │ │ ├── publicaciones.php
+- │ │ ├── crear_publicacion.php
+- │ │ ├── cambiar_rol.php
+- │ │ └── eliminar_usuario.php
+- │ ├── css/ # Hojas de estilo
+- │ │ ├── navbar-style.css
+- │ │ ├── index-styles.css
+- │ │ ├── categorias-styles.css
+- │ │ ├── categoria-styles.css
+- │ │ ├── login-style.css
+- │ │ └── dash_usuario_styles.css
+- │ ├── image/ # Recursos gráficos
+- │ ├── js/ # Scripts JavaScript
+- │ │ └── usuarios.js
+- │ └── pages/ # Páginas públicas
+- │ ├── index.php
+- │ ├── navbar.php
+- │ ├── footer.php
+- │ ├── inicioSesion.php
+- │ ├── registro.php
+- │ ├── categorias.php
+- │ └── categoria.php
 - ├── backend/
-- │   ├── controllers/
-- │   ├── models/
-- │   └── config/
-- ├── docs/
-- ├── assets/
-- └── database/
+- │ ├── config/ # Configuración de base de datos
+- │ └── models/ # Modelos de datos
+- ├── database/ # Scripts SQL
+- ├── docs/ # Documentación
+- └── assets/ # Recursos estáticos
 
-## Estado del Proyecto: En desarrollo
-## Equipo de Desarrollo:
 
-- Equipo 3:
+## Roles del Sistema
+
+|      Rol      | Permisos |
+|---------------|-------------------------------------------------------------------------------------------------------------|
+| Administrador | Control total: gestionar usuarios, cambiar roles, eliminar usuarios, crear publicaciones, moderar contenido |
+| Editor        | Revisar y aprobar publicaciones                                                                             |
+| Autor         | Crear y editar sus propias publicaciones                                                                    |
+| Visitante     | Solo visualizar contenido público                                                                           |
+
+## Instalación Local
+
+1. Clonar el repositorio:
+git clone https://github.com/Alejandrovazquezat/Eq3_PI_web_ODS7.git
+
+
+2. Copiar la carpeta a htdocs de XAMPP:
+C:\xampp\htdocs\Eq3_PI_web_ODS7
+
+3. Iniciar Apache y MySQL desde XAMPP Control Panel
+
+4. Crear la base de datos en phpMyAdmin:
+CREATE DATABASE plataforma_contenidos;
+
+
+5. Importar el archivo SQL ubicado en:
+database/schema.sql
+
+6. Configurar credenciales de base de datos en:
+frontend/admin/Conexion.php
+
+7. Acceder a la aplicación:
+http://localhost/Eq3_PI_web_ODS7/frontend/pages/index.php
+
+
+
+## Credenciales de Prueba
+
+|      Rol       |           Email          | Contraseña  |
+|----------------|--------------------------|-------------|
+| Usuario Normal | alan_ecolima@cityboy.com | alanecolima |
+
+## Estado del Proyecto
+
+En desarrollo activo.
+
+## Equipo de Desarrollo - Equipo 3
 
 - Carlos Arturo Argüellez Ruiz
 - Jesús Enrique Ibarra Figueroa
 - Alan Yakxel Juárez Cano
 - Fernando Franco Juárez Lara
-- Diego Alejandro Vázquez Atanacio
+- Diego Alejandro Vazquez Atanacio
