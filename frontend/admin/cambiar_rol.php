@@ -41,7 +41,7 @@ if ($usuario_id > 0 && $nuevo_rol > 0) {
             $stmt->bindParam(':rol_id', $nuevo_rol);
             $stmt->bindParam(':id', $usuario_id);
             $stmt->execute();
-            $_SESSION['mensaje_exito'] = "✅ Rol del usuario actualizado correctamente.";
+            $_SESSION['mensaje_exito'] = "Rol del usuario actualizado correctamente.";
         } else {
             $_SESSION['mensaje_error'] = "Usuario no encontrado.";
         }
