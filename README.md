@@ -10,7 +10,7 @@ Proyecto desarrollado como parte del Proyecto Integrador de Ingeniería de Softw
 
 ## Objetivo
 
-Diseñar e implementar una plataforma web que permita la creación y gestión de contenidos digitales aplicando principios de ingeniería de software, programación orientada a objetos y arquitectura cliente-servidor.
+Diseñar e implementar una plataforma web que permita la creación y gestión de contenidos digitales.
 
 ## Funcionalidades Implementadas
 
@@ -79,6 +79,7 @@ Diseñar e implementar una plataforma web que permita la creación y gestión de
 | Administrador | Control total: gestionar usuarios, cambiar roles, eliminar usuarios, crear publicaciones, moderar contenido |
 | Editor        | Revisar y aprobar publicaciones                                                                             |
 | Autor         | Crear y editar sus propias publicaciones                                                                    |
+| Usuario       | Visualizar contenido e interactuar con el
 | Visitante     | Solo visualizar contenido público                                                                           |
 
 ## Instalación Local
