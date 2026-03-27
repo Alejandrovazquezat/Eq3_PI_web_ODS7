@@ -106,13 +106,6 @@ frontend/admin/Conexion.php
 http://localhost/Eq3_PI_web_ODS7/frontend/pages/index.php
 
 
-
-## Credenciales de Prueba
-
-|      Rol       |           Email          | Contraseña  |
-|----------------|--------------------------|-------------|
-| Usuario Normal | alan_ecolima@cityboy.com | alanecolima |
-
 ## Estado del Proyecto
 
 En desarrollo activo.
