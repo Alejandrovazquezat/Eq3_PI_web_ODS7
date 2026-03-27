@@ -13,3 +13,4 @@ try {
     echo "Error: " . $e->getMessage();
 }
 ?>
+<!-- solo es para verificar que las tablas se hayan creado correctamente, no es parte de la aplicación final -->

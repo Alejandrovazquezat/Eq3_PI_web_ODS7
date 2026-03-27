@@ -1,24 +1,12 @@
--- ============================================
--- CREAR BASE DE DATOS
--- ============================================
-
 CREATE DATABASE IF NOT EXISTS plataforma_contenidos;
 USE plataforma_contenidos;
 
-
--- ============================================
--- TABLA ROLES
--- ============================================
 
 CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL UNIQUE
 );
 
-
--- ============================================
--- TABLA USUARIOS
--- ============================================
 
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -32,20 +20,12 @@ CREATE TABLE usuarios (
 );
 
 
--- ============================================
--- TABLA CATEGORIAS
--- ============================================
-
 CREATE TABLE categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL UNIQUE,
     descripcion TEXT
 );
 
-
--- ============================================
--- TABLA PUBLICACIONES
--- ============================================
 
 CREATE TABLE publicaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -63,10 +43,6 @@ CREATE TABLE publicaciones (
     FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 );
 
-
--- ============================================
--- TABLA LIKES
--- ============================================
 
 CREATE TABLE likes (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -96,7 +72,7 @@ CREATE TABLE comentarios (
     FOREIGN KEY (publicacion_id) REFERENCES publicaciones(id)
 );
 
--- ROLES INICIALES
+
 
 INSERT INTO roles (nombre) VALUES
 ('admin'),

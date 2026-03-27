@@ -120,12 +120,10 @@ if ($rol_seleccionado > 0) {
                             <td style="padding: 12px;"><?= htmlspecialchars($user['email']) ?></td>
                             <td style="padding: 12px;">
                                 <?php if ($user['id'] == 1): ?>
-                                    <!-- Alejandro Admin Supremo - Protegido -->
                                     <span style="background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">
                                         <i></i> Admin Supremo
                                     </span>
                                 <?php else: ?>
-                                    <!-- Rol editable con cursor pointer -->
                                     <span onclick="mostrarModalRol(<?= $user['id'] ?>, '<?= htmlspecialchars($user['nombre']) ?>', <?= $user['rol_id'] ?>)" 
                                           style="background-color: <?= $rolColors[$user['rol']] ?? '#64748b' ?>; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer;">
                                         <?= ucfirst($user['rol'] ?? 'usuario') ?> <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
@@ -134,7 +132,6 @@ if ($rol_seleccionado > 0) {
                             </td>
                             <td style="padding: 12px; text-align: center;">
                                 <?php if ($user['id'] == 1): ?>
-                                    <!-- Alejandro Admin Supremo - Intocable -->
                                     <span style="color: #f59e0b; font-size: 0.8rem; font-weight: bold;">
                                         <i></i> Irrevocable
                                     </span>
@@ -165,7 +162,7 @@ if ($rol_seleccionado > 0) {
         </div>
     </main>
 
-    <!-- Modal de confirmación para eliminar -->
+    
     <div id="modalConfirmacion" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
         <div style="background: white; padding: 30px; border-radius: 12px; text-align: center; max-width: 400px;">
             <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #ef4444; margin-bottom: 15px;"></i>
@@ -179,7 +176,7 @@ if ($rol_seleccionado > 0) {
         </div>
     </div>
 
-    <!-- Modal para cambiar rol -->
+    
     <div id="modalCambioRol" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
         <div style="background: white; padding: 30px; border-radius: 12px; text-align: center; max-width: 400px;">
             <i class="fas fa-user-tag" style="font-size: 3rem; color: #3b82f6; margin-bottom: 15px;"></i>

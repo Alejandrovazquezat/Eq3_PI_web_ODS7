@@ -37,12 +37,11 @@ $resto = array_slice($publicaciones, 4);
 
     <main class="main-content">
         
-        <!-- Hero con imagen de fondo y capa oscura -->
+        
         <div style="background-image: url('../image/Redenovable_inicio.jpg'); background-size: cover; background-position: center; color: white; padding: 100px 5%; text-align: center; border-radius: 0 0 40px 40px; margin-bottom: 30px; position: relative;">
-            <!-- Capa oscura para mejorar legibilidad del texto -->
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.55); border-radius: 0 0 40px 40px;"></div>
             <div style="position: relative; z-index: 2;">
-                <h1 style="color: white; font-size: 3rem; margin-bottom: 15px;">Redrenovable</h1>
+                <h1 style="color: white; font-size: 3rem; margin-bottom: 15px;">REDrenovable</h1>
                 <p style="font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">Difusión de información sobre energías asequibles y no contaminantes.</p>
             </div>
         </div>
@@ -55,7 +54,7 @@ $resto = array_slice($publicaciones, 4);
                 </div>
             <?php elseif (count($publicaciones) > 0): ?>
                 
-                <!-- Destacados: 4 publicaciones en horizontal -->
+                <!-- Destacadoshorizontal -->
                 <div class="destacados-grid">
                     <?php foreach($destacados as $pub): ?>
                     <div class="destacado-card" onclick="window.location.href='categoria.php?id=<?= $pub['categoria_id'] ?>'">
@@ -83,7 +82,7 @@ $resto = array_slice($publicaciones, 4);
                     <span>Más publicaciones</span>
                 </div>
                 
-                <!-- Lista vertical infinita -->
+                
                 <div class="lista-vertical">
                     <?php foreach($resto as $pub): ?>
                     <div class="vertical-card" onclick="window.location.href='categoria.php?id=<?= $pub['categoria_id'] ?>'">

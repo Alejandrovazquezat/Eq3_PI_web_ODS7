@@ -37,7 +37,6 @@ try {
     $error = "Error: " . $e->getMessage();
 }
 
-// Si no hay categoría, redirigir
 if (!$categoria && !isset($error)) {
     header("Location: categorias.php");
     exit;
