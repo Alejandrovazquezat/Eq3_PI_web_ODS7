@@ -26,7 +26,7 @@ $resto = array_slice($publicaciones, 4);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Redrenovable</title>
+    <title>REDnovable</title>
     <link rel="stylesheet" href="../css/navbar-style.css">
     <link rel="stylesheet" href="../css/index-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -41,7 +41,7 @@ $resto = array_slice($publicaciones, 4);
         <div style="background-image: url('../image/Redenovable_inicio.jpg'); background-size: cover; background-position: center; color: white; padding: 100px 5%; text-align: center; border-radius: 0 0 40px 40px; margin-bottom: 30px; position: relative;">
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.55); border-radius: 0 0 40px 40px;"></div>
             <div style="position: relative; z-index: 2;">
-                <h1 style="color: white; font-size: 3rem; margin-bottom: 15px;">REDrenovable</h1>
+                <h1 style="color: white; font-size: 3rem; margin-bottom: 15px;">REDnovable</h1>
                 <p style="font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">Difusión de información sobre energías asequibles y no contaminantes.</p>
             </div>
         </div>
