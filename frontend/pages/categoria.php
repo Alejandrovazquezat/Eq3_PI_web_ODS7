@@ -1,52 +1,60 @@
 <?php
-session_start();
+// ==========================
+// 1. Cargar dependencias
+// ==========================
+require_once __DIR__ . '/../../config/Conexion.php';
+require_once __DIR__ . '/../../backend/controllers/CategoriesController.php';
+require_once __DIR__ . '/../../backend/controllers/PublicacionController.php';
 
+// ==========================
+// 2. Conexión e instancias
+// ==========================
+$db = (new Conexion())->getConexion();
+$catController = new CategoriesController($db);
+$pubController = new PublicacionController($db);
+
+// ==========================
+// 3. Obtener ID de categoría
+// ==========================
 $categoria_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$categoria_nombre = '';
-$categoria_descripcion = '';
-$publicaciones = [];
 
-try {
-    $db = new PDO("mysql:host=localhost;dbname=plataforma_contenidos", "root", "");
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    // Obtener información de la categoría
-    $stmt = $db->prepare("SELECT id, nombre, descripcion FROM categorias WHERE id = :id");
-    $stmt->bindParam(':id', $categoria_id);
-    $stmt->execute();
-    $categoria = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if ($categoria) {
-        $categoria_nombre = $categoria['nombre'];
-        $categoria_descripcion = $categoria['descripcion'];
-        
-        // Obtener publicaciones de esta categoría (solo publicadas)
-        $stmt = $db->prepare("SELECT p.*, u.nombre as autor 
-                              FROM publicaciones p 
-                              JOIN usuarios u ON p.usuario_id = u.id 
-                              WHERE p.categoria_id = :categoria_id AND p.estado = 'publicado'
-                              ORDER BY p.fecha_creacion DESC");
-        $stmt->bindParam(':categoria_id', $categoria_id);
-        $stmt->execute();
-        $publicaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } else {
-        $error = "Categoría no encontrada";
-    }
-    
-} catch (PDOException $e) {
-    $error = "Error: " . $e->getMessage();
-}
-
-if (!$categoria && !isset($error)) {
+if ($categoria_id <= 0) {
     header("Location: categorias.php");
     exit;
+}
+
+// ==========================
+// 4. Obtener información de la categoría
+// ==========================
+$categoria_stmt = $catController->obtenerPorId($categoria_id);
+$categoria = null;
+
+if (!is_string($categoria_stmt)) {
+    $categoria = $categoria_stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+if (!$categoria) {
+    $error = "Categoría no encontrada";
+} else {
+    // ==========================
+    // 5. Obtener publicaciones de esta categoría
+    // ==========================
+    $pub_stmt = $pubController->obtenerPorCategoria($categoria_id);
+    $publicaciones = is_string($pub_stmt) ? [] : $pub_stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// ==========================
+// 6. Iniciar sesión para el navbar
+// ==========================
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title><?= htmlspecialchars($categoria_nombre) ?> - Redrenovable</title>
+    <title><?= isset($categoria) ? htmlspecialchars($categoria['nombre']) : 'Categoría' ?> - Redrenovable</title>
     <link rel="stylesheet" href="../css/navbar-style.css">
     <link rel="stylesheet" href="../css/categoria-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -76,14 +84,14 @@ if (!$categoria && !isset($error)) {
         
         <?php if (isset($error)): ?>
             <div style="background: #fee2e2; color: #ef4444; padding: 20px; border-radius: 10px; text-align: center;">
-                <i class="fas fa-exclamation-triangle"></i> <?= $error ?>
+                <i class="fas fa-exclamation-triangle"></i> <?= htmlspecialchars($error) ?>
             </div>
         <?php else: ?>
         
             <div class="titulo-categoria">
-                <i class="fas fa-tag"></i> <?= htmlspecialchars($categoria_nombre) ?>
-                <?php if ($categoria_descripcion): ?>
-                    <p style="font-size: 1rem; color: #64748b; margin-top: 10px;"><?= htmlspecialchars($categoria_descripcion) ?></p>
+                <i class="fas fa-tag"></i> <?= htmlspecialchars($categoria['nombre']) ?>
+                <?php if (!empty($categoria['descripcion'])): ?>
+                    <p style="font-size: 1rem; color: #64748b; margin-top: 10px;"><?= htmlspecialchars($categoria['descripcion']) ?></p>
                 <?php endif; ?>
             </div>
             
@@ -99,7 +107,7 @@ if (!$categoria && !isset($error)) {
                     
                     <h2 class="publicacion-titulo"><?= htmlspecialchars($pub['titulo']) ?></h2>
                     <div class="publicacion-meta">
-                        <i class="fas fa-user"></i> <?= htmlspecialchars($pub['autor']) ?> &nbsp;|&nbsp;
+                        <i class="fas fa-user"></i> <?= htmlspecialchars($pub['autor'] ?? 'Desconocido') ?> &nbsp;|&nbsp;
                         <i class="fas fa-calendar"></i> <?= date('d/m/Y', strtotime($pub['fecha_creacion'])) ?>
                     </div>
                     <div class="publicacion-contenido">
@@ -111,8 +119,8 @@ if (!$categoria && !isset($error)) {
                 <div class="sin-publicaciones">
                     <i class="fas fa-folder-open"></i>
                     <h3>No hay publicaciones en esta categoría aún</h3>
-                    <p>Sé el primero en compartir contenido sobre <?= htmlspecialchars($categoria_nombre) ?></p>
-                    <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
+                    <p>Sé el primero en compartir contenido sobre <?= htmlspecialchars($categoria['nombre']) ?></p>
+                    <?php if (isset($_SESSION['usuario_id'])): ?>
                         <a href="../admin/crear_publicacion.php" style="display: inline-block; margin-top: 20px; background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none;">
                             <i class="fas fa-plus"></i> Crear publicación
                         </a>

@@ -59,12 +59,12 @@ class Usuario {
     // =============================
     // Obtener usuarios por rol
     // =============================
-    
     public function obtenerPorRol($rol_id) {
-        $query = "SELECT id, nombre, email, fecha_creacion 
-                  FROM " . $this->table . " 
-                  WHERE rol_id = :rol_id 
-                  ORDER BY fecha_creacion DESC";
+        $query = "SELECT u.id, u.nombre, u.email, u.rol_id, r.nombre as rol_nombre, u.fecha_creacion 
+                  FROM " . $this->table . " u
+                  LEFT JOIN roles r ON u.rol_id = r.id 
+                  WHERE u.rol_id = :rol_id 
+                  ORDER BY u.fecha_creacion DESC";
         
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":rol_id", $rol_id);
@@ -102,5 +102,4 @@ class Usuario {
         return $stmt->execute();
     }
 
-} // <-- ESTA ES LA ÚNICA LLAVE DE CIERRE DE LA CLASE
-?>
+}

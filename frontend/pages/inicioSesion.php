@@ -1,40 +1,45 @@
 <?php
-session_start();
+// ==========================
+// 1. Cargar dependencias
+// ==========================
+require_once __DIR__ . '/../../config/Conexion.php';
+require_once __DIR__ . '/../../backend/controllers/AuthController.php';
 
-// Si ya está logueado, redirigir al inicio
-if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true) {
+// ==========================
+// 2. Conexión e instancia del controlador
+// ==========================
+$db = (new Conexion())->getConexion();
+$auth = new AuthController($db);
+
+// ==========================
+// 3. Sesión: si ya está logueado, redirigir
+// ==========================
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (isset($_SESSION['usuario_id'])) {
     header("Location: index.php");
     exit;
 }
 
+// ==========================
+// 4. Procesar login
+// ==========================
 $mensaje = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
 
-    try {
-        // Cambiar a MySQL
-        $db = new PDO("mysql:host=localhost;dbname=plataforma_contenidos", "root", "");
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $resultado = $auth->login($email, $password);
 
-        $stmt = $db->prepare("SELECT * FROM usuarios WHERE email = :email");
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['logueado'] = true;
-            $_SESSION['nombre_usuario'] = $user['nombre'];
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['rol_id'] = $user['rol_id']; // Guardar rol para después
-            header("Location: index.php");
-            exit;
-        } else {
-            $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Correo o contraseña incorrectos.</div>";
-        }
-    } catch (Exception $e) {
-        $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Error al conectar con la base de datos: " . $e->getMessage() . "</div>";
+    if ($resultado === "Login correcto") {
+        // Redirigir al index con la sesión ya iniciada por AuthController
+        header("Location: index.php");
+        exit;
+    } else {
+        $mensaje = $resultado;
     }
 }
 ?>
@@ -58,7 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         <img src="../image/LogotipoSinfondo.png" class="logotipo" alt="Logotipo">
 
-        <?php echo $mensaje; ?>
+        <?php if (!empty($mensaje)): ?>
+            <div style="background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+                <?= htmlspecialchars($mensaje) ?>
+            </div>
+        <?php endif; ?>
 
         <form method="POST">
             <label>Correo Electrónico:</label>

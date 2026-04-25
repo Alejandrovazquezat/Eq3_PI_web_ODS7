@@ -1,32 +1,66 @@
 <?php
-session_start();
-require_once 'Conexion.php';
+// ==========================
+// 1. Cargar dependencias
+// ==========================
+require_once __DIR__ . '/../../config/Conexion.php';
+require_once __DIR__ . '/../../backend/controllers/AuthController.php';
+require_once __DIR__ . '/../../backend/controllers/PublicacionController.php';
+require_once __DIR__ . '/../../backend/controllers/CategoriesController.php';
+
+// ==========================
+// 2. Conexión y sesión
+// ==========================
 $db = (new Conexion())->getConexion();
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// ==========================
+// 3. Verificar autenticación y permiso
+// ==========================
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../pages/inicioSesion.php");
+    exit;
+}
+
+$auth = new AuthController($db);
+$usuario_id = $_SESSION['usuario_id'];
+
+if (!$auth->tienePermiso($usuario_id, 'crear_publicacion')) {
+    header("Location: ../pages/index.php");
+    exit;
+}
+
+// ==========================
+// 4. Obtener categorías para el select
+// ==========================
+$catController = new CategoriesController($db);
+$categorias_stmt = $catController->obtenerTodas();
+$categorias = is_object($categorias_stmt) ? $categorias_stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+
+// ==========================
+// 5. Procesar formulario
+// ==========================
 $mensaje = "";
 $error = "";
 
-// Obtener categorías para el select
-$categorias = $db->query("SELECT id, nombre FROM categorias ORDER BY nombre")->fetchAll();
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $titulo = trim($_POST['titulo']);
-    $contenido = trim($_POST['contenido']);
-    $categoria_id = $_POST['categoria_id'] ?: null;
-    $estado = $_POST['estado'];
+    $titulo = trim($_POST['titulo'] ?? '');
+    $contenido = trim($_POST['contenido'] ?? '');
+    $categoria_id = !empty($_POST['categoria_id']) ? $_POST['categoria_id'] : null;
     $imagen_binaria = null;
     
     // Validar campos obligatorios
     if (empty($titulo) || empty($contenido)) {
         $error = "El título y el contenido son obligatorios";
     } else {
-        // Procesar imagen si se subió
+        // Procesar imagen si se subió (mantenemos BLOB por ahora)
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
             $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
             $extension = strtolower(pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION));
             
             if (in_array($extension, $allowed)) {
-                // Leer la imagen como binario
                 $imagen_binaria = file_get_contents($_FILES['imagen']['tmp_name']);
             } else {
                 $error = "Formato de imagen no permitido. Usa: jpg, jpeg, png, gif, webp";
@@ -34,28 +68,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         if (empty($error)) {
-            try {
-                $usuario_id = $_SESSION['user_id'] ?? 1;
-                
-                $query = "INSERT INTO publicaciones (titulo, contenido, imagen, categoria_id, estado, usuario_id) 
-                          VALUES (:titulo, :contenido, :imagen, :categoria_id, :estado, :usuario_id)";
-                $stmt = $db->prepare($query);
-                $stmt->bindParam(':titulo', $titulo);
-                $stmt->bindParam(':contenido', $contenido);
-                $stmt->bindParam(':imagen', $imagen_binaria, PDO::PARAM_LOB);
-                $stmt->bindParam(':categoria_id', $categoria_id);
-                $stmt->bindParam(':estado', $estado);
-                $stmt->bindParam(':usuario_id', $usuario_id);
-                
-                if ($stmt->execute()) {
-                    $mensaje = "¡Publicación creada con éxito!";
-                    // Limpiar formulario
-                    $titulo = $contenido = "";
-                } else {
-                    $error = "Error al guardar la publicación";
-                }
-            } catch (PDOException $e) {
-                $error = "Error en la base de datos: " . $e->getMessage();
+            // Usar el controlador para crear la publicación (el estado se asigna automáticamente por rol)
+            $pubController = new PublicacionController($db);
+            $resultado = $pubController->crear($titulo, $contenido, $imagen_binaria, $categoria_id, $usuario_id);
+            
+            // El controlador devuelve un string con el mensaje
+            if (strpos($resultado, 'correctamente') !== false) {
+                $mensaje = $resultado;
+                // Limpiar variables para nuevo formulario
+                $titulo = $contenido = "";
+                $categoria_id = null;
+            } else {
+                $error = $resultado;
             }
         }
     }
@@ -86,11 +110,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         <div class="form-container">
             <?php if ($mensaje): ?>
-                <div class="mensaje-exito"><?= $mensaje ?></div>
+                <div class="mensaje-exito"><?= htmlspecialchars($mensaje) ?></div>
             <?php endif; ?>
             
             <?php if ($error): ?>
-                <div class="mensaje-error"><?= $error ?></div>
+                <div class="mensaje-error"><?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
             
             <form method="POST" action="" enctype="multipart/form-data">
@@ -104,19 +128,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <select id="categoria_id" name="categoria_id" required>
                         <option value="">-- Seleccionar categoría --</option>
                         <?php foreach ($categorias as $cat): ?>
-                            <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['nombre']) ?></option>
+                            <option value="<?= $cat['id'] ?>" <?= (isset($categoria_id) && $categoria_id == $cat['id']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($cat['nombre']) ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 
-                <div class="form-group">
-                    <label for="estado">Estado</label>
-                    <select id="estado" name="estado">
-                        <option value="borrador">Borrador</option>
-                        <option value="pendiente">Pendiente</option>
-                        <option value="publicado" selected>Publicado</option>
-                    </select>
-                </div>
+                <!-- Eliminamos el campo "Estado" porque el controlador lo asigna automáticamente según el rol -->
                 
                 <div class="form-group">
                     <label for="imagen">Imagen (opcional)</label>
@@ -130,6 +149,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 
                 <button type="submit" class="btn-submit">Publicar</button>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 10px;">
+                    * Si eres autor, la publicación quedará pendiente de aprobación.<br>
+                    * Administradores y editores publican directamente.
+                </p>
             </form>
         </div>
     </main>

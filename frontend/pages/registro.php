@@ -1,64 +1,64 @@
 <?php
-session_start();
+// ==========================
+// 1. Cargar dependencias
+// ==========================
+require_once __DIR__ . '/../../config/Conexion.php';
+require_once __DIR__ . '/../../backend/controllers/AuthController.php';
 
+// ==========================
+// 2. Conexión e instancia del controlador
+// ==========================
+$db = (new Conexion())->getConexion();
+$auth = new AuthController($db);
+
+// ==========================
+// 3. Sesión: si ya está logueado, redirigir al inicio
+// ==========================
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (isset($_SESSION['usuario_id'])) {
+    header("Location: index.php");
+    exit;
+}
+
+// ==========================
+// 4. Procesar registro
+// ==========================
 $mensaje = "";
-$registro_exitoso = false;
+$tipo_mensaje = ""; // 'error' o 'exito'
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nombre = trim($_POST['user']);
-    $email = trim($_POST['email']);
-    $password = $_POST['password'];
+    $nombre = trim($_POST['user'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
 
     // Validaciones básicas
     if (empty($nombre) || empty($email) || empty($password)) {
-        $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Todos los campos son obligatorios.</div>";
+        $mensaje = "Todos los campos son obligatorios.";
+        $tipo_mensaje = "error";
     } elseif (strlen($password) < 6) {
-        $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>La contraseña debe tener al menos 6 caracteres.</div>";
+        $mensaje = "La contraseña debe tener al menos 6 caracteres.";
+        $tipo_mensaje = "error";
     } else {
-        try {
-            $db = new PDO("mysql:host=localhost;dbname=plataforma_contenidos", "root", "");
-            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // Intentar registrar
+        $resultado_registro = $auth->registrar($nombre, $email, $password);
 
-            // Verificar si el email ya existe
-            $check = $db->prepare("SELECT id FROM usuarios WHERE email = :email");
-            $check->bindParam(':email', $email);
-            $check->execute();
-            
-            if ($check->fetch()) {
-                $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Este correo ya está registrado.</div>";
+        if ($resultado_registro === "Registro exitoso") {
+            // Iniciar sesión automáticamente
+            $login = $auth->login($email, $password);
+            if ($login === "Login correcto") {
+                header("Location: index.php");
+                exit;
             } else {
-                // Generar hash de la contraseña
-                $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-                
-                // Verificar que el hash se generó correctamente
-                if ($hashedPassword === false) {
-                    $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Error al procesar la contraseña. Intenta de nuevo.</div>";
-                } else {
-                    $stmt = $db->prepare("INSERT INTO usuarios (nombre, email, password, rol_id) VALUES (:nombre, :email, :password, 4)");
-                    $stmt->bindParam(':nombre', $nombre);
-                    $stmt->bindParam(':email', $email);
-                    $stmt->bindParam(':password', $hashedPassword);
-                    
-                    if ($stmt->execute()) {
-                        // Obtener el ID del usuario recién creado
-                        $usuario_id = $db->lastInsertId();
-                        
-                        // Iniciar sesión automáticamente
-                        $_SESSION['logueado'] = true;
-                        $_SESSION['nombre_usuario'] = $nombre;
-                        $_SESSION['user_id'] = $usuario_id;
-                        $_SESSION['rol_id'] = 4; // Usuario normal
-                        
-                        // Redirigir directamente al index
-                        header("Location: index.php");
-                        exit;
-                    } else {
-                        $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Error al guardar el usuario. Intenta de nuevo.</div>";
-                    }
-                }
+                // Error inesperado al iniciar sesión después del registro
+                $mensaje = "Registro exitoso, pero no se pudo iniciar sesión. Intenta iniciar sesión manualmente.";
+                $tipo_mensaje = "error";
             }
-        } catch (Exception $e) {
-            $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Error al registrar: " . $e->getMessage() . "</div>";
+        } else {
+            $mensaje = $resultado_registro; // Ya contiene el mensaje de error
+            $tipo_mensaje = "error";
         }
     }
 }
@@ -81,7 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h2>REGISTRO</h2>
             </div>
 
-            <?php echo $mensaje; ?>
+            <?php if (!empty($mensaje)): ?>
+                <div style="<?= $tipo_mensaje === 'error' ? 'background: #fee2e2; color: #ef4444;' : 'background: #dcfce7; color: #166534;' ?> padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+                    <?= htmlspecialchars($mensaje) ?>
+                </div>
+            <?php endif; ?>
 
             <form method="POST">
                 <label for="user">Nombre de usuario:</label>

@@ -14,26 +14,27 @@ if (session_status() === PHP_SESSION_NONE) {
             <li><a href="index.php"><i class="fas fa-home"></i> Inicio</a></li>
             <li><a href="categorias.php"><i class="fas fa-th-large"></i> Categorías</a></li>
             
-            <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
+            <?php if (isset($_SESSION['usuario_id'])): ?>
                 <?php 
+                // Roles que pueden crear publicación: admin(1), editor(2), autor(3)
                 $puede_crear = in_array($_SESSION['rol_id'] ?? 0, [1, 2, 3]);
                 ?>
                 <?php if ($puede_crear): ?>
-                    <li><a href="publicar.php"><i class="fas fa-edit"></i> Crear Publicación</a></li>
+                    <li><a href="../admin/crear_publicacion.php"><i class="fas fa-edit"></i> Crear Publicación</a></li>
                 <?php endif; ?>
             <?php endif; ?>
         </ul>
     </nav>
 
     <div class="nav-auth">
-        <?php if (isset($_SESSION['logueado']) && $_SESSION['logueado'] === true): ?>
+        <?php if (isset($_SESSION['usuario_id'])): ?>
             <div class="menu-container">
                 <div class="menu-icon" onclick="toggleMenu()">
                     <i class="fas fa-bars"></i>
                 </div>
                 <div id="userMenu" class="menu-dropdown" style="display: none;">
                     <div class="menu-user-info">
-                        <i class="fas fa-user-circle"></i> <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
+                        <i class="fas fa-user-circle"></i> <?php echo htmlspecialchars($_SESSION['nombre'] ?? 'Usuario'); ?>
                     </div>
                     <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1): ?>
                         <a href="../admin/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard Admin</a>

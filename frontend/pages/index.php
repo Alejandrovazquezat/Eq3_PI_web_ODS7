@@ -1,26 +1,38 @@
 <?php
-session_start();
+// ==========================
+// 1. Cargar dependencias
+// ==========================
+require_once __DIR__ . '/../../config/Conexion.php';
+require_once __DIR__ . '/../../backend/controllers/PublicacionController.php';
 
-// Obtener publicaciones publicadas
-$publicaciones = [];
-try {
-    $db = new PDO("mysql:host=localhost;dbname=plataforma_contenidos", "root", "");
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    $stmt = $db->query("SELECT p.*, u.nombre as autor, c.nombre as categoria_nombre 
-                        FROM publicaciones p 
-                        JOIN usuarios u ON p.usuario_id = u.id 
-                        LEFT JOIN categorias c ON p.categoria_id = c.id 
-                        WHERE p.estado = 'publicado'
-                        ORDER BY p.fecha_creacion DESC");
-    $publicaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    $error = "Error al cargar publicaciones: " . $e->getMessage();
+// ==========================
+// 2. Conexión e instancia del controlador
+// ==========================
+$db = (new Conexion())->getConexion();
+$pubController = new PublicacionController($db);
+
+// ==========================
+// 3. Obtener publicaciones publicadas
+// ==========================
+$publicaciones_stmt = $pubController->obtenerPublicadas();
+
+if (is_string($publicaciones_stmt)) {
+    $error = $publicaciones_stmt;
+    $publicaciones = [];
+} else {
+    $publicaciones = $publicaciones_stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // Separar destacados (primeras 4) y el resto
 $destacados = array_slice($publicaciones, 0, 4);
 $resto = array_slice($publicaciones, 4);
+
+// ==========================
+// 4. Iniciar sesión para el navbar
+// ==========================
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -37,11 +49,10 @@ $resto = array_slice($publicaciones, 4);
 
     <main class="main-content">
         
-        
         <div style="background-image: url('../image/Redenovable_inicio.jpg'); background-size: cover; background-position: center; color: white; padding: 100px 5%; text-align: center; border-radius: 0 0 40px 40px; margin-bottom: 30px; position: relative;">
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.55); border-radius: 0 0 40px 40px;"></div>
             <div style="position: relative; z-index: 2;">
-                <h1 style="color: white; font-size: 3rem; margin-bottom: 15px;">RED-novable</h1>
+                <h1 style="color: white; font-size: 3rem; margin-bottom: 15px;">REDnovable</h1>
                 <p style="font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">Difusión de información sobre energías asequibles y no contaminantes.</p>
             </div>
         </div>
@@ -50,11 +61,11 @@ $resto = array_slice($publicaciones, 4);
             
             <?php if (isset($error)): ?>
                 <div style="background: #fee2e2; color: #ef4444; padding: 20px; border-radius: 10px; text-align: center;">
-                    <i class="fas fa-exclamation-triangle"></i> <?= $error ?>
+                    <i class="fas fa-exclamation-triangle"></i> <?= htmlspecialchars($error) ?>
                 </div>
             <?php elseif (count($publicaciones) > 0): ?>
                 
-                <!-- Destacadoshorizontal -->
+                <!-- Destacados horizontal -->
                 <div class="destacados-grid">
                     <?php foreach($destacados as $pub): ?>
                     <div class="destacado-card" onclick="window.location.href='categoria.php?id=<?= $pub['categoria_id'] ?>'">
@@ -64,7 +75,7 @@ $resto = array_slice($publicaciones, 4);
                         </div>
                         <?php endif; ?>
                         <div class="destacado-contenido">
-                            <span class="destacado-categoria"><?= htmlspecialchars($pub['categoria_nombre'] ?? 'General') ?></span>
+                            <span class="destacado-categoria"><?= htmlspecialchars($pub['categoria'] ?? 'General') ?></span>
                             <h3 class="destacado-titulo"><?= htmlspecialchars($pub['titulo']) ?></h3>
                             <div class="destacado-fecha">
                                 <i class="fas fa-calendar"></i> <?= date('d/m/Y', strtotime($pub['fecha_creacion'])) ?>
@@ -82,7 +93,7 @@ $resto = array_slice($publicaciones, 4);
                     <span>Más publicaciones</span>
                 </div>
                 
-                
+                <!-- Lista vertical -->
                 <div class="lista-vertical">
                     <?php foreach($resto as $pub): ?>
                     <div class="vertical-card" onclick="window.location.href='categoria.php?id=<?= $pub['categoria_id'] ?>'">
@@ -92,7 +103,7 @@ $resto = array_slice($publicaciones, 4);
                         </div>
                         <?php endif; ?>
                         <div class="vertical-contenido">
-                            <span class="vertical-categoria"><?= htmlspecialchars($pub['categoria_nombre'] ?? 'General') ?></span>
+                            <span class="vertical-categoria"><?= htmlspecialchars($pub['categoria'] ?? 'General') ?></span>
                             <h2 class="vertical-titulo"><?= htmlspecialchars($pub['titulo']) ?></h2>
                             <div class="vertical-meta">
                                 <i class="fas fa-user"></i> <?= htmlspecialchars($pub['autor']) ?> &nbsp;|&nbsp;
