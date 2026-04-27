@@ -32,11 +32,14 @@ if (session_status() === PHP_SESSION_NONE) {
                     <i class="fas fa-bars"></i>
                 </div>
                 <div id="userMenu" class="menu-dropdown" style="display: none;">
-                    <div class="menu-user-info">
-                        <i class="fas fa-user-circle"></i> <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
-                    </div>
+                   
+                    <a href="userEdith.php" class="menu-user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span><?php echo htmlspecialchars($_SESSION['nombre_usuario']);?></span>
+                    </a>
+
                     <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1): ?>
-                        <a href="../admin/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard Admin</a>
+                        <a href="../admin/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard admin</a>
                     <?php endif; ?>
                     <a href="logout.php" class="logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
                 </div>
