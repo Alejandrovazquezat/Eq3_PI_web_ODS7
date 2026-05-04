@@ -1,12 +1,10 @@
 CREATE DATABASE IF NOT EXISTS plataforma_contenidos;
 USE plataforma_contenidos;
 
-
 CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL UNIQUE
 );
-
 
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -19,13 +17,11 @@ CREATE TABLE usuarios (
     FOREIGN KEY (rol_id) REFERENCES roles(id)
 );
 
-
 CREATE TABLE categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL UNIQUE,
     descripcion TEXT
 );
-
 
 CREATE TABLE publicaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,6 +29,7 @@ CREATE TABLE publicaciones (
     contenido TEXT NOT NULL,
     imagen LONGBLOB,
     estado ENUM('borrador','pendiente','publicado','rechazado') DEFAULT 'borrador',
+    estilo ENUM('carta abajo', 'carta arriba', 'carta ezquierda', 'carta derecha') DEFAULT 'carta abajo',
 
     usuario_id INT NOT NULL,
     categoria_id INT,
@@ -42,7 +39,6 @@ CREATE TABLE publicaciones (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 );
-
 
 CREATE TABLE likes (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -71,8 +67,6 @@ CREATE TABLE comentarios (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     FOREIGN KEY (publicacion_id) REFERENCES publicaciones(id)
 );
-
-
 
 INSERT INTO roles (nombre) VALUES
 ('admin'),
