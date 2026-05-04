@@ -1,0 +1,122 @@
+/* Contenedor tipo tarjeta igual al Dashboard y al Banner */
+.card-table-container {
+    background: var(--white);
+    border-radius: var(--radius-banner); /* 30px o 24px según definimos */
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+    overflow: hidden; /* Para que el contenido respete los bordes redondeados */
+    margin-top: 20px;
+}
+
+.table-header {
+    padding: 25px 30px;
+    border-bottom: 1px solid var(--border);
+}
+
+.table-header h3 {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: 1.2rem;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.publicaciones-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Cabeceras más limpias */
+.publicaciones-table th {
+    padding: 18px 30px;
+    text-align: left;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-light);
+    font-weight: 700;
+}
+
+.publicaciones-table td {
+    padding: 20px 30px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+/* Miniatura de imagen con estilo */
+.img-wrapper {
+    width: 65px;
+    height: 45px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imagen-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Títulos y Meta info */
+.titulo-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.p-titulo {
+    font-weight: 700;
+    color: var(--text-dark);
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.p-autor {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+/* Tags de categoría */
+.cat-tag {
+    background: #f1f5f9;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text-dark);
+}
+
+/* Badges de Estado más modernos */
+.badge-estado {
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badge-estado.publicado { 
+    background-color: #dcfce7; 
+    color: #166534; 
+}
+.badge-estado.borrador { 
+    background-color: #f1f5f9; 
+    color: #475569; 
+}
+.badge-estado.pendiente { 
+    background-color: #fef3c7; 
+    color: #92400e; 
+}
+.badge-estado.rechazado { 
+    background-color: #fee2e2; 
+    color: #991b1b; 
+}
+
+.fecha-col {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
