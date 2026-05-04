@@ -54,7 +54,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title><?= isset($categoria) ? htmlspecialchars($categoria['nombre']) : 'Categoría' ?> - Redrenovable</title>
+    <title><?= isset($categoria) ? htmlspecialchars($categoria['nombre']) : 'Categoría' ?> - Red-novable</title>
     <link rel="stylesheet" href="../css/navbar-style.css">
     <link rel="stylesheet" href="../css/categoria-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

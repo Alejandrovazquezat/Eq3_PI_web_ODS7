@@ -1,7 +1,7 @@
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-info">
-            <h3>Redrenovable</h3>
+            <h3>Red-novable</h3>
             <p>Plataforma web de publicación y gestión de contenidos digitales enfocada en información sobre energías asequibles y no contaminantes.</p>
         </div>
         <div class="footer-links-box">
@@ -10,6 +10,6 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; <?php echo date("Y"); ?> Redrenovable. Todos los derechos reservados.</p>
+        <p>&copy; <?php echo date("Y"); ?> Red-novable. Todos los derechos reservados.</p>
     </div>
 </footer>

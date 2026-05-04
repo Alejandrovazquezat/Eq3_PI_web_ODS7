@@ -60,13 +60,13 @@ $num_pendientes = is_object($pendientes) ? $pendientes->rowCount() : 0;
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
-    <title>Dashboard - RedRenovable</title>
+    <title>Dashboard - Red-novable</title>
 </head>
 <body>
     <div class="sidebar">
         <div class="logo-box" onclick="window.location.href='../../frontend/pages/index.php'" style="cursor: pointer;">
             <img src="../image/LogotipoSinfondo.png" alt="Logo">
-            <div class="logo-name">RedRenovable</div>
+            <div class="logo-name">Red-novable</div>
         </div>
         <a href="dashboard.php" class="nav-link active">Dashboard</a>
         <a href="publicaciones.php" class="nav-link">Publicaciones</a>

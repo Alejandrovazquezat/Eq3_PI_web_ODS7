@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redrenovable - Registro</title>
+    <title>Red-novable - Registro</title>
     <link rel="stylesheet" href="../css/styleRegistro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -106,10 +106,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <!-- PANEL IZQUIERDO (con imagen de fondo) -->
         <div class="left" style="background-image: url('../image/Fondo.png'); background-size: cover; background-position: center;">
             <div class="welcome">
-                <h1>Gracias por ingresar a<br>Redrenovable!!</h1>
+                <h1>Gracias por ingresar a<br>Red-novable!!</h1>
                 <p>Ingresa tus datos correspondientes en las casillas</p>
             </div>
-            <div class="footer">2026 redrenovable.com all reserve to iso 994</div>
+            <div class="footer">2026 red-novable.com all reserve to iso 994</div>
         </div>
     </div>
 </body>

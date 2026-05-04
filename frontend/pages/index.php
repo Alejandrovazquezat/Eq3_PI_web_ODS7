@@ -52,7 +52,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <div style="background-image: url('../image/Redenovable_inicio.jpg'); background-size: cover; background-position: center; color: white; padding: 100px 5%; text-align: center; border-radius: 0 0 40px 40px; margin-bottom: 30px; position: relative;">
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.55); border-radius: 0 0 40px 40px;"></div>
             <div style="position: relative; z-index: 2;">
-                <h1 style="color: white; font-size: 3rem; margin-bottom: 15px;">REDnovable</h1>
+                <h1 style="color: white; font-size: 3rem; margin-bottom: 15px;">Red-novable</h1>
                 <p style="font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">Difusión de información sobre energías asequibles y no contaminantes.</p>
             </div>
         </div>

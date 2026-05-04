@@ -72,13 +72,13 @@ $rolColors = [
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../css/dash_usuario_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title>Usuarios - RedRenovable</title>
+    <title>Usuarios - Red-novable</title>
 </head>
 <body>
     <div class="sidebar">
         <div class="logo-box" onclick="window.location.href='../../frontend/pages/index.php'" style="cursor: pointer;">
             <img src="../image/LogotipoSinfondo.png" alt="Logo">
-            <div class="logo-name">RedRenovable</div>
+            <div class="logo-name">Red-novable</div>
         </div>
         <a href="dashboard.php" class="nav-link">Dashboard</a>
         <a href="publicaciones.php" class="nav-link">Publicaciones</a>

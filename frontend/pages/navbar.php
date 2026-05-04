@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <header class="navbar">
     <div class="logo">
         <img src="../image/LogotipoSinfondo.png" alt="Logo ODS7" class="img-logo">
-        <h2>REDnovable</h2>
+        <h2>Red-novable</h2>
     </div>
     
     <nav>

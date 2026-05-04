@@ -91,13 +91,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../css/crear_publicacion_styles.css">
-    <title>Crear Publicación - RedRenovable</title>
+    <title>Crear Publicación - Red-novable</title>
 </head>
 <body>
     <div class="sidebar">
         <div class="logo-box" onclick="window.location.href='../../frontend/pages/index.php'" style="cursor: pointer;">
             <img src="../image/LogotipoSinfondo.png" alt="Logo">
-            <div class="logo-name">RedRenovable</div>
+            <div class="logo-name">Red-novable</div>
         </div>
         <a href="dashboard.php" class="nav-link">Dashboard</a>
         <a href="publicaciones.php" class="nav-link">Publicaciones</a>
