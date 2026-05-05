@@ -84,4 +84,19 @@ class Like {
         
         return $stmt;
     }
+    // =============================
+    // Obtener IDs de publicaciones que ha likeado un usuario
+    // =============================
+    public function obtenerIdsPublicacionesLikedPorUsuario($usuario_id) {
+    $query = "SELECT publicacion_id FROM " . $this->table . " WHERE usuario_id = :usuario_id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(":usuario_id", $usuario_id);
+    $stmt->execute();
+    
+    $ids = [];
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $ids[] = $row['publicacion_id'];
+    }
+    return $ids;
+    }
 }
