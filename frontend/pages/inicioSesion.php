@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Redrenovable - Iniciar Sesión</title>
+    <title>Red-novable - Iniciar Sesión</title>
     <link rel="stylesheet" href="../css/login-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -87,14 +87,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <!-- PANEL DERECHO -->
-    <div class="right" style="background-image: url('../image/EquipodetrabajoPaneles.png'); background-size: cover; background-position: center; position: relative;">
+    <div class="right" style="background-image: url('../image/dakajedo.png'); background-size: cover; background-position: center; position: relative;">
         <div class="welcome" style="position: relative; z-index: 2; text-align: center; color: white; padding: 20px;">
             <h1>Bienvenido a<br>Red-novable!!</h1>
-            <p>Ingresa tus datos correspondientes en las casillas</p>
+            <p>Ingresa los datos en las casillas correspondientes</p>
         </div>
         
         <div class="footer" style="position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; z-index: 2; color: white; font-size: 0.8rem;">
-            2026 red-novable.com todos los derechos en ISO 994
+            2026 red-novable.com
         </div>
     </div>
 </div>

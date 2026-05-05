@@ -1,0 +1,78 @@
+/* Layout Principal */
+.main {
+    margin-left: 270px; /* Ajustado al tamaño de tu sidebar */
+    padding: 40px;
+    background-color: #f8fafc;
+    min-height: 100vh;
+}
+
+.main-header { margin-bottom: 30px; }
+.main-header h1 { font-weight: 800; color: #1e293b; font-size: 2rem; margin: 0; }
+.main-header p { color: #64748b; margin-top: 5px; }
+
+/* Filtro Estilo RED-novable */
+.filtro-rol {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.filtro-label { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #0f172a; }
+
+.filtro-form { display: flex; gap: 12px; align-items: center; }
+
+.filtro-form select {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primary { background: #27ae60; color: white; border: none; padding: 10px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+.btn-primary:hover { background: #219150; transform: translateY(-1px); }
+
+/* Tabla Moderna */
+.card-table { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; }
+.modern-table { width: 100%; border-collapse: collapse; }
+.modern-table th { background: #f1f5f9; padding: 16px; text-align: left; font-size: 0.85rem; color: #64748b; text-transform: uppercase; }
+.modern-table td { padding: 16px; border-bottom: 1px solid #f1f5f9; color: #334155; }
+
+.badge-role {
+    color: white; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; 
+    font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+}
+
+.btn-delete-icon {
+    background: #fee2e2; color: #ef4444; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: 0.2s;
+}
+.btn-delete-icon:hover { background: #ef4444; color: white; }
+
+/* Modales */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+    display: flex; justify-content: center; align-items: center; z-index: 3000;
+}
+
+.modal-card {
+    background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 400px; width: 90%;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-icon { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem; }
+.modal-icon.error { background: #fee2e2; color: #ef4444; }
+.modal-icon.info { background: #e0f2fe; color: #0ea5e9; }
+
+.modal-select { width: 100%; padding: 12px; margin: 20px 0; border-radius: 10px; border: 1px solid #e2e8f0; }
+.modal-btns { display: flex; gap: 12px; justify-content: center; }
+
+.btn-secondary { background: #f1f5f9; color: #475569; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; }
+.btn-danger { background: #ef4444; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; }

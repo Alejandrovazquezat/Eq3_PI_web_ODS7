@@ -1,100 +1,56 @@
+
+Copiar
+
 <?php
-// ==========================
-// 1. Cargar dependencias
-// ==========================
+session_start();
 require_once __DIR__ . '/../../config/Conexion.php';
-require_once __DIR__ . '/../../backend/controllers/AuthController.php';
-require_once __DIR__ . '/../../backend/controllers/UsuarioController.php';
-require_once __DIR__ . '/../../backend/controllers/PublicacionController.php';
-
-// ==========================
-// 2. Conexión y sesión
-// ==========================
 $db = (new Conexion())->getConexion();
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// ==========================
-// 3. Verificar autenticación y permiso
-// ==========================
-if (!isset($_SESSION['usuario_id'])) {
-    header("Location: ../pages/inicioSesion.php");
-    exit;
-}
-
-$auth = new AuthController($db);
-$usuario_id = $_SESSION['usuario_id'];
-
-// Solo admin y editor pueden ver estadísticas generales
-if (!$auth->tienePermiso($usuario_id, 'ver_estadisticas')) {
-    // Redirigir a la página principal si no tiene permisos
-    header("Location: ../pages/index.php");
-    exit;
-}
-
-// ==========================
-// 4. Obtener estadísticas usando el controlador
-// ==========================
-$usuarioController = new UsuarioController($db);
-$estadisticas = $usuarioController->obtenerEstadisticas($usuario_id);
-
-// Si hubo error (aunque no debería porque ya verificamos permisos)
-if (is_string($estadisticas)) {
-    $error_stats = $estadisticas;
-    $total_usuarios = 0;
-    $total_publicaciones = 0;
-} else {
-    $total_usuarios = $estadisticas['total_usuarios'];
-    $total_publicaciones = $estadisticas['total_publicaciones'];
-}
-
-// Opcional: obtener conteo de publicaciones pendientes
-$pubController = new PublicacionController($db);
-$pendientes = $pubController->obtenerPendientes($usuario_id);
-$num_pendientes = is_object($pendientes) ? $pendientes->rowCount() : 0;
+$u = $db->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
+$p = $db->query("SELECT COUNT(*) FROM publicaciones")->fetchColumn();
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <title>Dashboard - Red-novable</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css_dash/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Dashboard - RedRenovable</title>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="logo-box" onclick="window.location.href='../../frontend/pages/index.php'" style="cursor: pointer;">
+    <nav class="sidebar">
+        <div class="logo-box" onclick="window.location.href='../../frontend/pages/index.php'">
             <img src="../image/LogotipoSinfondo.png" alt="Logo">
-            <div class="logo-name">Red-novable</div>
+            <div class="logo-name">RED-novable</div>
         </div>
-        <a href="dashboard.php" class="nav-link active">Dashboard</a>
-        <a href="publicaciones.php" class="nav-link">Publicaciones</a>
-        <a href="usuarios.php" class="nav-link">Usuarios</a>
-        <a href="crear_publicacion.php" class="nav-link">+ Nueva publicación</a>
-    </div>
-
+        <div class="menu-groups">
+            <a href="dashboard.php" class="nav-link active">📊 Dashboard</a>
+            <a href="publicaciones.php" class="nav-link">📝 Publicaciones</a>
+            <a href="usuarios.php" class="nav-link">👥 Usuarios</a>
+            <a href="crear_publicacion.php" class="nav-link btn-special">+ Nueva publicación</a>
+        </div>
+    </nav>
     <main class="main">
-        <h1>Dashboard General</h1>
-        
-        <?php if (isset($error_stats)): ?>
-            <div class="mensaje-error"><?= $error_stats ?></div>
-        <?php endif; ?>
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 25px;">
-            <div class="card">
-                <p style="color:var(--text-light)">Usuarios Registrados</p>
-                <h2 style="font-size: 3rem; margin:0"><?= $total_usuarios ?></h2>
+        <header class="main-header">
+            <h1>Panel de Control</h1>
+            <p>Resumen general de la plataforma</p>
+        </header>
+        <section class="stats-grid">
+            <div class="card stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <p>Usuarios Registrados</p>
+                    <h2><?= number_format($u) ?></h2>
+                </div>
             </div>
-            <div class="card">
-                <p style="color:var(--text-light)">Publicaciones</p>
-                <h2 style="font-size: 3rem; margin:0"><?= $total_publicaciones ?></h2>
+            <div class="card stat-card">
+                <div class="stat-icon">🍃</div>
+                <div class="stat-info">
+                    <p>Publicaciones Totales</p>
+                    <h2><?= number_format($p) ?></h2>
+                </div>
             </div>
-            <div class="card">
-                <p style="color:var(--text-light)">Pendientes de revisión</p>
-                <h2 style="font-size: 3rem; margin:0"><?= $num_pendientes ?></h2>
-            </div>
-        </div>
+        </section>
     </main>
 </body>
 </html>

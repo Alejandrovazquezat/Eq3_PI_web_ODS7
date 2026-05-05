@@ -1,61 +1,50 @@
 <?php
-// ==========================
-// 1. Cargar dependencias
-// ==========================
+session_start();
 require_once __DIR__ . '/../../config/Conexion.php';
-require_once __DIR__ . '/../../backend/controllers/AuthController.php';
-require_once __DIR__ . '/../../backend/controllers/UsuarioController.php';
 
-// ==========================
-// 2. Conexión y sesión
-// ==========================
-$db = (new Conexion())->getConexion();
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// ==========================
-// 3. Verificar autenticación
-// ==========================
-if (!isset($_SESSION['usuario_id'])) {
-    header("Location: ../pages/inicioSesion.php");
+// Verificar que el usuario es admin
+if (!isset($_SESSION['logueado']) || $_SESSION['logueado'] !== true || $_SESSION['rol_id'] != 1) {
+    header("Location: ../../pages/inicioSesion.php");
     exit;
 }
 
-$usuario_id_admin = $_SESSION['usuario_id'];
-$usuario_id_destino = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$usuario_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $nuevo_rol = isset($_GET['rol']) ? intval($_GET['rol']) : 0;
 
-// Proteger al Admin Supremo (ID 1)
-if ($usuario_id_destino == 1) {
-    $_SESSION['mensaje_error'] = "¡No puedes modificar al Admin Supremo!";
+// Proteger al Alejandro Admin Supremo (ID 1)
+if ($usuario_id == 1) {
+    $_SESSION['mensaje_error'] = "¡No puedes modificar a Alejandro Admin Supremo!";
     header("Location: usuarios.php");
     exit;
 }
 
-if ($usuario_id_destino > 0 && $nuevo_rol > 0) {
-    $auth = new AuthController($db);
-    
-    // Verificar permiso de edición de usuarios
-    if (!$auth->tienePermiso($usuario_id_admin, 'editar_usuario')) {
-        $_SESSION['mensaje_error'] = "No tienes permiso para cambiar roles.";
+if ($usuario_id > 0 && $nuevo_rol > 0) {
+    $rolesValidos = [1, 2, 3, 4];
+    if (!in_array($nuevo_rol, $rolesValidos)) {
+        $_SESSION['mensaje_error'] = "Rol no válido.";
         header("Location: usuarios.php");
         exit;
     }
     
-    // Usar el controlador para cambiar el rol
-    $usuarioController = new UsuarioController($db);
-    $resultado = $usuarioController->cambiarRol($usuario_id_admin, $usuario_id_destino, $nuevo_rol);
-    
-    // El método devuelve string con el mensaje
-    if (strpos($resultado, 'correctamente') !== false) {
-        $_SESSION['mensaje_exito'] = $resultado;
-    } else {
-        $_SESSION['mensaje_error'] = $resultado;
+    try {
+        $db = (new Conexion())->getConexion();
+        
+        $check = $db->prepare("SELECT id FROM usuarios WHERE id = :id");
+        $check->bindParam(':id', $usuario_id);
+        $check->execute();
+        
+        if ($check->fetch()) {
+            $stmt = $db->prepare("UPDATE usuarios SET rol_id = :rol_id WHERE id = :id");
+            $stmt->bindParam(':rol_id', $nuevo_rol);
+            $stmt->bindParam(':id', $usuario_id);
+            $stmt->execute();
+            $_SESSION['mensaje_exito'] = "Rol del usuario actualizado correctamente.";
+        } else {
+            $_SESSION['mensaje_error'] = "Usuario no encontrado.";
+        }
+    } catch (Exception $e) {
+        $_SESSION['mensaje_error'] = "Error al cambiar rol: " . $e->getMessage();
     }
-} else {
-    $_SESSION['mensaje_error'] = "Datos incompletos para cambiar el rol.";
 }
 
 header("Location: usuarios.php");

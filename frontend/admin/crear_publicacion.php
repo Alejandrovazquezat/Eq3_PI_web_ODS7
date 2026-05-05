@@ -1,6 +1,6 @@
 <?php
 // ==========================
-// 1. Cargar dependencias
+// 1. Cargar dependencias (BACKEND DEL SEGUNDO CÓDIGO)
 // ==========================
 require_once __DIR__ . '/../../config/Conexion.php';
 require_once __DIR__ . '/../../backend/controllers/AuthController.php';
@@ -33,7 +33,7 @@ if (!$auth->tienePermiso($usuario_id, 'crear_publicacion')) {
 }
 
 // ==========================
-// 4. Obtener categorías para el select
+// 4. Obtener categorías para el select (mediante CategoriesController)
 // ==========================
 $catController = new CategoriesController($db);
 $categorias_stmt = $catController->obtenerTodas();
@@ -44,6 +44,7 @@ $categorias = is_object($categorias_stmt) ? $categorias_stmt->fetchAll(PDO::FETC
 // ==========================
 $mensaje = "";
 $error = "";
+$titulo = $contenido = ""; // para mantener valores en caso de error
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $titulo = trim($_POST['titulo'] ?? '');
@@ -51,11 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $categoria_id = !empty($_POST['categoria_id']) ? $_POST['categoria_id'] : null;
     $imagen_binaria = null;
     
-    // Validar campos obligatorios
     if (empty($titulo) || empty($contenido)) {
         $error = "El título y el contenido son obligatorios";
     } else {
-        // Procesar imagen si se subió (mantenemos BLOB por ahora)
+        // Procesar imagen si se subió
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
             $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
             $extension = strtolower(pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION));
@@ -68,14 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         if (empty($error)) {
-            // Usar el controlador para crear la publicación (el estado se asigna automáticamente por rol)
             $pubController = new PublicacionController($db);
             $resultado = $pubController->crear($titulo, $contenido, $imagen_binaria, $categoria_id, $usuario_id);
             
-            // El controlador devuelve un string con el mensaje
             if (strpos($resultado, 'correctamente') !== false) {
                 $mensaje = $resultado;
-                // Limpiar variables para nuevo formulario
+                // Limpiar campos después de éxito
                 $titulo = $contenido = "";
                 $categoria_id = null;
             } else {
@@ -89,85 +87,98 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="../css/crear_publicacion_styles.css">
-    <title>Crear Publicación - Red-novable</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css_dash/style.css"> 
+    <link rel="stylesheet" href="../css_dash/crear_publicacion_styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Nueva Publicación - RED-novable</title>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="logo-box" onclick="window.location.href='../../frontend/pages/index.php'" style="cursor: pointer;">
+
+    <nav class="sidebar">
+        <div class="logo-box" onclick="window.location.href='../../frontend/pages/index.php'">
             <img src="../image/LogotipoSinfondo.png" alt="Logo">
-            <div class="logo-name">Red-novable</div>
+            <div class="logo-name">RED-novable</div>
         </div>
-        <a href="dashboard.php" class="nav-link">Dashboard</a>
-        <a href="publicaciones.php" class="nav-link">Publicaciones</a>
-        <a href="usuarios.php" class="nav-link">Usuarios</a>
-        <a href="crear_publicacion.php" class="nav-link active">+ Nueva publicación</a>
-    </div>
+        <div class="menu-groups">
+            <a href="dashboard.php" class="nav-link">📊 Dashboard</a>
+            <a href="publicaciones.php" class="nav-link">📝 Publicaciones</a>
+            <a href="usuarios.php" class="nav-link">👥 Usuarios</a>
+            <a href="crear_publicacion.php" class="nav-link btn-special active">+ Nueva publicación</a>
+        </div>
+    </nav>
 
     <main class="main">
-        <h1>Crear Nueva Publicación</h1>
-        
-        <div class="form-container">
+        <header class="main-header">
+            <h1>Crear Publicación</h1>
+            <p>Completa el formulario para publicar nuevo contenido.</p>
+        </header>
+
+        <section class="form-container-card">
             <?php if ($mensaje): ?>
-                <div class="mensaje-exito"><?= htmlspecialchars($mensaje) ?></div>
+                <div class="alert alert-success"><i class="fas fa-check-circle"></i> <?= htmlspecialchars($mensaje) ?></div>
             <?php endif; ?>
-            
             <?php if ($error): ?>
-                <div class="mensaje-error"><?= htmlspecialchars($error) ?></div>
+                <div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> <?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
             
-            <form method="POST" action="" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="titulo">Título *</label>
-                    <input type="text" id="titulo" name="titulo" required value="<?= htmlspecialchars($titulo ?? '') ?>">
+            <form method="POST" enctype="multipart/form-data" class="modern-grid-form">
+                <div class="main-fields">
+                    <div class="field">
+                        <label>Título del artículo</label>
+                        <input type="text" name="titulo" placeholder="Escribe el título aquí..." required value="<?= htmlspecialchars($titulo) ?>">
+                    </div>
+
+                    <div class="inline-fields">
+                        <div class="field">
+                            <label>Categoría</label>
+                            <select name="categoria_id" required>
+                                <option value="">Seleccionar...</option>
+                                <?php foreach ($categorias as $cat): ?>
+                                    <option value="<?= $cat['id'] ?>" <?= (isset($categoria_id) && $categoria_id == $cat['id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($cat['nombre']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <!-- El campo "Visibilidad" se elimina porque el controlador asigna el estado automáticamente según el rol -->
+                    </div>
+
+                    <div class="field">
+                        <label>Contenido detallado</label>
+                        <textarea name="contenido" placeholder="Desarrolla tu publicación..." required><?= htmlspecialchars($contenido) ?></textarea>
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="categoria_id">Categoría *</label>
-                    <select id="categoria_id" name="categoria_id" required>
-                        <option value="">-- Seleccionar categoría --</option>
-                        <?php foreach ($categorias as $cat): ?>
-                            <option value="<?= $cat['id'] ?>" <?= (isset($categoria_id) && $categoria_id == $cat['id']) ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($cat['nombre']) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+
+                <div class="side-fields">
+                    <label>Imagen de portada</label>
+                    <div class="upload-zone" onclick="document.getElementById('imagen').click()">
+                        <input type="file" id="imagen" name="imagen" accept="image/*" onchange="previewImage(this)" hidden>
+                        <div id="preview" class="preview-content">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Cargar imagen</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-publish">
+                        <i class="fas fa-paper-plane"></i> Publicar ahora
+                    </button>
+                    <p style="font-size: 0.8rem; margin-top: 10px; color: #64748b;">
+                        * Si eres autor, la publicación quedará pendiente de aprobación.<br>
+                        * Administradores y editores publican directamente.
+                    </p>
                 </div>
-                
-                <!-- Eliminamos el campo "Estado" porque el controlador lo asigna automáticamente según el rol -->
-                
-                <div class="form-group">
-                    <label for="imagen">Imagen (opcional)</label>
-                    <input type="file" id="imagen" name="imagen" accept="image/*" onchange="previewImage(this)">
-                    <div id="preview" class="preview-imagen"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="contenido">Contenido *</label>
-                    <textarea id="contenido" name="contenido" required><?= htmlspecialchars($contenido ?? '') ?></textarea>
-                </div>
-                
-                <button type="submit" class="btn-submit">Publicar</button>
-                <p style="font-size: 0.85rem; color: #64748b; margin-top: 10px;">
-                    * Si eres autor, la publicación quedará pendiente de aprobación.<br>
-                    * Administradores y editores publican directamente.
-                </p>
             </form>
-        </div>
+        </section>
     </main>
-    
+
     <script>
         function previewImage(input) {
             const preview = document.getElementById('preview');
-            preview.innerHTML = '';
-            
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    preview.appendChild(img);
+                    preview.innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover; border-radius:15px;">`;
                 }
                 reader.readAsDataURL(input.files[0]);
             }

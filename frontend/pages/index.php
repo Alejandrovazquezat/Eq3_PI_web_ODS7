@@ -38,7 +38,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>REDnovable</title>
+    <title>Red-novable</title>
     <link rel="stylesheet" href="../css/navbar-style.css">
     <link rel="stylesheet" href="../css/index-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
