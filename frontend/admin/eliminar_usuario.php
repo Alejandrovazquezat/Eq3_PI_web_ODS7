@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'Conexion.php';
+require_once __DIR__ . '/../../config/Conexion.php';
 
 // Verificar que el usuario es admin
 if (!isset($_SESSION['logueado']) || $_SESSION['logueado'] !== true || $_SESSION['rol_id'] != 1) {
@@ -11,8 +11,7 @@ if (!isset($_SESSION['logueado']) || $_SESSION['logueado'] !== true || $_SESSION
 $usuario_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if ($usuario_id > 0) {
-    // No permitir eliminar al propio usuario
-    if ($usuario_id == $_SESSION['user_id']) {
+    if ($usuario_id == ($_SESSION['usuario_id'] ?? 0)) {
         $_SESSION['mensaje_error'] = "No puedes eliminar tu propio usuario.";
         header("Location: usuarios.php");
         exit;
@@ -21,13 +20,11 @@ if ($usuario_id > 0) {
     try {
         $db = (new Conexion())->getConexion();
         
-        // Verificar si el usuario existe
         $check = $db->prepare("SELECT id FROM usuarios WHERE id = :id");
         $check->bindParam(':id', $usuario_id);
         $check->execute();
         
         if ($check->fetch()) {
-            // Eliminar usuario
             $stmt = $db->prepare("DELETE FROM usuarios WHERE id = :id");
             $stmt->bindParam(':id', $usuario_id);
             $stmt->execute();
@@ -42,4 +39,3 @@ if ($usuario_id > 0) {
 
 header("Location: usuarios.php");
 exit;
-?>

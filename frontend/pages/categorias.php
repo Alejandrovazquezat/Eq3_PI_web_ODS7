@@ -1,28 +1,46 @@
 <?php
-session_start();
+// ==========================
+// 1. Cargar dependencias
+// ==========================
+require_once __DIR__ . '/../../config/Conexion.php';
+require_once __DIR__ . '/../../backend/controllers/CategoriesController.php';
 
-// Obtener todas las categorías
-$categorias = [];
-try {
-    $db = new PDO("mysql:host=localhost;dbname=plataforma_contenidos", "root", "");
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    $stmt = $db->query("SELECT id, nombre, descripcion FROM categorias ORDER BY nombre");
-    $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    $error = "Error al cargar categorías: " . $e->getMessage();
+// ==========================
+// 2. Conexión e instancia del controlador
+// ==========================
+$db = (new Conexion())->getConexion();
+$catController = new CategoriesController($db);
+
+// ==========================
+// 3. Obtener todas las categorías
+// ==========================
+$categorias_stmt = $catController->obtenerTodas();
+
+if (is_string($categorias_stmt)) {
+    $error = $categorias_stmt;
+    $categorias = [];
+} else {
+    $categorias = $categorias_stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// ==========================
+// 4. Iniciar sesión para el navbar
+// ==========================
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Categorías - Redrenovable</title>
+    <title>Categorías - Red-novable</title>
     <link rel="stylesheet" href="../css/navbar-style.css">
     <link rel="stylesheet" href="../css/categorias-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body style="background-color: #f1f5f9;">
+<!-- LE QUITAMOS EL STYLE EN LÍNEA PARA QUE EL CSS DEL MODO OSCURO HAGA SU MAGIA -->
+<body>
 
     <?php include 'navbar.php'; ?>
 
@@ -34,7 +52,7 @@ try {
     <main class="categorias-container">
         <?php if (isset($error)): ?>
             <div style="background: #fee2e2; color: #ef4444; padding: 20px; border-radius: 10px; text-align: center;">
-                <i class="fas fa-exclamation-triangle"></i> <?= $error ?>
+                <i class="fas fa-exclamation-triangle"></i> <?= htmlspecialchars($error) ?>
             </div>
         <?php elseif (count($categorias) > 0): ?>
             <div class="categorias-grid">

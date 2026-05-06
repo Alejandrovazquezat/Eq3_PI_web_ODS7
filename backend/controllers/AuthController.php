@@ -76,10 +76,16 @@ class AuthController {
 
         if(password_verify($password, $row['password'])){
 
-            session_start();
+            // --- INICIO: Unificación de sesión ---
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            
+            // Claves canónicas
             $_SESSION['usuario_id'] = $row['id'];
             $_SESSION['nombre'] = $row['nombre'];
             $_SESSION['rol_id'] = $row['rol_id'];
+            $_SESSION['logueado'] = true; // para chequeos rápidos
             
             // Obtener nombre del rol para facilitar
             $query = "SELECT nombre FROM roles WHERE id = :id";
@@ -88,6 +94,7 @@ class AuthController {
             $stmt->execute();
             $rol = $stmt->fetch(PDO::FETCH_ASSOC);
             $_SESSION['rol_nombre'] = $rol['nombre'] ?? 'usuario';
+            // --- FIN unificación ---
 
             return "Login correcto";
 
@@ -100,7 +107,9 @@ class AuthController {
     // LOGOUT
     // ==========================
     public function logout(){
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         session_destroy();
         return "Sesion cerrada";
     }
@@ -128,26 +137,36 @@ class AuthController {
         $rol = $usuario['rol_nombre']; // 'admin', 'editor', 'autor', 'usuario'
         
         // Definir permisos por rol
+        
         $permisos = [
             'admin' => [
-                'crear_usuario', 'editar_usuario', 'eliminar_usuario',
-                'crear_publicacion', 'editar_cualquier_publicacion', 'eliminar_cualquier_publicacion',
-                'aprobar_publicacion', 'rechazar_publicacion',
-                'gestionar_categorias', 'ver_estadisticas', 'moderar_comentarios',
-                'publicar_directo', 'ver_todas_publicaciones'
+            // Acciones propias de admin
+            'crear_usuario', 'editar_usuario', 'eliminar_usuario',
+            'gestionar_categorias', 'ver_estadisticas',
+            // Acciones de editor
+            'ver_publicaciones_pendientes', 'aprobar_publicacion', 'rechazar_publicacion',
+            'editar_cualquier_publicacion', 'publicar_publicacion',
+            'moderar_comentarios', 'publicar_directo', 'ver_todas_publicaciones',
+            // Acciones de autor
+            'crear_publicacion', 'editar_mis_publicaciones', 'eliminar_mis_publicaciones',
+            'ver_mis_publicaciones', 'subir_imagenes',
+            // Acciones de usuario básico
+            'ver_publicaciones_publicadas', 'comentar', 'dar_like'
             ],
+
             'editor' => [
-                'ver_publicaciones_pendientes', 'aprobar_publicacion', 'rechazar_publicacion',
-                'editar_cualquier_publicacion', 'publicar_publicacion',
-                'ver_estadisticas', 'moderar_comentarios',
-                'publicar_directo', 'ver_todas_publicaciones'
-            ],
+            'crear_publicacion',
+            'ver_publicaciones_pendientes', 'aprobar_publicacion', 'rechazar_publicacion',
+            'editar_cualquier_publicacion', 'publicar_publicacion',
+            'ver_estadisticas', 'moderar_comentarios',
+            'publicar_directo', 'ver_todas_publicaciones'
+                ],
             'autor' => [
-                'crear_publicacion', 'editar_mis_publicaciones', 'eliminar_mis_publicaciones',
-                'ver_mis_publicaciones', 'subir_imagenes'
+            'crear_publicacion', 'editar_mis_publicaciones', 'eliminar_mis_publicaciones',
+            'ver_mis_publicaciones', 'subir_imagenes'
             ],
             'usuario' => [
-                'ver_publicaciones_publicadas', 'comentar', 'dar_like'
+            'ver_publicaciones_publicadas', 'comentar', 'dar_like'
             ]
         ];
         
@@ -158,7 +177,9 @@ class AuthController {
     // OBTENER ROL DEL USUARIO ACTUAL
     // ==========================
     public function obtenerRolActual() {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         if (!isset($_SESSION['usuario_id'])) {
             return null;
         }

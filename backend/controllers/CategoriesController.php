@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../models/Categories.php";
+require_once __DIR__ . "/../models/Categorias.php";
 require_once __DIR__ . "/AuthController.php";
 
 class CategoriesController {

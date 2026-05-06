@@ -1,0 +1,147 @@
+/* =========================================
+   ESTILOS DE LA TABLA DE COMENTARIOS
+   ========================================= */
+.admin-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 20px; 
+    background: white; 
+    border-radius: 8px; 
+    overflow: hidden; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+}
+
+.admin-table th, .admin-table td { 
+    padding: 15px; 
+    text-align: left; 
+    border-bottom: 1px solid #f1f5f9; 
+}
+
+.admin-table th { 
+    background-color: #13693d; 
+    color: white; 
+}
+
+.admin-table tr:hover { 
+    background-color: #f8fafc; 
+}
+
+.btn-danger { 
+    background: #ef4444; 
+    color: white; 
+    padding: 8px 12px; 
+    border-radius: 6px; 
+    text-decoration: none; 
+    font-size: 0.9em; 
+    transition: 0.3s; 
+    display: inline-block; 
+    cursor: pointer; 
+    border: none; 
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-danger:hover { 
+    background: #dc2626; 
+}
+
+/* =========================================
+   ESTILOS DEL CONTENEDOR PRINCIPAL
+   ========================================= */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    margin-left: 250px; /* Ajusta según el ancho de tu sidebar */
+    width: calc(100% - 250px);
+}
+
+.container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+}
+
+.header-admin { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 20px; 
+}
+
+/* =========================================
+   ESTILOS DEL MODAL PERSONALIZADO
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.5); /* Fondo oscuro semitransparente */
+    backdrop-filter: blur(4px); /* Efecto difuminado atrás */
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999;
+    opacity: 0; visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1; visibility: visible;
+}
+
+.modal-box {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active .modal-box {
+    transform: translateY(0) scale(1);
+}
+
+.modal-icon-container {
+    width: 80px; height: 80px;
+    background: #fee2e2;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    margin: 0 auto 20px auto;
+}
+
+.modal-icon-container i {
+    font-size: 2.5rem;
+    color: #ef4444;
+}
+
+.modal-title {
+    color: #1e293b;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.modal-text {
+    color: #475569;
+    font-size: 1rem;
+    margin-bottom: 30px;
+}
+
+.modal-buttons {
+    display: flex; justify-content: center; gap: 15px;
+}
+
+.btn-modal-cancel {
+    background: #f1f5f9; color: #334155; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-size: 0.95rem;
+}
+
+.btn-modal-cancel:hover { 
+    background: #e2e8f0; color: #0f172a;
+}
+
+.btn-modal-confirm {
+    background: #ef4444; color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-size: 0.95rem;
+}
+
+.btn-modal-confirm:hover { 
+    background: #dc2626; 
+}

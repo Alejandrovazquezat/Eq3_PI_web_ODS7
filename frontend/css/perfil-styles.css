@@ -1,0 +1,345 @@
+/* ============================================ */
+/* VARIABLES LOCALES PARA PERFIL (GITHUB)       */
+/* ============================================ */
+:root {
+    --borde-tarjeta: #e2e8f0;
+    --texto-secundario: #64748b;
+    --color-enlace: #15181b;
+    
+    /* Degradado del Banner */
+    --banner-bg-1: #e0f2fe;
+    --banner-bg-2: #15181b;
+    
+    /* Fondos de estados (Hover, Delete, Rol) */
+    --bg-hover: #f8fafc;
+    --bg-rol: #eff6ff;
+    --bg-delete: #fee2e2;
+    --text-delete: #ef4444;
+    
+    --sombra-card: rgba(0,0,0,0.05);
+
+    /* Variables Neubrutalistas para el modal y botones */
+    --color-accion: #06b6d4; 
+    --sombra-neubrutal-oscura: rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode {
+    --borde-tarjeta: #30363d;
+    --texto-secundario: #8b949e;
+    --color-enlace: #58a6ff;
+    
+    /* Banner oscuro */
+    --banner-bg-1: #0d1117; 
+    --banner-bg-2: #161b22;
+    
+    /* Fondos de estados oscuros */
+    --bg-hover: #21262d;
+    --bg-rol: rgba(88, 166, 255, 0.1);
+    --bg-delete: rgba(239, 68, 68, 0.1);
+    --text-delete: #ff7b72;
+    
+    --sombra-card: rgba(0,0,0,0.4);
+}
+
+/* ============================================ */
+/* ESTILOS PARA PERFIL.PHP                      */
+/* ============================================ */
+
+.perfil-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* --- HEADER DEL PERFIL (Banner y Foto) --- */
+.perfil-header {
+    background-color: var(--blanco);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px var(--sombra-card);
+    margin-bottom: 30px;
+    position: relative;
+    border: 1px solid var(--borde-tarjeta);
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.perfil-banner {
+    height: 200px;
+    background: linear-gradient(135deg, var(--banner-bg-1) 0%, var(--banner-bg-2) 100%);
+    border-bottom: 1px solid var(--borde-tarjeta);
+    transition: background 0.3s, border-color 0.3s;
+}
+
+.perfil-info-wrapper {
+    padding: 20px 30px 30px 30px;
+    display: flex;
+    align-items: flex-end;
+    margin-top: -80px;
+}
+
+.foto-perfil-container {
+    position: relative;
+}
+
+.foto-perfil {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 6px solid var(--blanco); 
+    object-fit: cover;
+    box-shadow: 0 4px 15px var(--sombra-card);
+    background-color: var(--fondo-suave);
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+.foto-placeholder {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 6px solid var(--blanco);
+    background-color: var(--fondo-suave);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
+    box-shadow: 0 4px 15px var(--sombra-card);
+    color: var(--texto-secundario);
+    transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+}
+
+.user-details {
+    margin-left: 25px;
+    flex-grow: 1;
+    padding-bottom: 10px;
+}
+
+.user-name {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--texto-titulos);
+    margin: 0;
+    transition: color 0.3s;
+}
+
+.user-rol {
+    color: var(--color-enlace);
+    font-weight: 600;
+    font-size: 0.95rem;
+    background-color: var(--bg-rol);
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 5px;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.user-joined {
+    color: var(--texto-secundario);
+    font-size: 0.9rem;
+    margin-top: 10px;
+    transition: color 0.3s;
+}
+
+.btn-edit-perfil {
+    background-color: transparent;
+    border: 1px solid var(--borde-tarjeta);
+    color: var(--texto-titulos);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.btn-edit-perfil:hover {
+    background-color: var(--bg-hover);
+    border-color: var(--texto-secundario);
+}
+
+/* =========================================
+   MENÚ DE PESTAÑAS (ESTILO X / TWITTER)
+   ========================================= */
+.profile-nav {
+    display: flex;
+    border-bottom: 1px solid var(--borde-tarjeta);
+    margin-bottom: 20px;
+    background-color: var(--blanco);
+    border-radius: 16px 16px 0 0;
+    border: 1px solid var(--borde-tarjeta);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 18px 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--texto-secundario);
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    border-radius: 16px 16px 0 0;
+}
+
+.tab-btn:hover {
+    background-color: var(--bg-hover);
+}
+
+.tab-btn.active {
+    color: var(--texto-titulos);
+    font-weight: 800;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px; 
+    height: 4px;
+    background-color: var(--color-enlace);
+    border-radius: 4px 4px 0 0;
+    transition: background-color 0.3s;
+}
+
+.tab-content {
+    display: none; 
+    animation: fadeIn 0.3s ease;
+}
+
+/* =========================================
+   LISTA DE COMENTARIOS EN EL PERFIL
+   ========================================= */
+.mi-comentario-item {
+    background-color: var(--blanco);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--borde-tarjeta);
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px var(--sombra-card);
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+/* --- AJUSTES DE ALINEACIÓN DEL HEADER --- */
+.comentario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Asegura centrado vertical */
+    gap: 15px; /* Crea un muro invisible entre texto y botón */
+    margin-bottom: 10px;
+}
+
+.comentario-meta {
+    font-size: 0.85rem;
+    color: var(--texto-secundario);
+    transition: color 0.3s;
+    flex: 1; /* Permite que el texto tome el espacio sobrante */
+    word-break: break-word; /* Si el título es muy bestia, lo corta hacia abajo */
+}
+
+.comentario-meta strong {
+    color: var(--color-enlace);
+    transition: color 0.3s;
+}
+
+.comentario-texto {
+    color: var(--texto-oscuro);
+    line-height: 1.5;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+}
+
+/* --- BOTÓN ELIMINAR COMENTARIO (MINI-ECO) --- */
+.btn-delete-com {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem; /* Tamaño más sutil */
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.4em 0.8em; /* Padding más compacto */
+    border-radius: 6em;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-delete);
+    background-color: var(--bg-delete);
+    box-shadow: 2px 2px 0 var(--sombra-neubrutal-oscura);
+    flex-shrink: 0; /* IMPIDE que el texto largo aplaste el botón */
+}
+
+.btn-delete-com:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--sombra-neubrutal-oscura);
+    background-color: var(--text-delete);
+    color: var(--blanco);
+}
+
+.no-pubs {
+    text-align: center;
+    padding: 40px;
+    color: var(--texto-secundario);
+    transition: color 0.3s;
+}
+
+.no-pubs i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: var(--borde-tarjeta);
+    transition: color 0.3s;
+}
+
+/* =========================================
+   ESTILOS DEL MODAL Y BOTONES NEUBRUTALISTAS
+   ========================================= */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.7); display: none;
+    justify-content: center; align-items: center; z-index: 1000;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal-box {
+    background: var(--blanco); padding: 30px; border-radius: 16px;
+    width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    color: var(--texto-titulos); border: 1px solid var(--borde-tarjeta);
+}
+
+.form-control-modal {
+    width: 100%; padding: 12px; border: 1px solid var(--borde-tarjeta); 
+    border-radius: 8px; font-family: inherit; background: var(--fondo-suave);
+    color: var(--texto-titulos); box-sizing: border-box; margin-bottom: 15px;
+}
+
+/* Botones Animados "Eco" (Estilo Uiverse) para Perfil y Modales */
+.btn-p-edit, .btn-p-action, .btn-modal-cancel {
+    position: relative; font-size: 0.9rem; font-weight: 600;
+    text-transform: uppercase; text-decoration: none; padding: 0.8em 1.4em;
+    display: inline-flex; align-items: center; gap: 8px;
+    cursor: pointer; border-radius: 6em; border: none; transition: all 0.2s;
+    box-shadow: -4px -2px 16px 0px var(--blanco), 4px 2px 16px 0px rgba(0,0,0,0.1);
+}
+
+.btn-p-action { background-color: var(--color-accion); color: white; }
+.btn-p-action:hover { transform: translateY(-3px); color: white; }
+
+.btn-p-edit, .btn-modal-cancel { background-color: var(--blanco); color: var(--texto-oscuro); }
+.btn-p-edit:hover, .btn-modal-cancel:hover { color: var(--color-accion); transform: translateY(-3px); }
+
+.btn-p-edit, .btn-p-action, .btn-modal-cancel {
+    box-shadow: 3px 3px 0 var(--sombra-neubrutal-oscura);
+}
+
+.btn-p-edit:hover, .btn-p-action:hover, .btn-modal-cancel:hover {
+    box-shadow: 1px 1px 0 var(--sombra-neubrutal-oscura);
+    transform: translate(2px, 2px);
+}

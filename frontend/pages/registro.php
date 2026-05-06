@@ -1,64 +1,50 @@
 <?php
-session_start();
+// Rutas seguras para el hosting
+require_once __DIR__ . '/../../config/Conexion.php';
+require_once __DIR__ . '/../../backend/controllers/AuthController.php';
+
+$db = (new Conexion())->getConexion();
+$auth = new AuthController($db);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Si ya hay sesión, redirigir
+if (isset($_SESSION['usuario_id'])) {
+    header("Location: index.php");
+    exit;
+}
 
 $mensaje = "";
-$registro_exitoso = false;
+$tipo_mensaje = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nombre = trim($_POST['user']);
-    $email = trim($_POST['email']);
-    $password = $_POST['password'];
+    $nombre = trim($_POST['user'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
 
-    // Validaciones básicas
     if (empty($nombre) || empty($email) || empty($password)) {
-        $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Todos los campos son obligatorios.</div>";
+        $mensaje = "Todos los campos son obligatorios.";
+        $tipo_mensaje = "error";
     } elseif (strlen($password) < 6) {
-        $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>La contraseña debe tener al menos 6 caracteres.</div>";
+        $mensaje = "La contraseña debe tener al menos 6 caracteres.";
+        $tipo_mensaje = "error";
     } else {
-        try {
-            $db = new PDO("mysql:host=localhost;dbname=plataforma_contenidos", "root", "");
-            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $resultado_registro = $auth->registrar($nombre, $email, $password);
 
-            // Verificar si el email ya existe
-            $check = $db->prepare("SELECT id FROM usuarios WHERE email = :email");
-            $check->bindParam(':email', $email);
-            $check->execute();
-            
-            if ($check->fetch()) {
-                $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Este correo ya está registrado.</div>";
+        if ($resultado_registro === "Registro exitoso") {
+            $login = $auth->login($email, $password);
+            if ($login === "Login correcto") {
+                header("Location: index.php");
+                exit;
             } else {
-                // Generar hash de la contraseña
-                $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-                
-                // Verificar que el hash se generó correctamente
-                if ($hashedPassword === false) {
-                    $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Error al procesar la contraseña. Intenta de nuevo.</div>";
-                } else {
-                    $stmt = $db->prepare("INSERT INTO usuarios (nombre, email, password, rol_id) VALUES (:nombre, :email, :password, 4)");
-                    $stmt->bindParam(':nombre', $nombre);
-                    $stmt->bindParam(':email', $email);
-                    $stmt->bindParam(':password', $hashedPassword);
-                    
-                    if ($stmt->execute()) {
-                        // Obtener el ID del usuario recién creado
-                        $usuario_id = $db->lastInsertId();
-                        
-                        // Iniciar sesión automáticamente
-                        $_SESSION['logueado'] = true;
-                        $_SESSION['nombre_usuario'] = $nombre;
-                        $_SESSION['user_id'] = $usuario_id;
-                        $_SESSION['rol_id'] = 4; // Usuario normal
-                        
-                        // Redirigir directamente al index
-                        header("Location: index.php");
-                        exit;
-                    } else {
-                        $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Error al guardar el usuario. Intenta de nuevo.</div>";
-                    }
-                }
+                $mensaje = "Registro exitoso. Por favor, inicia sesión.";
+                $tipo_mensaje = "error";
             }
-        } catch (Exception $e) {
-            $mensaje = "<div style='background: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center;'>Error al registrar: " . $e->getMessage() . "</div>";
+        } else {
+            $mensaje = $resultado_registro;
+            $tipo_mensaje = "error";
         }
     }
 }
@@ -68,45 +54,108 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redrenovable - Registro</title>
-    <link rel="stylesheet" href="../css/styleRegistro.css">
+    <title>Crear Cuenta - Red-novable</title>
+    
+    <!-- Script Anti-Parpadeo para Modo Oscuro -->
+    <script>
+        (function() {
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+    </script>
+
+    <!-- FontAwesome y Hoja de Estilos Externa -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styleRegistro.css">
 </head>
 <body>
-    <div class="conteiner">
 
-        <!-- PANEL DERECHO (FORMULARIO) -->
-        <div class="right">
-            <div style="text-align: center;">
-                <h2>REGISTRO</h2>
-            </div>
-
-            <?php echo $mensaje; ?>
-
-            <form method="POST">
-                <label for="user">Nombre de usuario:</label>
-                <input type="text" id="user" name="user" required>
-
-                <label for="email">Correo electrónico:</label>
-                <input type="email" id="email" name="email" placeholder="ejemplo@email.com" required>
-
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" minlength="6" required>
-
-                <div style="text-align: center; margin-top: 20px;">
-                    <button type="submit">Registrarse</button>
-                </div>
-            </form>
-        </div>
-
-        <!-- PANEL IZQUIERDO (con imagen de fondo) -->
-        <div class="left" style="background-image: url('../image/Fondo.png'); background-size: cover; background-position: center;">
-            <div class="welcome">
-                <h1>Gracias por ingresar a<br>Redrenovable!!</h1>
-                <p>Ingresa tus datos correspondientes en las casillas</p>
-            </div>
-            <div class="footer">2026 redrenovable.com all reserve to iso 994</div>
+<div class="main-container">
+    
+    <!-- PANEL IZQUIERDO: PAISAJE ABSTRACTO -->
+    <div class="left-panel">
+        <div class="sun-glow"></div>
+        <div class="welcome-content">
+            <h1>Crea tu cuenta en<br>Red-novable</h1>
+            <p>Únete a nuestra comunidad y aprende sobre energía limpia.</p>
         </div>
     </div>
+
+    <!-- PANEL DERECHO: FORMULARIO -->
+    <div class="right-panel">
+        <div class="login-card">
+            <img src="../image/LogotipoSinfondo.png" class="mini-logo" alt="Logo">
+            <h2>Registro</h2>
+            
+            <?php if (!empty($mensaje)): ?>
+                <div class="msg <?= $tipo_mensaje ?>">
+                    <i class="fas fa-exclamation-circle"></i> <?= htmlspecialchars($mensaje) ?>
+                </div>
+            <?php endif; ?>
+
+            <form method="POST">
+                <div class="input-group">
+                    <label>Nombre de usuario:</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="user" placeholder="Ej. Alejandro" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Correo Electrónico:</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-at"></i>
+                        <input type="email" name="email" placeholder="ejemplo@correo.com" required>
+                    </div>
+                </div>
+            
+                <div class="input-group">
+                    <label>Contraseña:</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" id="reg-pass" placeholder="Mínimo 6 caracteres" minlength="6" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePass('reg-pass', this)"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    Registrarse <i class="fas fa-user-plus"></i>
+                </button>
+            </form>
+
+            <div class="divider"><span>O regístrate con</span></div>
+
+            <!-- BOTÓN DE GOOGLE -->
+            <a href="google_auth.php" class="btn-google">
+                <i class="fab fa-google"></i> Google
+            </a>
+
+            <p class="footer-text">
+                ¿Ya tienes cuenta? <a href="inicioSesion.php">Inicia sesión</a>
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function togglePass(id, el) {
+        const input = document.getElementById(id);
+        if (input.type === "password") {
+            input.type = "text";
+            el.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            input.type = "password";
+            el.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+    }
+</script>
+
 </body>
 </html>

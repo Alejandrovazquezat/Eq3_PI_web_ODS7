@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'Conexion.php';
+require_once __DIR__ . '/../../config/Conexion.php';
 
 // Verificar que el usuario es admin
 if (!isset($_SESSION['logueado']) || $_SESSION['logueado'] !== true || $_SESSION['rol_id'] != 1) {
@@ -19,7 +19,6 @@ if ($usuario_id == 1) {
 }
 
 if ($usuario_id > 0 && $nuevo_rol > 0) {
-    // Verificar que el rol existe
     $rolesValidos = [1, 2, 3, 4];
     if (!in_array($nuevo_rol, $rolesValidos)) {
         $_SESSION['mensaje_error'] = "Rol no válido.";
@@ -30,13 +29,11 @@ if ($usuario_id > 0 && $nuevo_rol > 0) {
     try {
         $db = (new Conexion())->getConexion();
         
-        // Verificar si el usuario existe
         $check = $db->prepare("SELECT id FROM usuarios WHERE id = :id");
         $check->bindParam(':id', $usuario_id);
         $check->execute();
         
         if ($check->fetch()) {
-            // Cambiar rol del usuario
             $stmt = $db->prepare("UPDATE usuarios SET rol_id = :rol_id WHERE id = :id");
             $stmt->bindParam(':rol_id', $nuevo_rol);
             $stmt->bindParam(':id', $usuario_id);
@@ -52,4 +49,3 @@ if ($usuario_id > 0 && $nuevo_rol > 0) {
 
 header("Location: usuarios.php");
 exit;
-?>
