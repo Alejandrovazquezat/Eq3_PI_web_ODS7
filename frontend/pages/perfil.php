@@ -95,7 +95,7 @@ $misComentarios = $stmtComentarios->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Perfil - Red-novable</title>
     <link rel="stylesheet" href="../css/navbar-style.css"> 
-    <link rel="stylesheet" href="../css/categoria-styles.css"> <!-- CARGAMOS ESTILOS DE LAS TARJETAS -->
+    <link rel="stylesheet" href="../css/categoria-styles.css">
     <link rel="stylesheet" href="../css/perfil-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">

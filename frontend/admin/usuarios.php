@@ -121,7 +121,7 @@ if ($rol_seleccionado > 0) {
                             <td>
                                 <?php if ($user['id'] == 1): ?>
                                     <span class="badge-root">
-                                        <i class="fas fa-crown"></i> S.U Admin
+                                        <i></i> S.U Admin
                                     </span>
                                 <?php else: ?>
                                     <span class="badge-role" 
