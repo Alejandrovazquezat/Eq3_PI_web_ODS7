@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-// Opcional: Validar permisos (Recomendado para proteger la eliminación)
-if (!isset($_SESSION['usuario_id']) || !in_array($_SESSION['rol_id'], [1, 2, 3])) { 
+// Validar permisos: Solo Admin (1) y Editor (2)
+if (!isset($_SESSION['usuario_id']) || !in_array($_SESSION['rol_id'], [1, 2])) { 
     header("Location: ../pages/index.php");
     exit;
 }
@@ -10,14 +10,8 @@ if (!isset($_SESSION['usuario_id']) || !in_array($_SESSION['rol_id'], [1, 2, 3])
 require_once __DIR__ . '/../../config/Conexion.php';
 $db = (new Conexion())->getConexion();
 
-// ==========================================
-// LÓGICA PARA ELIMINAR UNA PUBLICACIÓN
-// ==========================================
 if (isset($_GET['eliminar'])) {
     $id_eliminar = intval($_GET['eliminar']);
-    // Primero, si tienes una tabla de 'likes' o 'comentarios' vinculada a esta publicación, 
-    // asegúrate de que tu base de datos tenga "ON DELETE CASCADE" configurado, 
-    // o elimínalos manualmente antes de borrar la publicación.
     $stmt = $db->prepare("DELETE FROM publicaciones WHERE id = ?");
     $stmt->execute([$id_eliminar]);
     
@@ -25,9 +19,6 @@ if (isset($_GET['eliminar'])) {
     exit;
 }
 
-// ==========================================
-// OBTENER TODAS LAS PUBLICACIONES
-// ==========================================
 $pubs = $db->query("SELECT p.*, u.nombre as autor, c.nombre as categoria 
                     FROM publicaciones p 
                     JOIN usuarios u ON p.usuario_id = u.id 
@@ -46,20 +37,8 @@ $pubs = $db->query("SELECT p.*, u.nombre as autor, c.nombre as categoria
     <title>Publicaciones - RedRenovable</title>
 </head>
 <body>
-    <nav class="sidebar">
-        <div class="logo-box" onclick="window.location.href='../../frontend/pages/index.php'">
-            <img src="../image/LogotipoSinfondo.png" alt="Logo">
-            <div class="logo-name">RED-novable</div>
-        </div>
-        <div class="menu-groups">
-            <a href="dashboard.php" class="nav-link">📊 Dashboard general</a>
-            <a href="publicaciones.php" class="nav-link active">📝 Publicaciones</a>
-            <a href="revisar.php" class="nav-link">✅ Pendientes de revisión</a>
-            <a href="usuarios.php" class="nav-link">👥 Usuarios</a>
-            <a href="comentarios.php" class="nav-link">💬 Comentarios</a>
-            <a href="crear_publicacion.php" class="nav-link btn-special">+ Nueva publicación</a>
-        </div>
-    </nav>
+
+    <?php include 'sidebar.php'; ?>
 
     <main class="main">
         <header class="main-header">
@@ -67,7 +46,6 @@ $pubs = $db->query("SELECT p.*, u.nombre as autor, c.nombre as categoria
             <p>Administra y supervisa las publicaciones de la red.</p>
         </header>
 
-        <!-- Mensaje de éxito al eliminar -->
         <?php if(isset($_GET['msg']) && $_GET['msg'] == 'eliminado'): ?>
             <div class="alert-success">
                 <i class="fas fa-check-circle"></i> Publicación eliminada exitosamente.
@@ -87,7 +65,7 @@ $pubs = $db->query("SELECT p.*, u.nombre as autor, c.nombre as categoria
                             <th>Categoría</th>
                             <th>Estado</th>
                             <th>Fecha</th>
-                            <th>Acciones</th> <!-- Nueva columna añadida -->
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,7 +74,7 @@ $pubs = $db->query("SELECT p.*, u.nombre as autor, c.nombre as categoria
                             <td>
                                 <div class="img-wrapper">
                                     <?php if($item['imagen']): ?>
-                                        <img src="data:image/jpeg;base64,<?= base64_encode($item['imagen']) ?>" class="imagen-preview">
+                                        <img src="../../assets/<?= htmlspecialchars($item['imagen']) ?>" class="imagen-preview">
                                     <?php else: ?>
                                         <div class="sin-imagen">🍃</div>
                                     <?php endif; ?>
@@ -116,7 +94,6 @@ $pubs = $db->query("SELECT p.*, u.nombre as autor, c.nombre as categoria
                             </td>
                             <td class="fecha-col"><?= date('d M, Y', strtotime($item['fecha_creacion'])) ?></td>
                             <td>
-                                <!-- Botón de eliminar con onclick hacia el modal -->
                                 <button class="btn-danger" onclick="abrirModal(<?= $item['id'] ?>, '<?= htmlspecialchars($item['titulo'], ENT_QUOTES) ?>')">
                                     <i class="fas fa-trash-alt"></i> Eliminar
                                 </button>
@@ -129,7 +106,6 @@ $pubs = $db->query("SELECT p.*, u.nombre as autor, c.nombre as categoria
         </div>
     </main>
 
-    <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->
     <div id="modal-confirmacion" class="modal-overlay">
         <div class="modal-box">
             <div class="modal-icon-container">
@@ -145,35 +121,29 @@ $pubs = $db->query("SELECT p.*, u.nombre as autor, c.nombre as categoria
         </div>
     </div>
 
-    <!-- SCRIPT DEL MODAL -->
     <script>
         let publicacionIdSeleccionada = null;
         const modal = document.getElementById('modal-confirmacion');
         const mensajeTexto = document.getElementById('modal-mensaje');
         const btnConfirmar = document.getElementById('btn-confirmar-eliminar');
 
-        // Función para abrir el modal
         function abrirModal(id, titulo) {
             publicacionIdSeleccionada = id;
-            // Personalizamos el mensaje dinámicamente con el título
             mensajeTexto.innerHTML = `¿Estás seguro de que quieres eliminar la publicación <strong>"${titulo}"</strong>? Esta acción no se puede deshacer.`;
             modal.classList.add('active');
         }
 
-        // Función para cerrar el modal
         function cerrarModal() {
             modal.classList.remove('active');
             publicacionIdSeleccionada = null;
         }
 
-        // Ejecutar eliminación
         btnConfirmar.addEventListener('click', function() {
             if (publicacionIdSeleccionada) {
                 window.location.href = `publicaciones.php?eliminar=${publicacionIdSeleccionada}`;
             }
         });
 
-        // Cerrar si hace clic fuera del cuadro blanco
         modal.addEventListener('click', function(e) {
             if (e.target === modal) {
                 cerrarModal();

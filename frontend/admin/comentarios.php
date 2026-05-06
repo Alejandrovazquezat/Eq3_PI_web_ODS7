@@ -38,32 +38,13 @@ $comentarios = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Comentarios - Red-novable Admin</title>
     
-    <!-- Hojas de estilo y fuentes -->
     <link rel="stylesheet" href="../css_dash/style.css"> 
-    <link rel="stylesheet" href="../css_dash/comentarios_styles.css"> <!-- Aquí vinculamos el nuevo CSS -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css_dash/comentarios_styles.css"> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body style="background-color: #f1f5f9; display: flex;">
+<body style="display: flex;">
 
-    <!-- INICIO SIDEBAR -->
-    <nav class="sidebar">
-        <div class="logo-box" onclick="window.location.href='../../frontend/pages/index.php'">
-            <img src="../image/LogotipoSinfondo.png" alt="Logo">
-            <div class="logo-name">Red-novable</div>
-        </div>
-        <div class="menu-groups">
-            <a href="dashboard.php" class="nav-link">📊 Dashboard general</a>
-            <a href="publicaciones.php" class="nav-link">📝 Publicaciones</a>
-            <a href="revisar.php" class="nav-link">✅ Pendientes de revisión</a>
-            <a href="usuarios.php" class="nav-link">👥 Usuarios</a>
-            <a href="comentarios.php" class="nav-link active">💬 Comentarios</a>
-            <a href="crear_publicacion.php" class="nav-link btn-special">+ Nueva publicación</a>
-        </div>
-    </nav>
-    <!-- FIN SIDEBAR -->
-
-    <!-- CONTENIDO PRINCIPAL -->
+    <?php include 'sidebar.php'; ?>
     <main class="main-content">
         <div class="container">
             <div class="header-admin">
@@ -97,7 +78,6 @@ $comentarios = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
                                 <td style="max-width: 300px;"><?= htmlspecialchars($c['contenido']) ?></td>
                                 <td style="color: #64748b;"><?= date('d/m/Y H:i', strtotime($c['fecha_creacion'])) ?></td>
                                 <td>
-                                    <!-- Botón que dispara el modal -->
                                     <button class="btn-danger" onclick="abrirModal(<?= $c['id'] ?>, '<?= htmlspecialchars($c['autor_nombre'] ?? 'Usuario', ENT_QUOTES) ?>')">
                                         <i class="fas fa-trash-alt"></i> Eliminar
                                     </button>
@@ -117,7 +97,6 @@ $comentarios = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </main>
 
-    <!-- MODAL DE CONFIRMACIÓN -->
     <div id="modal-confirmacion" class="modal-overlay">
         <div class="modal-box">
             <div class="modal-icon-container">
@@ -133,7 +112,6 @@ $comentarios = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <!-- SCRIPT PARA CONTROLAR EL MODAL -->
     <script>
         let comentarioIdSeleccionado = null;
         const modal = document.getElementById('modal-confirmacion');

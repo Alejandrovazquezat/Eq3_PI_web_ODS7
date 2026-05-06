@@ -1,16 +1,18 @@
-
-Copiar
-
 <?php
 session_start();
+
+// Validar permisos: Solo Admin (1) y Editor (2)
+if (!isset($_SESSION['usuario_id']) || !in_array($_SESSION['rol_id'], [1, 2])) { 
+    header("Location: ../pages/index.php");
+    exit;
+}
+
 require_once __DIR__ . '/../../config/Conexion.php';
 $db = (new Conexion())->getConexion();
 $u = $db->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
 $p = $db->query("SELECT COUNT(*) FROM publicaciones")->fetchColumn();
-// Asumiendo que ya tienes tu variable $db (conexión a la base de datos)
 $total_comentarios = $db->query("SELECT COUNT(*) FROM comentarios")->fetchColumn();
 $total_likes = $db->query("SELECT COUNT(*) FROM likes")->fetchColumn();
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -22,20 +24,9 @@ $total_likes = $db->query("SELECT COUNT(*) FROM likes")->fetchColumn();
     <title>Dashboard - Red-novable</title>
 </head>
 <body>
-    <nav class="sidebar">
-        <div class="logo-box" onclick="window.location.href='../../frontend/pages/index.php'">
-            <img src="../image/LogotipoSinfondo.png" alt="Logo">
-            <div class="logo-name">RED-novable</div>
-        </div>
-        <div class="menu-groups">
-            <a href="dashboard.php" class="nav-link active">📊 Dashboard general</a>
-            <a href="publicaciones.php" class="nav-link">📝 Publicaciones</a>
-            <a href="revisar.php" class="nav-link">✅ Pendientes de revisión</a>
-            <a href="usuarios.php" class="nav-link">👥 Usuarios</a>
-            <a href="comentarios.php" class="nav-link">💬 Comentarios</a>
-            <a href="crear_publicacion.php" class="nav-link btn-special">+ Nueva publicación</a>
-        </div>
-    </nav>
+
+    <?php include 'sidebar.php'; ?>
+
     <main class="main">
         <header class="main-header">
             <h1>Panel de Control</h1>

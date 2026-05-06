@@ -102,4 +102,22 @@ class Usuario {
         return $stmt->execute();
     }
 
+    // ==========================================
+    // NUEVA FUNCIÓN ESTÁTICA PARA ACTUALIZAR PERFIL
+    // ==========================================
+    public static function actualizarPerfil($db, $usuario_id, $nuevo_nombre, $ruta_foto) {
+        // Preparamos la consulta SQL
+        $query = "UPDATE usuarios SET nombre = :nombre, foto_perfil = :foto WHERE id = :id";
+        $stmt = $db->prepare($query);
+        
+        // Vinculamos los parámetros
+        $stmt->bindParam(':nombre', $nuevo_nombre);
+        $stmt->bindParam(':foto', $ruta_foto); // Puede ser nulo
+        $stmt->bindParam(':id', $usuario_id);
+        
+        // Ejecutamos la consulta
+        return $stmt->execute();
+
+    }
+
 }

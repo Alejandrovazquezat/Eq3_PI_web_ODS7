@@ -155,6 +155,7 @@ class AuthController {
             ],
 
             'editor' => [
+            'crear_publicacion',
             'ver_publicaciones_pendientes', 'aprobar_publicacion', 'rechazar_publicacion',
             'editar_cualquier_publicacion', 'publicar_publicacion',
             'ver_estadisticas', 'moderar_comentarios',

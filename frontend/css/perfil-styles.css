@@ -4,11 +4,11 @@
 :root {
     --borde-tarjeta: #e2e8f0;
     --texto-secundario: #64748b;
-    --color-enlace: #3b82f6;
+    --color-enlace: #15181b;
     
     /* Degradado del Banner */
     --banner-bg-1: #e0f2fe;
-    --banner-bg-2: #3b82f6;
+    --banner-bg-2: #15181b;
     
     /* Fondos de estados (Hover, Delete, Rol) */
     --bg-hover: #f8fafc;
@@ -17,6 +17,10 @@
     --text-delete: #ef4444;
     
     --sombra-card: rgba(0,0,0,0.05);
+
+    /* Variables Neubrutalistas para el modal y botones */
+    --color-accion: #06b6d4; 
+    --sombra-neubrutal-oscura: rgba(0, 0, 0, 0.4);
 }
 
 body.dark-mode {
@@ -82,7 +86,6 @@ body.dark-mode {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    /* El borde tomará el color de la tarjeta para fusionarse perfecto */
     border: 6px solid var(--blanco); 
     object-fit: cover;
     box-shadow: 0 4px 15px var(--sombra-card);
@@ -90,7 +93,6 @@ body.dark-mode {
     transition: border-color 0.3s, background-color 0.3s;
 }
 
-/* Placeholder emoji si no hay foto */
 .foto-placeholder {
     width: 150px;
     height: 150px;
@@ -193,7 +195,6 @@ body.dark-mode {
     font-weight: 800;
 }
 
-/* La barrita indicadora de la pestaña activa */
 .tab-btn.active::after {
     content: '';
     position: absolute;
@@ -225,10 +226,12 @@ body.dark-mode {
     transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 
+/* --- AJUSTES DE ALINEACIÓN DEL HEADER --- */
 .comentario-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Asegura centrado vertical */
+    gap: 15px; /* Crea un muro invisible entre texto y botón */
     margin-bottom: 10px;
 }
 
@@ -236,6 +239,8 @@ body.dark-mode {
     font-size: 0.85rem;
     color: var(--texto-secundario);
     transition: color 0.3s;
+    flex: 1; /* Permite que el texto tome el espacio sobrante */
+    word-break: break-word; /* Si el título es muy bestia, lo corta hacia abajo */
 }
 
 .comentario-meta strong {
@@ -250,23 +255,34 @@ body.dark-mode {
     transition: color 0.3s;
 }
 
+/* --- BOTÓN ELIMINAR COMENTARIO (MINI-ECO) --- */
 .btn-delete-com {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem; /* Tamaño más sutil */
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.4em 0.8em; /* Padding más compacto */
+    border-radius: 6em;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
     color: var(--text-delete);
     background-color: var(--bg-delete);
-    border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s;
-    font-size: 0.85rem;
+    box-shadow: 2px 2px 0 var(--sombra-neubrutal-oscura);
+    flex-shrink: 0; /* IMPIDE que el texto largo aplaste el botón */
 }
 
 .btn-delete-com:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--sombra-neubrutal-oscura);
     background-color: var(--text-delete);
-    color: white;
+    color: var(--blanco);
 }
 
-/* Mensaje sin publicaciones/comentarios */
 .no-pubs {
     text-align: center;
     padding: 40px;
@@ -279,4 +295,51 @@ body.dark-mode {
     margin-bottom: 15px;
     color: var(--borde-tarjeta);
     transition: color 0.3s;
+}
+
+/* =========================================
+   ESTILOS DEL MODAL Y BOTONES NEUBRUTALISTAS
+   ========================================= */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.7); display: none;
+    justify-content: center; align-items: center; z-index: 1000;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal-box {
+    background: var(--blanco); padding: 30px; border-radius: 16px;
+    width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    color: var(--texto-titulos); border: 1px solid var(--borde-tarjeta);
+}
+
+.form-control-modal {
+    width: 100%; padding: 12px; border: 1px solid var(--borde-tarjeta); 
+    border-radius: 8px; font-family: inherit; background: var(--fondo-suave);
+    color: var(--texto-titulos); box-sizing: border-box; margin-bottom: 15px;
+}
+
+/* Botones Animados "Eco" (Estilo Uiverse) para Perfil y Modales */
+.btn-p-edit, .btn-p-action, .btn-modal-cancel {
+    position: relative; font-size: 0.9rem; font-weight: 600;
+    text-transform: uppercase; text-decoration: none; padding: 0.8em 1.4em;
+    display: inline-flex; align-items: center; gap: 8px;
+    cursor: pointer; border-radius: 6em; border: none; transition: all 0.2s;
+    box-shadow: -4px -2px 16px 0px var(--blanco), 4px 2px 16px 0px rgba(0,0,0,0.1);
+}
+
+.btn-p-action { background-color: var(--color-accion); color: white; }
+.btn-p-action:hover { transform: translateY(-3px); color: white; }
+
+.btn-p-edit, .btn-modal-cancel { background-color: var(--blanco); color: var(--texto-oscuro); }
+.btn-p-edit:hover, .btn-modal-cancel:hover { color: var(--color-accion); transform: translateY(-3px); }
+
+.btn-p-edit, .btn-p-action, .btn-modal-cancel {
+    box-shadow: 3px 3px 0 var(--sombra-neubrutal-oscura);
+}
+
+.btn-p-edit:hover, .btn-p-action:hover, .btn-modal-cancel:hover {
+    box-shadow: 1px 1px 0 var(--sombra-neubrutal-oscura);
+    transform: translate(2px, 2px);
 }

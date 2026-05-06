@@ -1,5 +1,12 @@
 <?php
 session_start();
+
+// Validar permisos: SOLO ADMIN (1)
+if (!isset($_SESSION['usuario_id']) || $_SESSION['rol_id'] != 1) { 
+    header("Location: ../pages/index.php");
+    exit;
+}
+
 require_once __DIR__ . '/../../config/Conexion.php';
 $db = (new Conexion())->getConexion();
 
@@ -42,22 +49,8 @@ if ($rol_seleccionado > 0) {
     <title>Usuarios - RED-novable</title>
 </head>
 <body>
-    <nav class="sidebar">
-        <div class="logo-box" onclick="window.location.href='../../frontend/pages/index.php'">
-            <img src="../image/LogotipoSinfondo.png" alt="Logo">
-            <div class="logo-name">RED-novable</div>
-        </div>
-        <div class="menu-groups">
-            <a href="dashboard.php" class="nav-link">📊 Dashboard general</a>
-            <a href="publicaciones.php" class="nav-link">📝 Publicaciones</a>
-            <a href="revisar.php" class="nav-link">✅ Pendientes de revisión</a>
-            <a href="usuarios.php" class="nav-link active">👥 Usuarios</a>
-            <a href="comentarios.php" class="nav-link">💬 Comentarios</a>
-            <div class="sidebar-divider"></div>
-            <a href="crear_publicacion.php" class="nav-link btn-special">+ Nueva publicación</a>
-        </div>
-    </nav>
 
+    <?php include 'sidebar.php'; ?>
     <main class="main">
         <header class="main-header">
             <h1>Gestión de Usuarios</h1>

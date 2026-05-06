@@ -2,7 +2,7 @@
 .main {
     margin-left: 270px; /* Ajustado al tamaño de tu sidebar */
     padding: 40px;
-    background-color: #f8fafc;
+    background-color: var(--bg-main);
     min-height: 100vh;
 }
 

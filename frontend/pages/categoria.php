@@ -104,7 +104,7 @@ if ($usuarioLogueado && !empty($publicaciones)) {
                     
                     <?php if($pub['imagen']): ?>
                     <div class="publicacion-imagen">
-                        <img src="data:image/jpeg;base64,<?= base64_encode($pub['imagen']) ?>" alt="Imagen de publicación">
+                        <img src="../../assets/<?= htmlspecialchars($pub['imagen']) ?>" alt="Imagen de publicación">
                     </div>
                     <?php endif; ?>
 

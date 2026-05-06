@@ -73,7 +73,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <div class="destacado-card" onclick="window.location.href='categoria.php?id=<?= $pub['categoria_id'] ?>'">
                         <?php if($pub['imagen']): ?>
                         <div class="destacado-imagen">
-                            <img src="data:image/jpeg;base64,<?= base64_encode($pub['imagen']) ?>" alt="<?= htmlspecialchars($pub['titulo']) ?>">
+                            <img src="../../assets/<?= htmlspecialchars($pub['imagen']) ?>" alt="<?= htmlspecialchars($pub['titulo']) ?>">
                         </div>
                         <?php endif; ?>
                         <div class="destacado-contenido">
@@ -101,7 +101,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <div class="vertical-card" onclick="window.location.href='categoria.php?id=<?= $pub['categoria_id'] ?>'">
                         <?php if($pub['imagen']): ?>
                         <div class="vertical-imagen">
-                            <img src="data:image/jpeg;base64,<?= base64_encode($pub['imagen']) ?>" alt="<?= htmlspecialchars($pub['titulo']) ?>">
+                            <img src="../../assets/<?= htmlspecialchars($pub['imagen']) ?>" alt="<?= htmlspecialchars($pub['titulo']) ?>">
                         </div>
                         <?php endif; ?>
                         <div class="vertical-contenido">

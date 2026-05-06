@@ -80,33 +80,15 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body style="background-color: #f1f5f9; display: flex;">
+<body style="display: flex;">
 
-    <!-- INICIO SIDEBAR -->
-    <nav class="sidebar">
-        <div class="logo-box" onclick="window.location.href='../../frontend/pages/index.php'">
-            <img src="../image/LogotipoSinfondo.png" alt="Logo">
-            <div class="logo-name">Red-novable</div>
-        </div>
-        <div class="menu-groups">
-            <a href="dashboard.php" class="nav-link">📊 Dashboard general</a>
-            <a href="publicaciones.php" class="nav-link">📝 Publicaciones</a>
-            <a href="revisar.php" class="nav-link active">✅ Revisar</a>    
-            <a href="usuarios.php" class="nav-link">👥 Usuarios</a>
-            <a href="comentarios.php" class="nav-link">💬 Comentarios</a>
-            <a href="crear_publicacion.php" class="nav-link btn-special">+ Nueva publicación</a>
-        </div>
-    </nav>
-    <!-- FIN SIDEBAR -->
-
-    <!-- CONTENIDO PRINCIPAL -->
+    <?php include 'sidebar.php'; ?>
     <main class="main-content">
         <div class="container">
             <div class="header-admin">
                 <h1 style="color: #1e293b;"><i class="fas fa-check-double"></i> Revisión de Publicaciones</h1>
             </div>
 
-            <!-- Alertas de éxito -->
             <?php if(isset($_GET['msg'])): ?>
                 <?php if($_GET['msg'] == 'aprobado'): ?>
                     <div style="background: #dcfce7; color: #166534; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
@@ -141,21 +123,18 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
                                 <td><?= $p['id'] ?></td>
                                 <td><strong><?= htmlspecialchars($p['titulo']) ?></strong></td>
                                 <td><i class="fas fa-user-edit" style="color: #94a3b8;"></i> <?= htmlspecialchars($p['autor_nombre'] ?? 'Desconocido') ?></td>
-                                <td><span style="background: #e2e8f0; padding: 4px 8px; border-radius: 4px; font-size: 0.85em;"><?= htmlspecialchars($p['categoria_nombre'] ?? 'Sin categoría') ?></span></td>
+                                <td><span class="cat-tag"><?= htmlspecialchars($p['categoria_nombre'] ?? 'Sin categoría') ?></span></td>
                                 <td style="color: #64748b;"><?= date('d/m/Y H:i', strtotime($p['fecha_creacion'])) ?></td>
                                 <td>
                                     <div class="actions-group">
-                                        <!-- Botón Ver (Vista Previa) -->
                                         <button class="btn-info" onclick="abrirModalPreview(<?= $p['id'] ?>)" title="Vista Previa">
                                             <i class="fas fa-eye"></i>
                                         </button>
 
-                                        <!-- Botón Editar (NUEVO) -->
                                         <button class="btn-warning" onclick="abrirModalEditar(<?= $p['id'] ?>)" title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </button>
 
-                                        <!-- Botones de Acción -->
                                         <button class="btn-success" onclick="abrirModalAccion('aprobar', <?= $p['id'] ?>, '<?= htmlspecialchars($p['titulo'], ENT_QUOTES) ?>')" title="Aprobar">
                                             <i class="fas fa-check"></i>
                                         </button>
@@ -165,15 +144,12 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
                                         </button>
                                     </div>
 
-                                    <!-- Datos ocultos para JS -->
                                     <div id="data-titulo-<?= $p['id'] ?>" style="display:none;"><?= htmlspecialchars($p['titulo']) ?></div>
                                     <div id="data-autor-<?= $p['id'] ?>" style="display:none;"><?= htmlspecialchars($p['autor_nombre'] ?? 'Desconocido') ?></div>
                                     <div id="data-cat-nombre-<?= $p['id'] ?>" style="display:none;"><?= htmlspecialchars($p['categoria_nombre'] ?? 'Sin categoría') ?></div>
                                     <div id="data-cat-id-<?= $p['id'] ?>" style="display:none;"><?= $p['categoria_id'] ?></div>
                                     <div id="data-fecha-<?= $p['id'] ?>" style="display:none;"><?= date('d/m/Y H:i', strtotime($p['fecha_creacion'])) ?></div>
-                                    <!-- Contenido para Vista Previa (con saltos de línea HTMl) -->
                                     <div id="data-contenido-html-<?= $p['id'] ?>" style="display:none;"><?= nl2br(htmlspecialchars($p['contenido'])) ?></div>
-                                    <!-- Contenido Crudo para Edición en Textarea -->
                                     <div id="data-contenido-raw-<?= $p['id'] ?>" style="display:none;"><?= htmlspecialchars($p['contenido']) ?></div>
                                     <div id="data-imagen-<?= $p['id'] ?>" style="display:none;"><?= $p['imagen'] ? 'data:image/jpeg;base64,' . base64_encode($p['imagen']) : '' ?></div>
                                 </td>
@@ -193,7 +169,6 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </main>
 
-    <!-- MODAL DE VISTA PREVIA -->
     <div id="modal-preview" class="modal-overlay">
         <div class="modal-box preview-box">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
@@ -218,7 +193,6 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <!-- MODAL DE EDICIÓN (NUEVO) -->
     <div id="modal-editar" class="modal-overlay">
         <div class="modal-box preview-box">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -257,7 +231,6 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <!-- MODAL DINÁMICO DE ACCIÓN (APROBAR/RECHAZAR) -->
     <div id="modal-accion" class="modal-overlay">
         <div class="modal-box">
             <div class="modal-icon-container" id="modal-icon-bg">
@@ -273,7 +246,6 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <!-- SCRIPTS -->
     <script>
         // Función unificada para cerrar modales
         function cerrarModal(modalId) {
