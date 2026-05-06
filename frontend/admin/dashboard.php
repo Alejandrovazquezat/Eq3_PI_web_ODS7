@@ -7,6 +7,10 @@ require_once __DIR__ . '/../../config/Conexion.php';
 $db = (new Conexion())->getConexion();
 $u = $db->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
 $p = $db->query("SELECT COUNT(*) FROM publicaciones")->fetchColumn();
+// Asumiendo que ya tienes tu variable $db (conexión a la base de datos)
+$total_comentarios = $db->query("SELECT COUNT(*) FROM comentarios")->fetchColumn();
+$total_likes = $db->query("SELECT COUNT(*) FROM likes")->fetchColumn();
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -15,7 +19,7 @@ $p = $db->query("SELECT COUNT(*) FROM publicaciones")->fetchColumn();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css_dash/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <title>Dashboard - RedRenovable</title>
+    <title>Dashboard - Red-novable</title>
 </head>
 <body>
     <nav class="sidebar">
@@ -24,9 +28,11 @@ $p = $db->query("SELECT COUNT(*) FROM publicaciones")->fetchColumn();
             <div class="logo-name">RED-novable</div>
         </div>
         <div class="menu-groups">
-            <a href="dashboard.php" class="nav-link active">📊 Dashboard</a>
+            <a href="dashboard.php" class="nav-link active">📊 Dashboard general</a>
             <a href="publicaciones.php" class="nav-link">📝 Publicaciones</a>
+            <a href="revisar.php" class="nav-link">✅ Pendientes de revisión</a>
             <a href="usuarios.php" class="nav-link">👥 Usuarios</a>
+            <a href="comentarios.php" class="nav-link">💬 Comentarios</a>
             <a href="crear_publicacion.php" class="nav-link btn-special">+ Nueva publicación</a>
         </div>
     </nav>
@@ -48,6 +54,20 @@ $p = $db->query("SELECT COUNT(*) FROM publicaciones")->fetchColumn();
                 <div class="stat-info">
                     <p>Publicaciones Totales</p>
                     <h2><?= number_format($p) ?></h2>
+                </div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-icon">💬</div>
+                <div class="stat-info">
+                    <p>Comentarios Totales</p>
+                    <h2><?= number_format($total_comentarios) ?></h2>
+                </div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-icon">❤️</div>
+                <div class="stat-info">
+                    <p>Likes Totales</p>
+                    <h2><?= number_format($total_likes) ?></h2>
                 </div>
             </div>
         </section>

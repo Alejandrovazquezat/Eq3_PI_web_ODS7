@@ -1,14 +1,61 @@
 /* ============================================ */
+/* VARIABLES LOCALES PARA CATEGORIAS (GITHUB)   */
+/* ============================================ */
+:root {
+    --borde-tarjeta: #e2e8f0;
+    --texto-secundario: #64748b;
+    --color-enlace: #3b82f6;
+    
+    /* Degradado del Hero (Banner superior) */
+    --hero-bg-1: #1e3a8a;
+    --hero-bg-2: #3b82f6;
+    
+    /* Degradado de los círculos de iconos */
+    --icono-bg-1: #1e3a8a;
+    --icono-bg-2: #3b82f6;
+    
+    /* Scrollbar */
+    --scroll-track: #e2e8f0;
+    --scroll-thumb: #3b82f6;
+    --scroll-thumb-hover: #1e3a8a;
+    
+    --sombra-card: rgba(0,0,0,0.1);
+}
+
+body.dark-mode {
+    --borde-tarjeta: #30363d;
+    --texto-secundario: #8b949e;
+    --color-enlace: #58a6ff;
+    
+    /* Hero oscuro, fundiéndose con el fondo de GitHub */
+    --hero-bg-1: #0d1117; 
+    --hero-bg-2: #161b22; 
+    
+    /* Iconos vibrantes para destacar en la oscuridad */
+    --icono-bg-1: #1f6feb; 
+    --icono-bg-2: #388bfd;
+    
+    /* Scrollbar oscuro */
+    --scroll-track: #010409;
+    --scroll-thumb: #30363d;
+    --scroll-thumb-hover: #58a6ff;
+    
+    --sombra-card: rgba(0,0,0,0.5);
+}
+
+/* ============================================ */
 /* ESTILOS PARA CATEGORIAS.PHP */
 /* ============================================ */
 
 .hero-categorias {
-    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-    color: white;
+    background: linear-gradient(135deg, var(--hero-bg-1), var(--hero-bg-2));
+    color: white; /* El texto del banner siempre será blanco por contraste */
     padding: 60px 5%;
     text-align: center;
     border-radius: 0 0 40px 40px;
     margin-bottom: 30px;
+    border-bottom: 1px solid var(--borde-tarjeta); /* Ayuda a definir el borde en modo oscuro */
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .hero-categorias h1 {
@@ -37,13 +84,13 @@
 }
 
 .categoria-card {
-    background: white;
+    background-color: var(--blanco); /* Variable global */
     border-radius: 16px;
     padding: 25px;
     text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s, border-color 0.3s;
     cursor: pointer;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--borde-tarjeta);
     width: 280px;
     flex-shrink: 0;
     display: inline-block;
@@ -53,78 +100,91 @@
 
 .categoria-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px var(--sombra-card);
 }
 
 .categoria-icono {
     width: 70px;
     height: 70px;
-    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+    background: linear-gradient(135deg, var(--icono-bg-1), var(--icono-bg-2));
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 20px;
+    transition: background 0.3s ease;
 }
 
 .categoria-icono i {
     font-size: 2rem;
-    color: white;
+    color: white; /* El icono en sí siempre blanco */
 }
 
 .categoria-card h3 {
-    color: #0f172a;
+    color: var(--texto-titulos); /* Variable global */
     font-size: 1.3rem;
     margin-bottom: 10px;
+    transition: color 0.3s ease;
 }
 
 .categoria-card p {
-    color: #64748b;
+    color: var(--texto-secundario);
     font-size: 0.9rem;
     line-height: 1.5;
+    transition: color 0.3s ease;
 }
 
 .publicaciones-count {
     margin-top: 15px;
     font-size: 0.8rem;
-    color: #3b82f6;
+    color: var(--color-enlace);
     font-weight: 600;
+    transition: color 0.3s ease;
 }
 
-/* Barra de desplazamiento horizontal */
+/* ============================================ */
+/* BARRA DE DESPLAZAMIENTO (SCROLLBAR)          */
+/* ============================================ */
 .categorias-container::-webkit-scrollbar {
     height: 8px;
 }
 
 .categorias-container::-webkit-scrollbar-track {
-    background: #e2e8f0;
+    background-color: var(--scroll-track);
     border-radius: 10px;
 }
 
 .categorias-container::-webkit-scrollbar-thumb {
-    background: #3b82f6;
+    background-color: var(--scroll-thumb);
     border-radius: 10px;
+    transition: background-color 0.3s ease;
 }
 
 .categorias-container::-webkit-scrollbar-thumb:hover {
-    background: #1e3a8a;
+    background-color: var(--scroll-thumb-hover);
 }
 
-/* Mensaje cuando no hay categorías */
+/* ============================================ */
+/* ESTADO VACÍO (SIN CATEGORÍAS)                */
+/* ============================================ */
 .sin-categorias {
     text-align: center;
     padding: 60px;
-    background: white;
+    background-color: var(--blanco);
     border-radius: 16px;
+    border: 1px solid var(--borde-tarjeta);
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
 .sin-categorias i {
     font-size: 4rem;
-    color: #cbd5e1;
+    color: var(--texto-secundario);
     margin-bottom: 20px;
+    transition: color 0.3s;
 }
 
 .sin-categorias h3 {
     margin-top: 20px;
-    color: #475569;
+    color: var(--texto-titulos);
+    transition: color 0.3s;
 }

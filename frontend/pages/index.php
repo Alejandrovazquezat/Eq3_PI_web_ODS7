@@ -43,7 +43,8 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="../css/index-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body style="background-color: #f1f5f9;">
+<!-- LE QUITAMOS EL STYLE AL BODY PARA QUE EL CSS MANDE -->
+<body>
 
     <?php include 'navbar.php'; ?>
 
@@ -52,8 +53,9 @@ if (session_status() === PHP_SESSION_NONE) {
         <div style="background-image: url('../image/Redenovable_inicio.jpg'); background-size: cover; background-position: center; color: white; padding: 100px 5%; text-align: center; border-radius: 0 0 40px 40px; margin-bottom: 30px; position: relative;">
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.55); border-radius: 0 0 40px 40px;"></div>
             <div style="position: relative; z-index: 2;">
+                <!-- Usamos herencia normal para el texto del banner, ya que siempre será blanco por la foto oscura -->
                 <h1 style="color: white; font-size: 3rem; margin-bottom: 15px;">Red-novable</h1>
-                <p style="font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">Difusión de información sobre energías asequibles y no contaminantes.</p>
+                <p style="color: white; font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">Difusión de información sobre energías asequibles y no contaminantes.</p>
             </div>
         </div>
 
@@ -119,10 +121,11 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
                 
             <?php else: ?>
-                <div style="text-align: center; padding: 60px; background: white; border-radius: 16px;">
-                    <i class="fas fa-folder-open" style="font-size: 4rem; color: #cbd5e1;"></i>
-                    <h3 style="margin-top: 20px;">No hay publicaciones aún</h3>
-                    <p>Sé el primero en compartir contenido sobre energías renovables</p>
+                <!-- Usamos las variables CSS en los estilos en línea para este cuadro -->
+                <div style="text-align: center; padding: 60px; background-color: var(--blanco); border: 1px solid var(--borde-tarjeta); border-radius: 16px;">
+                    <i class="fas fa-folder-open" style="font-size: 4rem; color: var(--texto-secundario);"></i>
+                    <h3 style="margin-top: 20px; color: var(--texto-titulos);">No hay publicaciones aún</h3>
+                    <p style="color: var(--texto-oscuro);">Sé el primero en compartir contenido sobre energías renovables</p>
                 </div>
             <?php endif; ?>
             

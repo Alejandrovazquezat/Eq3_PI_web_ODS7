@@ -48,9 +48,11 @@ if ($rol_seleccionado > 0) {
             <div class="logo-name">RED-novable</div>
         </div>
         <div class="menu-groups">
-            <a href="dashboard.php" class="nav-link">📊 Dashboard</a>
+            <a href="dashboard.php" class="nav-link">📊 Dashboard general</a>
             <a href="publicaciones.php" class="nav-link">📝 Publicaciones</a>
+            <a href="revisar.php" class="nav-link">✅ Pendientes de revisión</a>
             <a href="usuarios.php" class="nav-link active">👥 Usuarios</a>
+            <a href="comentarios.php" class="nav-link">💬 Comentarios</a>
             <div class="sidebar-divider"></div>
             <a href="crear_publicacion.php" class="nav-link btn-special">+ Nueva publicación</a>
         </div>
@@ -119,7 +121,7 @@ if ($rol_seleccionado > 0) {
                             <td>
                                 <?php if ($user['id'] == 1): ?>
                                     <span class="badge-root">
-                                        <i class="fas fa-crown"></i> Admin Supremo
+                                        <i class="fas fa-crown"></i> S.U Admin
                                     </span>
                                 <?php else: ?>
                                     <span class="badge-role" 

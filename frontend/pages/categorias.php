@@ -39,7 +39,8 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="../css/categorias-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body style="background-color: #f1f5f9;">
+<!-- LE QUITAMOS EL STYLE EN LÍNEA PARA QUE EL CSS DEL MODO OSCURO HAGA SU MAGIA -->
+<body>
 
     <?php include 'navbar.php'; ?>
 

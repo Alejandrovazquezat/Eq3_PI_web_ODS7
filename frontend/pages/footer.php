@@ -10,6 +10,6 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; <?php echo date("Y"); ?> Red-novable. Todos los derechos reservados.</p>
+        <p>&copy; <?php echo date("Y"); ?> red-novable.com, Todos los derechos reservados.</p>
     </div>
 </footer>

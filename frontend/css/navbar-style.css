@@ -4,12 +4,36 @@
     font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
+/* =========================================
+   PALETA DE COLORES (MODO CLARO)
+   ========================================= */
 :root {
     --color-primario: #055220;
-    --color-oscuro: #1e293b;
-    --texto-oscuro: #334155;
-    --blanco: #ffffff;
-    --fondo-suave: #f8fafc;
+    --color-oscuro: #1e293b; /* Para el footer */
+    --texto-titulos: #1e293b; /* Separado para los h1 y h2 */
+    --texto-oscuro: #334155; /* Texto de párrafos y enlaces */
+    --blanco: #ffffff; /* Fondos de botones y tarjetas */
+    --fondo-suave: #f8fafc; /* Fondo de la página y navbar */
+    
+    /* Sombras para los botones */
+    --sombra-clara: #ffffff;
+    --sombra-oscura: rgba(95, 157, 231, 0.48);
+}
+
+/* =========================================
+   PALETA DE COLORES (MODO OSCURO - ESTILO GITHUB)
+   ========================================= */
+body.dark-mode {
+    --color-primario: #2ea043; /* El verde característico de los botones de GitHub */
+    --color-oscuro: #010409; /* Footer casi negro puro */
+    --texto-titulos: #e6edf3; /* Blanco suave para títulos */
+    --texto-oscuro: #8b949e; /* Gris tenue de GitHub para texto secundario */
+    --blanco: #161b22; /* Fondo de tarjetas (un tono arriba del fondo general) */
+    --fondo-suave: #0d1117; /* El fondo exacto de la página de GitHub */
+    
+    /* Sombras ajustadas para el fondo más oscuro */
+    --sombra-clara: rgba(255, 255, 255, 0.01);
+    --sombra-oscura: rgba(0, 0, 0, 0.6);
 }
 
 body {
@@ -18,6 +42,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave al cambiar de modo */
 }
 
 .color-primario { color: var(--color-primario); }
@@ -25,24 +50,91 @@ body {
 /* --- BARRA DE NAVEGACIÓN --- */
 .navbar {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 15px 5%; background-color: var(--blanco);
+    padding: 15px 5%; 
+    background-color: var(--fondo-suave); 
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     position: sticky; top: 0; z-index: 1000;
+    transition: background-color 0.3s ease;
 }
 
 .logo { display: flex; align-items: center; gap: 10px; }
 .img-logo { width: 40px; height: 40px; border-radius: 8px; background: #e2e8f0; object-fit: contain; }
 
-.nav-links { list-style: none; display: flex; gap: 25px; }
-.nav-links a { text-decoration: none; color: var(--texto-oscuro); font-weight: 500; transition: 0.3s; }
-.nav-links a:hover { color: var(--color-primario); }
+.nav-links { list-style: none; display: flex; gap: 15px; align-items: center; }
+.nav-auth { display: flex; gap: 15px; align-items: center; }
 
-.nav-auth { display: flex; gap: 15px; }
-.btn-login, .btn-registro { text-decoration: none; padding: 8px 20px; border-radius: 6px; font-weight: 600; transition: 0.3s; }
-.btn-login { color: var(--texto-oscuro); border: 1px solid transparent; }
-.btn-login:hover { background-color: #f1f5f9; }
-.btn-registro { background-color: var(--color-primario); color: var(--blanco); border: none; }
-.btn-registro:hover { background-color: #055220; }
+/* =========================================
+   BOTONES ANIMADOS "ECO" (Estilo Uiverse)
+   ========================================= */
+.nav-btn-eco {
+    position: relative;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.6em 1.2em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    border-radius: 6em;
+    transition: all 0.2s;
+    border: none;
+    color: var(--texto-oscuro);
+    background-color: var(--blanco);
+    box-shadow: -4px -2px 16px 0px var(--sombra-clara), 4px 2px 16px 0px var(--sombra-oscura);
+}
+
+.nav-btn-eco i {
+    font-size: 1.1rem;
+}
+
+.nav-btn-eco:hover {
+    transform: translateY(-3px);
+    box-shadow: -2px -1px 8px 0px var(--sombra-clara), 2px 1px 8px 0px var(--sombra-oscura);
+    color: var(--color-primario);
+}
+
+.nav-btn-eco:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px var(--sombra-oscura);
+}
+
+.nav-btn-eco::after {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: all 0.4s;
+    background-color: var(--blanco);
+}
+
+.nav-btn-eco:hover::after {
+    transform: scaleX(1.4) scaleY(1.6);
+    opacity: 0;
+}
+
+/* Variante para el botón de Registro */
+.nav-btn-eco.primary {
+    background-color: var(--color-primario);
+    color: var(--blanco);
+}
+.nav-btn-eco.primary::after {
+    background-color: var(--color-primario);
+}
+.nav-btn-eco.primary:hover {
+    color: var(--blanco);
+}
+
+/* Ajuste específico para el icono de 3 rayitas */
+.menu-icon.nav-btn-eco {
+    padding: 0.6em 1em;
+}
 
 /* --- CONTENIDO PRINCIPAL --- */
 .main-content {
@@ -52,8 +144,9 @@ body {
 }
 
 .main-content h1, .main-content h2 {
-    color: var(--color-oscuro);
+    color: var(--texto-titulos);
     margin-bottom: 20px;
+    transition: color 0.3s ease;
 }
 
 /* Formularios */
@@ -74,6 +167,7 @@ form input:focus, form textarea:focus {
 .footer {
     background-color: var(--color-oscuro);
     color: #cbd5e1; padding: 40px 5% 20px; text-align: center;
+    transition: background-color 0.3s ease;
 }
 .footer-container { margin-bottom: 20px; }
 .footer-links-box a { color: #cbd5e1; text-decoration: none; margin: 0 10px; transition: 0.3s; }
@@ -87,82 +181,188 @@ form input:focus, form textarea:focus {
     .nav-auth { width: 100%; justify-content: center; }
 }
 
-/* Menú desplegable */
-.menu-icon {
-    cursor: pointer;
-    font-size: 1.5rem;
-    color: #334155;
-    transition: color 0.2s;
-    padding: 8px;
-    border-radius: 8px;
-}
-
-.menu-icon:hover {
-    color: #1e3a8a;
-    background-color: #f1f5f9;
-}
-
+/* =========================================
+   MENÚ DESPLEGABLE (Estilo Uiverse)
+   ========================================= */
 .menu-container {
     position: relative;
     display: inline-block;
 }
 
 .menu-dropdown {
-    display: none;
+    display: none; 
     position: absolute;
     right: 0;
-    top: calc(100% + 5px);
-    background-color: white;
+    top: calc(100% + 10px);
+    background-color: #0D1117; 
     min-width: 220px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    border-radius: 12px;
+    border-radius: 8px;
     z-index: 1000;
-    border: 1px solid #e2e8f0;
-    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border: 1px solid #30363d;
+    padding: 10px;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .menu-dropdown.show {
-    display: block;
+    display: flex;
 }
 
-.menu-dropdown a {
-    color: #334155;
-    padding: 12px 18px;
-    text-decoration: none;
+.menu-header {
+    color: #8b949e;
+    font-size: 0.85rem;
+    padding: 5px 10px 10px 10px;
+    border-bottom: 1px solid #21262C;
+    margin-bottom: 5px;
+}
+.menu-header strong {
+    color: #e6edf3;
+}
+
+.menu-item {
+    background-color: transparent;
+    border: none;
+    padding: 10px 12px;
+    color: #e6edf3;
     display: flex;
     align-items: center;
+    position: relative;
     gap: 12px;
-    transition: background 0.2s;
+    cursor: pointer;
+    border-radius: 6px;
+    text-decoration: none;
     font-size: 0.95rem;
+    transition: background-color 0.2s;
 }
 
-.menu-dropdown a:hover {
-    background-color: #f8fafc;
+.menu-item i {
+    width: 20px;
+    text-align: center;
+    color: #7D8590;
+    font-size: 1.1rem;
 }
 
-.menu-dropdown .logout {
-    color: #ef4444;
-    border-top: 1px solid #e2e8f0;
+.menu-item:not(:active):hover,
+.menu-item:focus {
+    background-color: #21262C;
 }
 
-.menu-dropdown .logout:hover {
-    background-color: #fef2f2;
+.menu-item:focus,
+.menu-item:active {
+    background-color: #1A1F24;
+    outline: none;
 }
 
-.menu-user-info {
-    padding: 12px 18px;
-    border-bottom: 1px solid #e2e8f0;
-    font-weight: 500;
-    color: #0f172a;
-    background-color: #fafbfc;
+.menu-item::before {
+    content: "";
+    position: absolute;
+    top: 10%;
+    left: -10px; 
+    width: 4px;
+    height: 80%;
+    background-color: #2F81F7;
+    border-radius: 0 5px 5px 0;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.menu-item:focus::before,
+.menu-item:active::before,
+.menu-item:hover::before {
+    opacity: 1;
+}
+
+.menu-dropdown:hover > :not(.menu-item:hover):not(.menu-header) {
+    transition: 300ms;
+    filter: blur(1px);
+    transform: scale(0.96, 0.96);
+    opacity: 0.7;
+}
+
+.menu-item.logout {
+    margin-top: 5px;
+    border-top: 1px solid #21262C;
+    border-radius: 0 0 6px 6px;
+}
+.menu-item.logout:hover {
+    background-color: rgba(248, 81, 73, 0.1); 
+}
+.menu-item.logout i {
+    color: #f85149;
+}
+.menu-item.logout:hover::before {
+    background-color: #f85149; 
+}
+
+/* =========================================
+   TOGGLE MODO OSCURO (Lógica Corregida)
+   ========================================= */
+.theme-toggle-container {
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    --light: #d8dbe0;
+    --dark: #28292c;
+    margin-right: 5px;
+    pointer-events: none; 
+}
+
+.switch-label {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--light); 
+    border-radius: 13px;
+    cursor: pointer;
+    border: 2px solid var(--dark);
+    overflow: hidden;
+}
+
+.checkbox {
+    position: absolute;
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 13px;
+    transition: 0.3s;
+    background-color: var(--light); 
+}
+
+.checkbox:checked ~ .slider {
+    background-color: var(--dark);
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--dark); 
+    box-shadow: none; 
+    transition: 0.3s;
+}
+
+.checkbox:checked ~ .slider::before {
+    transform: translateX(24px);
+    background-color: transparent; 
+    box-shadow: inset 6px -2px 0px 0px var(--light); 
+}
+.navbar-toggle {
+    margin-right: 15px;
+    /* Alineación vertical perfecta */
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 0.9rem;
 }
-
-.menu-user-info i {
-    font-size: 1.2rem;
-    color: #3b82f6;
-}
-

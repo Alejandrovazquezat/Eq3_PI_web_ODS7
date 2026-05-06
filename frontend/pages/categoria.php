@@ -6,7 +6,6 @@ require_once __DIR__ . '/../../config/Conexion.php';
 require_once __DIR__ . '/../../backend/controllers/CategoriesController.php';
 require_once __DIR__ . '/../../backend/controllers/PublicacionController.php';
 require_once __DIR__ . '/../../backend/models/Like.php';
-// Agregamos el controlador de comentarios
 require_once __DIR__ . '/../../backend/controllers/ComentarioController.php';
 
 // ==========================
@@ -15,7 +14,6 @@ require_once __DIR__ . '/../../backend/controllers/ComentarioController.php';
 $db = (new Conexion())->getConexion();
 $catController = new CategoriesController($db);
 $pubController = new PublicacionController($db);
-// Instanciamos el controlador de comentarios
 $comentarioController = new ComentarioController($db);
 
 // ==========================
@@ -73,7 +71,8 @@ if ($usuarioLogueado && !empty($publicaciones)) {
     <link rel="stylesheet" href="../css/categoria-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body style="background-color: #f1f5f9;">
+<!-- QUITA EL STYLE DEL BODY -->
+<body>
     <?php include 'navbar.php'; ?>
 
     <main class="publicaciones-container">
@@ -91,7 +90,7 @@ if ($usuarioLogueado && !empty($publicaciones)) {
             <div class="titulo-categoria">
                 <i class="fas fa-tag"></i> <?= htmlspecialchars($categoria['nombre']) ?>
                 <?php if (!empty($categoria['descripcion'])): ?>
-                    <p style="font-size: 1rem; color: #64748b; margin-top: 10px;"><?= htmlspecialchars($categoria['descripcion']) ?></p>
+                    <p style="font-size: 1rem; color: var(--texto-meta); margin-top: 10px; transition: color 0.3s;"><?= htmlspecialchars($categoria['descripcion']) ?></p>
                 <?php endif; ?>
             </div>
 
@@ -157,14 +156,14 @@ if ($usuarioLogueado && !empty($publicaciones)) {
                                 endforeach;
                             else: 
                             ?>
-                                <p style="font-size: 0.85rem; color: #94a3b8; text-align: center; margin-bottom: 10px;" class="no-comments-msg">Aún no hay comentarios. ¡Sé el primero en opinar!</p>
+                                <p style="font-size: 0.85rem; color: var(--texto-meta); text-align: center; margin-bottom: 10px;" class="no-comments-msg">Aún no hay comentarios. ¡Sé el primero en opinar!</p>
                             <?php endif; ?>
                         </div>
 
                         <!-- Input de Uiverse para comentar -->
                         <form class="comment-form" data-pubid="<?= $pub['id'] ?>">
                             <div class="form-control">
-                                <input class="input input-alt" placeholder="Escribe tu opinión sobre el ODS 7..." required="" type="text" name="comentario">
+                                <input class="input input-alt" placeholder="Escribe tu opinión..." required="" type="text" name="comentario">
                                 <span class="input-border input-border-alt"></span>
                             </div>
                             <button type="submit" style="display:none"></button>
@@ -179,7 +178,8 @@ if ($usuarioLogueado && !empty($publicaciones)) {
                     <h3>No hay publicaciones en esta categoría</h3>
                     <p>Sé el primero en compartir contenido sobre <?= htmlspecialchars($categoria['nombre']) ?></p>
                     <?php if ($usuarioLogueado): ?>
-                        <a href="../admin/crear_publicacion.php" style="display: inline-block; margin-top: 20px; background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none;">
+                        <!-- Cambié el estilo en línea oscuro para que use var(--color-primario) -->
+                        <a href="../admin/crear_publicacion.php" style="display: inline-block; margin-top: 20px; background-color: var(--color-primario); color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none; transition: background-color 0.3s;">
                             <i class="fas fa-plus"></i> Crear publicación
                         </a>
                     <?php endif; ?>

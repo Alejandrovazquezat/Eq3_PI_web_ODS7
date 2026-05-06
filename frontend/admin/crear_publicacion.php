@@ -102,9 +102,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="logo-name">RED-novable</div>
         </div>
         <div class="menu-groups">
-            <a href="dashboard.php" class="nav-link">📊 Dashboard</a>
+            <a href="dashboard.php" class="nav-link">📊 Dashboard general</a>
             <a href="publicaciones.php" class="nav-link">📝 Publicaciones</a>
+            <a href="revisar.php" class="nav-link">✅ Pendientes de revisión</a>
             <a href="usuarios.php" class="nav-link">👥 Usuarios</a>
+            <a href="comentarios.php" class="nav-link">💬 Comentarios</a>
             <a href="crear_publicacion.php" class="nav-link btn-special active">+ Nueva publicación</a>
         </div>
     </nav>

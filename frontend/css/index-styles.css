@@ -1,4 +1,24 @@
 /* ============================================ */
+/* VARIABLES LOCALES PARA INDEX (CLARO/OSCURO)  */
+/* ============================================ */
+:root {
+    --borde-tarjeta: #e2e8f0;
+    --fondo-etiqueta: #e2e8f0;
+    --texto-etiqueta: #1e3a8a;
+    --texto-secundario: #64748b;
+    --texto-resumen: #475569;
+    --color-enlace: #3b82f6;
+}
+
+body.dark-mode {
+    --borde-tarjeta: #30363d; /* El color exacto de las líneas divisoras en GitHub */
+    --fondo-etiqueta: rgba(31, 111, 235, 0.15); /* Fondo azul transparente para las categorías */
+    --texto-etiqueta: #58a6ff; /* Azul vibrante de los enlaces de GitHub */
+    --texto-secundario: #8b949e; /* Gris tenue */
+    --texto-resumen: #c9d1d9; /* Gris perla para que el texto principal se lea perfecto */
+    --color-enlace: #58a6ff; 
+}
+/* ============================================ */
 /* ESTILOS PARA INDEX.PHP */
 /* ============================================ */
 
@@ -18,13 +38,13 @@
 }
 
 .destacado-card {
-    background: white;
+    background-color: var(--blanco); /* Variable global de la navbar */
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s, border-color 0.3s;
     cursor: pointer;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--borde-tarjeta);
 }
 
 .destacado-card:hover {
@@ -55,35 +75,39 @@
 
 .destacado-categoria {
     display: inline-block;
-    background: #e2e8f0;
-    color: #1e3a8a;
+    background: var(--fondo-etiqueta);
+    color: var(--texto-etiqueta);
     font-size: 0.7rem;
     padding: 4px 10px;
     border-radius: 20px;
     margin-bottom: 12px;
     font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .destacado-titulo {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--texto-titulos); /* Variable global de la navbar */
     margin-bottom: 10px;
     line-height: 1.4;
+    transition: color 0.3s;
 }
 
 .destacado-fecha {
     font-size: 0.75rem;
-    color: #64748b;
+    color: var(--texto-secundario);
     margin-bottom: 12px;
+    transition: color 0.3s;
 }
 
 .destacado-resumen {
     font-size: 0.85rem;
-    color: #475569;
+    color: var(--texto-resumen);
     line-height: 1.5;
     max-height: 3.9em; /* 3 líneas * line-height 1.3 */
     overflow: hidden;
+    transition: color 0.3s;
 }
 
 /* Lista vertical infinita */
@@ -94,14 +118,14 @@
 .vertical-card {
     display: flex;
     gap: 25px;
-    background: white;
+    background-color: var(--blanco);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     margin-bottom: 30px;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s, border-color 0.3s;
     cursor: pointer;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--borde-tarjeta);
 }
 
 .vertical-card:hover {
@@ -133,39 +157,44 @@
 
 .vertical-categoria {
     display: inline-block;
-    background: #e2e8f0;
-    color: #1e3a8a;
+    background: var(--fondo-etiqueta);
+    color: var(--texto-etiqueta);
     font-size: 0.75rem;
     padding: 4px 12px;
     border-radius: 20px;
     margin-bottom: 12px;
     font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .vertical-titulo {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--texto-titulos);
     margin-bottom: 12px;
+    transition: color 0.3s;
 }
 
 .vertical-meta {
     font-size: 0.8rem;
-    color: #64748b;
+    color: var(--texto-secundario);
     margin-bottom: 15px;
+    transition: color 0.3s;
 }
 
 .vertical-resumen {
-    color: #475569;
+    color: var(--texto-resumen);
     line-height: 1.6;
     margin-bottom: 15px;
+    transition: color 0.3s;
 }
 
 .vertical-leer-mas {
-    color: #3b82f6;
+    color: var(--color-enlace);
     font-weight: 600;
     text-decoration: none;
     font-size: 0.9rem;
+    transition: color 0.3s;
 }
 
 .vertical-leer-mas:hover {
@@ -180,12 +209,13 @@
 }
 
 .separador span {
-    background: #f1f5f9;
+    background-color: var(--fondo-suave); /* Toma el color de fondo exacto para "camuflarse" */
     padding: 0 20px;
-    color: #64748b;
+    color: var(--texto-secundario);
     font-size: 0.9rem;
     position: relative;
     z-index: 1;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .separador::before {
@@ -195,8 +225,9 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: #e2e8f0;
+    background-color: var(--borde-tarjeta);
     z-index: 0;
+    transition: background-color 0.3s;
 }
 
 /* Responsive */
