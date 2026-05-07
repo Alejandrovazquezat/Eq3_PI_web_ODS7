@@ -68,10 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- FontAwesome y Hoja de Estilos Externa -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../css/styleRegistro.css">
+    <link rel="stylesheet" href="../css/mascota.css">
 </head>
 <body>
 
-<div class="main-container">
+    <div class="main-container">
     
     <!-- PANEL IZQUIERDO: PAISAJE ABSTRACTO -->
     <div class="left-panel">
@@ -138,24 +139,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 
-</div>
 
-<script>
-    function togglePass(id, el) {
-        const input = document.getElementById(id);
-        if (input.type === "password") {
-            input.type = "text";
-            el.classList.replace('fa-eye', 'fa-eye-slash');
-        } else {
-            input.type = "password";
-            el.classList.replace('fa-eye-slash', 'fa-eye');
+
+    <script>
+        function togglePass(id, el) {
+          const input = document.getElementById(id);
+          if (input.type === "password") {
+             input.type = "text";
+             el.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+               input.type = "password";
+               el.classList.replace('fa-eye-slash', 'fa-eye');
+           }
         }
-    }
 
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-    }
-</script>
-
+        if (localStorage.getItem('darkMode') === 'enabled') {
+           document.body.classList.add('dark-mode');
+        }
+    </script>
+    <?php include 'mascota.php'; ?>
 </body>
 </html>

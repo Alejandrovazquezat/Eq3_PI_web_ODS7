@@ -1,0 +1,100 @@
+    /* frontend/css/mascota.css */
+
+    #mascota-container {
+        position: fixed;
+        bottom: 40px; 
+        display: flex;
+        align-items: center; 
+        gap: 15px;
+        /* Un z-index de 10000 asegura que esté por encima de formularios y modales */
+        z-index: 10000; 
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        pointer-events: none;
+        /* Esto evita que filtros del login lo muevan de lugar */
+        left: 20px; 
+    }
+
+    #mascota-container.dragging {
+        /* Al arrastrar, desactivamos la transición para que siga al ratón al instante */
+        transition: none; 
+    }
+
+    .mascota-wrapper, #mascota-globo {
+        pointer-events: auto;
+    }
+
+    /* --- TRAYECTORIAS (Lados y Abajo) --- */
+    /* Usamos 'vw' para asegurar que salga por completo de cualquier tamaño de monitor */
+    .mascota-oculto.lado-izquierdo { transform: translateX(-150vw); }
+    .mascota-oculto.lado-derecho { transform: translateX(150vw); }
+    .mascota-oculto-v { transform: translateY(250px); } /* Se hunde hacia abajo */
+
+    .mascota-visible { transform: translate(0px, 0px); }
+
+    /* --- DIRECCIONES --- */
+    .lado-izquierdo { left: 20px; flex-direction: row; }
+    .lado-derecho { right: 20px; flex-direction: row-reverse; }
+    .lado-izquierdo #mascota-globo { border-radius: 16px 16px 16px 0px; }
+    .lado-derecho #mascota-globo { border-radius: 16px 16px 0px 16px; }
+
+    /* Globo Neubrutalista */
+    #mascota-globo {
+        background-color: var(--bg-color, #ffffff);
+        color: var(--text-color, #000000);
+        padding: 12px 18px;
+        border: 3px solid #000000;
+        box-shadow: 4px 4px 0px #000000;
+        max-width: 220px;
+        font-weight: bold;
+        font-size: 13px;
+        display: none;
+        position: relative;
+        top: -20px; 
+    }
+
+    .mascota-sombra {
+        width: 50px;
+        height: 8px;
+        background: rgba(0, 0, 0, 0.15);
+        border-radius: 50%;
+        filter: blur(3px);
+        margin-top: -5px;
+        animation: sombra-flotar 3s ease-in-out infinite;
+        transition: opacity 0.5s;
+    }
+
+    /* --- DISEÑO ECO-BOT --- */
+    #mascota-css {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        animation: flotar 3s ease-in-out infinite;
+        cursor: grab; /* Cursor de "agarrar" */
+        z-index: 2;
+    }
+
+    #mascota-css:active {
+        cursor: grabbing; /* Cursor de "agarrando" */
+    }
+
+    .eco-antena-bolita { width: 14px; height: 14px; background-color: #f1c40f; border: 3px solid #000; border-radius: 50%; margin-bottom: -3px; animation: brillar 1.5s infinite alternate; }
+    .eco-antena { width: 4px; height: 12px; background-color: #000; }
+    .eco-cabeza { width: 55px; height: 40px; background-color: #ffffff; border: 3px solid #000; border-radius: 12px; box-shadow: 4px 4px 0px #000; display: flex; justify-content: center; align-items: center; gap: 8px; z-index: 3; }
+    .eco-ojo { width: 10px; height: 14px; background-color: #000; border-radius: 50%; animation: parpadear 4s infinite; }
+    .eco-cuerpo-contenedor { width: 45px; height: 35px; position: relative; margin-top: -3px; z-index: 2; }
+    .eco-cuerpo { width: 100%; height: 100%; background-color: #2ecc71; border: 3px solid #000; border-radius: 8px; box-shadow: 4px 4px 0px #000; display: flex; justify-content: center; align-items: center; position: relative; z-index: 3; }
+    .eco-pantalla { color: #fff; font-weight: bold; font-size: 18px; text-shadow: 1px 1px 0px #000; }
+    .eco-brazo { width: 10px; height: 8px; background-color: #ffffff; border: 3px solid #000; border-radius: 4px; position: absolute; top: 12px; z-index: 1; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .eco-brazo.izq { left: -8px; transform-origin: right center; transform: rotate(-40deg); }
+    .eco-brazo.der { right: -12px; transform-origin: left center; transform: rotate(40deg); }
+    #mascota-css.hablando .eco-brazo.der { transform: rotate(-35deg); width: 24px; right: -18px; }
+    .eco-llanta { width: 32px; height: 10px; background-color: #555; border: 3px solid #000; border-radius: 6px; margin-top: -2px; box-shadow: 2px 2px 0px #000; z-index: 1; }
+
+    @keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes sombra-flotar { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(0.7); opacity: 0.2; } }
+    @keyframes parpadear { 0%, 95%, 98%, 100% { transform: scaleY(1); } 96%, 99% { transform: scaleY(0.1); } }
+    @keyframes brillar { from { box-shadow: 0 0 2px #f1c40f, 2px 2px 0px #000; } to { box-shadow: 0 0 10px #f1c40f, 2px 2px 0px #000; } }
+    .shake-anim { animation: shake 0.4s both; }
+    @keyframes shake { 10%, 90% { transform: translate3d(-2px, 0, 0); } 30%, 70% { transform: translate3d(-4px, 0, 0); } 50% { transform: translate3d(4px, 0, 0); } }
+
+    #mascota-css.espejo { transform: scaleX(-1); }

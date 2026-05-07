@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         })();
     </script>
-
+    <link rel="stylesheet" href="../css/mascota.css">
     <!-- FontAwesome para los iconos (Incluido el de Google) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -230,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
 
-<div class="main-container">
+    <div class="main-container">
     <div class="left-panel">
         <div class="login-card">
             <img src="../image/LogotipoSinfondo.png" class="mini-logo" alt="Logo">
@@ -284,25 +284,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>Impulsando el cambio hacia energías limpias.</p>
         </div>
     </div>
-</div>
+    </div>
 
-<script>
-    function togglePass(id, el) {
-        const input = document.getElementById(id);
-        if (input.type === "password") {
-            input.type = "text";
-            el.classList.replace('fa-eye', 'fa-eye-slash');
-        } else {
-            input.type = "password";
-            el.classList.replace('fa-eye-slash', 'fa-eye');
+    <script>
+        function togglePass(id, el) {
+            const input = document.getElementById(id);
+           if (input.type === "password") {
+              input.type = "text";
+              el.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+               input.type = "password";
+               el.classList.replace('fa-eye-slash', 'fa-eye');
+            }
         }
-    }
 
-    // Aplicar clase al body si el modo oscuro está activo
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-    }
-</script>
-
+        // Aplicar clase al body si el modo oscuro está activo
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    
+    <?php include 'mascota.php'; ?>
+    
 </body>
 </html>

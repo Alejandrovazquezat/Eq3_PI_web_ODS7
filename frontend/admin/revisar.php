@@ -334,6 +334,5 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
             }
         });
     </script>
-
 </body>
 </html>

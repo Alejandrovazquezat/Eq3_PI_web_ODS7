@@ -12,4 +12,5 @@
     <div class="footer-bottom">
         <p>&copy; <?php echo date("Y"); ?> red-novable.com, Todos los derechos reservados.</p>
     </div>
+    <?php include 'mascota.php'; ?>
 </footer>
