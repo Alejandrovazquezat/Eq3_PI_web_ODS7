@@ -10,6 +10,7 @@ $rol = $_SESSION['rol_id'] ?? 0;
     </div>
     <div class="menu-groups">
         
+        <a href="../pages/index.php" class="nav-link">🏠 Volver al inicio</a>
         <?php if ($rol == 1): /* == ADMINISTRADOR == */ ?>
             <a href="dashboard.php" class="nav-link <?= $current_page == 'dashboard.php' ? 'active' : '' ?>">📊 Dashboard general</a>
             <a href="gestionar_contenido.php" class="nav-link <?= $current_page == 'gestionar_contenido.php' ? 'active' : '' ?>">📝 Gestor de contenidos</a>

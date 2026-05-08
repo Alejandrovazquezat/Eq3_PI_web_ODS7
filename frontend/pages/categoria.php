@@ -66,6 +66,7 @@ if ($usuarioLogueado && !empty($publicaciones)) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($categoria) ? htmlspecialchars($categoria['nombre']) : 'Categoría' ?> - Red-novable</title>
     <link rel="stylesheet" href="../css/navbar-style.css">
     <link rel="stylesheet" href="../css/categoria-styles.css">

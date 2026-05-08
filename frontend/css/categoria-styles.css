@@ -375,3 +375,28 @@ body.dark-mode {
     background: var(--borde-tarjeta);
     border-radius: 10px;
 }
+
+/* --- AJUSTES PARA MÓVIL (AGREGAR AL FINAL) --- */
+@media (max-width: 768px) {
+    .publicaciones-container {
+        padding: 20px 10px;
+    }
+    .publicacion-card {
+        padding: 15px; /* Tarjeta un poco más compacta */
+    }
+    .titulo-categoria {
+        font-size: 1.5rem;
+        padding: 20px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .post-actions {
+        flex-direction: column; /* Apila el botón de like y comentar uno sobre otro */
+        align-items: stretch;
+        gap: 10px;
+    }
+    .like-btn, .comment-trigger-btn {
+        width: 100%; /* Botones de ancho completo para fácil alcance con el dedo */
+        justify-content: center;
+    }
+}

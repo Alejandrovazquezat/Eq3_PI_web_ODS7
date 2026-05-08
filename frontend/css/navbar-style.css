@@ -366,3 +366,15 @@ form input:focus, form textarea:focus {
     display: flex;
     align-items: center;
 }
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 15px;
+    }
+    .nav-links {
+        margin-top: 15px;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

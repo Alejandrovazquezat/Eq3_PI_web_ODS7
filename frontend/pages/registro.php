@@ -2,9 +2,12 @@
 // Rutas seguras para el hosting
 require_once __DIR__ . '/../../config/Conexion.php';
 require_once __DIR__ . '/../../backend/controllers/AuthController.php';
+require_once __DIR__ . '/../../config/google_config.php';
 
 $db = (new Conexion())->getConexion();
 $auth = new AuthController($db);
+// Generar la URL segura de Google
+$login_url_google = $client->createAuthUrl();
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -129,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="divider"><span>O regístrate con</span></div>
 
             <!-- BOTÓN DE GOOGLE -->
-            <a href="google_auth.php" class="btn-google">
+            <a href="<?= filter_var($login_url_google, FILTER_SANITIZE_URL) ?>" class="btn-google">
                 <i class="fab fa-google"></i> Google
             </a>
 

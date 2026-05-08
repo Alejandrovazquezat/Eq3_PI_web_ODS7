@@ -170,7 +170,7 @@ body.dark-mode .hero-text-box p { color: #cbd5e1; }
 .publicaciones-grid {
     max-width: 1200px; 
     margin: 0 auto; 
-    padding: 2px 20px 60px 20px;
+    padding: 35px 20px 60px 20px;
 }
 .destacados-grid {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin-bottom: 50px;
@@ -244,4 +244,38 @@ body.dark-mode .hero-text-box p { color: #cbd5e1; }
     .destacados-grid { grid-template-columns: 1fr; }
     .vertical-card-inner { flex-direction: column; }
     .vertical-imagen { width: 100%; height: 200px; }
+}
+/* Para pantallas menores a 768px (celulares y tablets) */
+@media (max-width: 768px) {
+    .destacados-grid, .publicaciones-grid {
+        grid-template-columns: 1fr !important; /* Fuerza una sola columna */
+        gap: 15px;
+    }
+
+    .hero-text-box h1 {
+        font-size: 2rem; /* Reduce el tamaño del título para que no se corte */
+    }
+}
+/* --- AJUSTES PARA MÓVIL --- */
+@media (max-width: 768px) {
+    /* Hacemos que la cuadrícula de destacados sea de 1 sola columna */
+    .destacados-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+    }
+
+    /* Las tarjetas verticales ahora se apilan hacia abajo */
+    .vertical-card-inner {
+        flex-direction: column !important;
+    }
+
+    /* La imagen ocupa todo el ancho en lugar de 280px */
+    .vertical-imagen {
+        width: 100% !important;
+        height: 200px;
+    }
+
+    .hero-text-box h1 {
+        font-size: 2.5rem; /* Un poco más pequeño para que no se corte */
+    }
 }

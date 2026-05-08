@@ -145,3 +145,28 @@
 .btn-modal-confirm:hover { 
     background: #dc2626; 
 }
+
+/* --- AJUSTES PARA MÓVIL (AGREGAR AL FINAL) --- */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px;
+    }
+    .admin-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    .modal-box {
+        width: 95%;
+        padding: 20px;
+    }
+    .modal-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .modal-buttons button {
+        width: 100%;
+    }
+}

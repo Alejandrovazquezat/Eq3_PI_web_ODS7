@@ -138,3 +138,14 @@
 }
 
 @media (max-width: 768px) { .footer-container { flex-direction: column; text-align: center; } .footer-info p { margin: 0 auto; } }
+
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+    .footer-info p {
+        max-width: 100%;
+    }
+}

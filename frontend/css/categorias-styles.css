@@ -227,3 +227,24 @@ body.dark-mode {
     .hero-categorias h1 { font-size: 2.5rem; }
     .hero-categorias { padding: 50px 5%; }
 }
+
+/* --- AJUSTES PARA MÓVIL (AGREGAR AL FINAL) --- */
+@media (max-width: 1024px) {
+    .categorias-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .categorias-grid { 
+        grid-template-columns: 1fr; /* 1 sola columna en celular */
+        gap: 20px;
+    }
+    .hero-categorias { 
+        padding: 50px 5%; 
+    }
+    .hero-categorias h1 { 
+        font-size: 2.2rem; /* Letra un poco más pequeña para que no se corte */
+    }
+    .categoria-card-inner {
+        padding: 25px 15px; /* Menos relleno para que respire en pantallas chicas */
+    }
+}

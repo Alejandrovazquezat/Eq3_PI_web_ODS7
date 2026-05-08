@@ -220,37 +220,43 @@ document.addEventListener("DOMContentLoaded", () => {
         hablar(tip, 6000, false, debeMoverse ? "cambiar" : "nada");
     });
 
-  // --- DRAG & DROP ---
-    franxxImg.addEventListener("mousedown", (e) => {
+    // --- DRAG & DROP (Ratón y Táctil) ---
+    const iniciarArrastre = (x, y) => {
         isDragging = true;
         resetearInactividad();
         container.classList.add("dragging");
-        startX = e.clientX - currentX;
-        startY = e.clientY - currentY;
-    });
+        startX = x - currentX;
+        startY = y - currentY;
+    };
 
-    document.addEventListener("mousemove", (e) => {
+    const moverArrastre = (e, x, y) => {
         if (!isDragging) return;
-        e.preventDefault(); 
-        currentX = e.clientX - startX;
-        currentY = e.clientY - startY;
+        e.preventDefault(); // Evita que la pantalla haga scroll al mover la mascota
+        currentX = x - startX;
+        currentY = y - startY;
         container.style.transform = `translate(${currentX}px, ${currentY}px)`;
-    });
+    };
 
-    document.addEventListener("mouseup", () => {
+    const soltarArrastre = () => {
         if (!isDragging) return;
         isDragging = false;
         resetearInactividad(); 
         container.classList.remove("dragging");
         
-        container.style.transition = "transform 0.4s ease-out"; // Le damos un efecto de "vuelo" suave
-        container.style.transform = "translate(0px, 0px)"; // Lo mandamos a su coordenada original
-        currentX = 0;
-        currentY = 0;
+        container.style.transition = "transform 0.4s ease-out";
+        container.style.transform = "translate(0px, 0px)";
+        currentX = 0; currentY = 0;
+        
+        setTimeout(() => { container.style.transition = "none"; }, 400);
+    };
 
-        // Limpiamos la transición después de que llegue para no afectar si lo vuelves a arrastrar
-        setTimeout(() => {
-            if (!isDragging) container.style.transition = "";
-        }, 400);
-    });
+    // Eventos para Computadora (Ratón)
+    franxxImg.addEventListener("mousedown", (e) => iniciarArrastre(e.clientX, e.clientY));
+    document.addEventListener("mousemove", (e) => moverArrastre(e, e.clientX, e.clientY));
+    document.addEventListener("mouseup", soltarArrastre);
+
+    // Eventos para Celular (Táctil)
+    franxxImg.addEventListener("touchstart", (e) => iniciarArrastre(e.touches[0].clientX, e.touches[0].clientY), {passive: false});
+    document.addEventListener("touchmove", (e) => moverArrastre(e, e.touches[0].clientX, e.touches[0].clientY), {passive: false});
+    document.addEventListener("touchend", soltarArrastre);
 });

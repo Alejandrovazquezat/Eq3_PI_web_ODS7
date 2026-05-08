@@ -1,0 +1,17 @@
+{
+    "name": "diego/eq3_pi_web_ods7",
+    "authors": [
+        {
+            "name": "Alejandrovazquezat",
+            "email": "diegoataz39@gmail.com"
+        }
+    ],
+    "require": {
+        "google/apiclient": "^2.18"
+    },
+    "config": {
+        "audit": {
+            "block-insecure": false
+        }
+    }
+}

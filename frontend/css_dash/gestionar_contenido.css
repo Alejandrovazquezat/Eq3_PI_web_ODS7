@@ -77,3 +77,29 @@
 .btn-modal-cancel:hover { background: #e2e8f0; color: #0f172a; }
 .btn-modal-confirm { background: #ef4444; color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-size: 0.95rem; }
 .btn-modal-confirm:hover { background: #dc2626; }
+
+/* --- AJUSTES PARA MÓVIL (AGREGAR AL FINAL) --- */
+@media (max-width: 768px) {
+    .table-header {
+        padding: 15px;
+    }
+    .table-responsive {
+        overflow-x: auto;
+        display: block;
+        width: 100%;
+    }
+    .publicaciones-table {
+        min-width: 700px; /* Ancho mínimo para mantener tu diseño intacto */
+    }
+    .modal-box {
+        padding: 20px;
+        width: 95%;
+    }
+    .modal-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .btn-modal-cancel, .btn-modal-confirm {
+        width: 100%;
+    }
+}

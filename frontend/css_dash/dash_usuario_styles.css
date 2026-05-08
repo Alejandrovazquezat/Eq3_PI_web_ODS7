@@ -76,3 +76,32 @@
 
 .btn-secondary { background: #f1f5f9; color: #475569; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; }
 .btn-danger { background: #ef4444; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; }
+
+/* --- AJUSTES PARA MÓVIL (AGREGAR AL FINAL) --- */
+@media (max-width: 768px) {
+    .filtro-rol {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+        gap: 15px;
+    }
+    .filtro-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .filtro-form button, .filtro-form select {
+        width: 100%;
+    }
+    .card-table {
+        overflow-x: auto; /* Scroll horizontal mágico para tablas */
+        display: block;
+        width: 100%;
+    }
+    .modern-table {
+        min-width: 600px; /* Evita que las columnas se aplasten */
+    }
+    .modal-card {
+        padding: 25px;
+        width: 95%;
+    }
+}

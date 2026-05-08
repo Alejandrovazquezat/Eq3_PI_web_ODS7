@@ -120,3 +120,68 @@ body.dark-mode .filtro-rol { background: var(--white); border-color: var(--borde
 body.dark-mode .filtro-label { color: var(--text-dark); }
 body.dark-mode .filtro-form select { background: var(--bg-main); color: var(--text-dark); border-color: var(--border); }
 body.dark-mode .empty-msg { color: var(--text-light); }
+
+/* --- AJUSTES PARA MÓVIL (NUEVO NAVBAR INFERIOR) --- */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+
+    /* 1. Convertimos el Sidebar en una barra inferior pegada a la pantalla */
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        padding: 10px;
+        border-right: none;
+        border-top: 1px solid var(--border);
+        z-index: 1000;
+        flex-direction: row;
+        align-items: center;
+        box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+    }
+
+    /* 2. Ocultamos el logo y la mascota SOLO en el celular para que no estorben */
+    .logo-box, .franxx-sidebar-container { 
+        display: none !important; 
+    }
+
+    /* 3. Acomodamos los enlaces en fila con scroll horizontal */
+    .menu-groups {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        gap: 10px;
+    }
+
+    /* Ocultar barra de scroll para que se vea limpio en el iPhone */
+    .menu-groups::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 4. Estilo de los botones tipo "Píldora" */
+    .nav-link {
+        flex: 0 0 auto; /* Evita que los botones se aplasten */
+        margin-bottom: 0;
+        padding: 10px 18px;
+        font-size: 0.9rem;
+        border-radius: 20px;
+    }
+
+    /* 5. Ajustamos el contenedor principal para que el menú no tape el contenido */
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px 15px 90px 15px; /* 90px de margen inferior para que respire */
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}

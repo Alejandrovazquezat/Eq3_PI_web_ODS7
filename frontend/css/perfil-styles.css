@@ -343,3 +343,74 @@ body.dark-mode {
     box-shadow: 1px 1px 0 var(--sombra-neubrutal-oscura);
     transform: translate(2px, 2px);
 }
+
+/* --- AJUSTES PARA MÓVIL (REEMPLAZA EL ANTERIOR) --- */
+@media (max-width: 768px) {
+    /* 1. Candado maestro: nada se sale de los lados */
+    body, html {
+        overflow-x: hidden;
+    }
+
+    .perfil-container {
+        padding: 0 15px; /* Menos espacio a los lados */
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* 2. Reducimos un poco la sombra para que no rompa el borde del cel */
+    .perfil-header {
+        box-shadow: 4px 4px 0px var(--texto-titulos);
+    }
+
+    .perfil-info-wrapper {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: -60px;
+        padding: 15px;
+    }
+
+    /* 3. Asegura que si el correo o nombre son largos, bajen de renglón */
+    .user-details {
+        margin-left: 0;
+        margin-top: 15px;
+        width: 100%;
+        word-wrap: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    .foto-perfil, .foto-placeholder {
+        width: 120px;
+        height: 120px;
+        font-size: 4rem;
+        box-shadow: 3px 3px 0px var(--texto-titulos); /* Sombra más sutil */
+        border-width: 3px;
+    }
+
+    /* 4. Permite que las pestañas se acomoden libremente */
+    .profile-nav {
+        flex-wrap: wrap;
+    }
+    
+    .tab-btn {
+        padding: 12px 5px;
+        font-size: 0.85rem;
+        flex: 1 1 33%; /* Ajusta su ancho para que no se aprieten */
+    }
+
+    .comentario-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn-delete-com {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .modal-box {
+        width: 90%;
+        padding: 20px;
+    }
+}
