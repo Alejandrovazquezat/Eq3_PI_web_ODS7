@@ -11,9 +11,9 @@ class LikeController {
         $this->db = $db;
     }
     
-    // ==========================
+
     // Dar like a una publicación
-    // ==========================
+
     public function darLike($usuario_id, $publicacion_id) {
         
         // Verificar permisos (solo usuarios registrados pueden dar like)
@@ -45,9 +45,9 @@ class LikeController {
         }
     }
     
-    // ==========================
+
     // Quitar like
-    // ==========================
+
     public function quitarLike($usuario_id, $publicacion_id) {
         
         $like = new Like($this->db);
@@ -69,10 +69,9 @@ class LikeController {
             ];
         }
     }
-    
-    // ==========================
+
     // Verificar si el usuario ya dio like
-    // ==========================
+
     public function yaDioLike($usuario_id, $publicacion_id) {
         $like = new Like($this->db);
         $like->usuario_id = $usuario_id;
@@ -81,17 +80,17 @@ class LikeController {
         return $like->yaDioLike();
     }
     
-    // ==========================
+
     // Obtener total de likes de una publicación
-    // ==========================
+
     public function totalLikes($publicacion_id) {
         $like = new Like($this->db);
         return $like->contarLikes($publicacion_id);
     }
     
-    // ==========================
+
     // Obtener usuarios que dieron like
-    // ==========================
+
     public function obtenerUsuariosLike($publicacion_id, $admin_id = null) {
         
         // Solo admin/editor pueden ver quién dio like
@@ -113,10 +112,9 @@ class LikeController {
             'usuarios' => $result->fetchAll(PDO::FETCH_ASSOC)
         ];
     }
-    
-    // ==========================
+
     // Toggle like (si ya dio like, lo quita; si no, lo pone)
-    // ==========================
+
     public function toggleLike($usuario_id, $publicacion_id) {
         $like = new Like($this->db);
         $like->usuario_id = $usuario_id;

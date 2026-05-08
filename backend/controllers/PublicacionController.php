@@ -178,9 +178,19 @@ class PublicacionController {
         return $publicacion->obtenerTodas();
     }
 
-    public function obtenerPorCategoria($categoria_id){
-        $publicacion = new Publicacion($this->db);
-        return $publicacion->obtenerPorCategoria($categoria_id);
+    public function obtenerPorCategoria($categoria_id) {
+    
+
+      $query = "SELECT p.*, u.nombre AS autor_nombre 
+                FROM publicaciones p 
+                 LEFT JOIN usuarios u ON p.usuario_id = u.id 
+                 WHERE p.categoria_id = :cat_id AND p.estado = 'publicado'
+                 ORDER BY p.fecha_creacion DESC";
+              
+       $stmt = $this->db->prepare($query);
+       $stmt->bindParam(':cat_id', $categoria_id);
+       $stmt->execute();
+       return $stmt;
     }
 
     public function obtenerPorId($id, $usuario_id = null){

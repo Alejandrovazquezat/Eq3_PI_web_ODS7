@@ -11,25 +11,24 @@ class CategoriesController {
         $this->db = $db;
     }
     
-    // ==========================
+
     // Obtener todas las categorías (público)
-    // ==========================
+
     public function obtenerTodas() {
         $categorias = new Categories($this->db);
         return $categorias->obtenerTodas();
     }
-    
-    // ==========================
+
     // Obtener categoría por ID (público)
-    // ==========================
+
     public function obtenerPorId($id) {
         $categorias = new Categories($this->db);
         return $categorias->obtenerPorId($id);
     }
     
-    // ==========================
-    // Crear categoría (solo admin)
-    // ==========================
+ 
+    // Crear categoría
+
     public function crear($nombre, $descripcion, $admin_id) {
         
         $auth = new AuthController($this->db);
@@ -63,10 +62,9 @@ class CategoriesController {
             ];
         }
     }
-    
-    // ==========================
-    // Actualizar categoría (solo admin)
-    // ==========================
+
+        // Actualizar categoría
+
     public function actualizar($id, $nombre, $descripcion, $admin_id) {
         
         $auth = new AuthController($this->db);
@@ -95,9 +93,9 @@ class CategoriesController {
         }
     }
     
-    // ==========================
-    // Eliminar categoría (solo admin)
-    // ==========================
+
+    // Eliminar categoría
+
     public function eliminar($id, $admin_id) {
         
         $auth = new AuthController($this->db);
@@ -138,9 +136,9 @@ class CategoriesController {
         }
     }
     
-    // ==========================
+
     // Obtener categorías con conteo de publicaciones
-    // ==========================
+
     public function obtenerConConteo() {
         $query = "SELECT c.*, COUNT(p.id) as total_publicaciones 
                   FROM categorias c

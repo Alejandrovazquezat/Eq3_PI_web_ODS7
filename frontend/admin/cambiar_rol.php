@@ -11,7 +11,7 @@ if (!isset($_SESSION['logueado']) || $_SESSION['logueado'] !== true || $_SESSION
 $usuario_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $nuevo_rol = isset($_GET['rol']) ? intval($_GET['rol']) : 0;
 
-// Proteger al Alejandro Admin Supremo (ID 1)
+// Proteger al Alejandro (ID 1)
 if ($usuario_id == 1) {
     $_SESSION['mensaje_error'] = "¡No puedes modificar a Alejandro Admin Supremo!";
     header("Location: usuarios.php");

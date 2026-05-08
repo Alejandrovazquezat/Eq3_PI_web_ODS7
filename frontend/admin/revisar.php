@@ -26,14 +26,26 @@ if (isset($_GET['aprobar'])) {
 // ==========================================
 if (isset($_GET['rechazar'])) {
     $id_rechazar = intval($_GET['rechazar']);
-    $stmt = $db->prepare("DELETE FROM publicaciones WHERE id = ?");
-    $stmt->execute([$id_rechazar]);
-    header("Location: revisar.php?msg=rechazado");
-    exit;
+    
+    try {
+        $db->beginTransaction();
+        $stmt_likes = $db->prepare("DELETE FROM likes WHERE publicacion_id = ?");
+        $stmt_likes->execute([$id_rechazar]);
+        $stmt_comentarios = $db->prepare("DELETE FROM comentarios WHERE publicacion_id = ?");
+        $stmt_comentarios->execute([$id_rechazar]);
+        $stmt_pub = $db->prepare("DELETE FROM publicaciones WHERE id = ?");
+        $stmt_pub->execute([$id_rechazar]);
+        $db->commit();
+        header("Location: revisar.php?msg=rechazado");
+        exit;
+    } catch (Exception $e) {
+        $db->rollBack();
+        die("Error crítico: " . $e->getMessage());
+    }
 }
 
 // ==========================================
-// LÓGICA PARA EDITAR PUBLICACIÓN (NUEVA)
+// LÓGICA PARA EDITAR PUBLICACIÓN
 // ==========================================
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['accion'] == 'editar') {
     $id_editar = intval($_POST['pub_id']);
@@ -48,9 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['
     exit;
 }
 
-// ==========================================
-// OBTENER CATEGORÍAS (Para el select del modal de edición)
-// ==========================================
 $categorias = $db->query("SELECT * FROM categorias ORDER BY nombre ASC")->fetchAll(PDO::FETCH_ASSOC);
 
 // ==========================================
@@ -74,7 +83,6 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revisar Publicaciones - Red-novable</title>
-    
     <link rel="stylesheet" href="../css_dash/style.css"> 
     <link rel="stylesheet" href="../css_dash/revisar_styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -91,30 +99,17 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 
             <?php if(isset($_GET['msg'])): ?>
                 <?php if($_GET['msg'] == 'aprobado'): ?>
-                    <div style="background: #dcfce7; color: #166534; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <i class="fas fa-check-circle"></i> La publicación ha sido aprobada y ya es visible en la plataforma.
-                    </div>
+                    <div style="background: #dcfce7; color: #166534; padding: 15px; border-radius: 8px; margin-bottom: 20px;"><i class="fas fa-check-circle"></i> Aprobada.</div>
                 <?php elseif($_GET['msg'] == 'rechazado'): ?>
-                    <div style="background: #fee2e2; color: #ef4444; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <i class="fas fa-trash-alt"></i> La publicación ha sido rechazada y eliminada.
-                    </div>
+                    <div style="background: #fee2e2; color: #ef4444; padding: 15px; border-radius: 8px; margin-bottom: 20px;"><i class="fas fa-trash-alt"></i> Eliminada.</div>
                 <?php elseif($_GET['msg'] == 'editado'): ?>
-                    <div style="background: #dbeafe; color: #1e40af; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <i class="fas fa-edit"></i> La publicación ha sido actualizada correctamente. Sigue en estado "pendiente".
-                    </div>
+                    <div style="background: #dbeafe; color: #1e40af; padding: 15px; border-radius: 8px; margin-bottom: 20px;"><i class="fas fa-edit"></i> Actualizada correctamente.</div>
                 <?php endif; ?>
             <?php endif; ?>
 
             <table class="admin-table">
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Título</th>
-                        <th>Autor</th>
-                        <th>Categoría</th>
-                        <th>Fecha de envío</th>
-                        <th>Acciones</th>
-                    </tr>
+                    <tr><th>ID</th><th>Título</th><th>Autor</th><th>Categoría</th><th>Fecha</th><th>Acciones</th></tr>
                 </thead>
                 <tbody>
                     <?php if(count($pendientes) > 0): ?>
@@ -122,26 +117,15 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
                             <tr>
                                 <td><?= $p['id'] ?></td>
                                 <td><strong><?= htmlspecialchars($p['titulo']) ?></strong></td>
-                                <td><i class="fas fa-user-edit" style="color: #94a3b8;"></i> <?= htmlspecialchars($p['autor_nombre'] ?? 'Desconocido') ?></td>
+                                <td><?= htmlspecialchars($p['autor_nombre'] ?? 'Desconocido') ?></td>
                                 <td><span class="cat-tag"><?= htmlspecialchars($p['categoria_nombre'] ?? 'Sin categoría') ?></span></td>
-                                <td style="color: #64748b;"><?= date('d/m/Y H:i', strtotime($p['fecha_creacion'])) ?></td>
+                                <td><?= date('d/m/Y H:i', strtotime($p['fecha_creacion'])) ?></td>
                                 <td>
                                     <div class="actions-group">
-                                        <button class="btn-info" onclick="abrirModalPreview(<?= $p['id'] ?>)" title="Vista Previa">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-
-                                        <button class="btn-warning" onclick="abrirModalEditar(<?= $p['id'] ?>)" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-
-                                        <button class="btn-success" onclick="abrirModalAccion('aprobar', <?= $p['id'] ?>, '<?= htmlspecialchars($p['titulo'], ENT_QUOTES) ?>')" title="Aprobar">
-                                            <i class="fas fa-check"></i>
-                                        </button>
-                                        
-                                        <button class="btn-danger" onclick="abrirModalAccion('rechazar', <?= $p['id'] ?>, '<?= htmlspecialchars($p['titulo'], ENT_QUOTES) ?>')" title="Rechazar">
-                                            <i class="fas fa-times"></i>
-                                        </button>
+                                        <button class="btn-info" onclick="abrirModalPreview(<?= $p['id'] ?>)"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-warning" onclick="abrirModalEditar(<?= $p['id'] ?>)"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-success" onclick="abrirModalAccion('aprobar', <?= $p['id'] ?>, '<?= htmlspecialchars($p['titulo'], ENT_QUOTES) ?>')"><i class="fas fa-check"></i></button>
+                                        <button class="btn-danger" onclick="abrirModalAccion('rechazar', <?= $p['id'] ?>, '<?= htmlspecialchars($p['titulo'], ENT_QUOTES) ?>')"><i class="fas fa-times"></i></button>
                                     </div>
 
                                     <div id="data-titulo-<?= $p['id'] ?>" style="display:none;"><?= htmlspecialchars($p['titulo']) ?></div>
@@ -151,18 +135,12 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
                                     <div id="data-fecha-<?= $p['id'] ?>" style="display:none;"><?= date('d/m/Y H:i', strtotime($p['fecha_creacion'])) ?></div>
                                     <div id="data-contenido-html-<?= $p['id'] ?>" style="display:none;"><?= nl2br(htmlspecialchars($p['contenido'])) ?></div>
                                     <div id="data-contenido-raw-<?= $p['id'] ?>" style="display:none;"><?= htmlspecialchars($p['contenido']) ?></div>
-                                    <div id="data-imagen-<?= $p['id'] ?>" style="display:none;"><?= $p['imagen'] ? 'data:image/jpeg;base64,' . base64_encode($p['imagen']) : '' ?></div>
+                                    <div id="data-imagen-<?= $p['id'] ?>" style="display:none;"><?= htmlspecialchars($p['imagen']) ?></div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <tr>
-                            <td colspan="6" style="text-align: center; padding: 40px; color: #64748b;">
-                                <i class="fas fa-glass-cheers" style="font-size: 2.5rem; margin-bottom: 15px; display: block; color: #10b981;"></i>
-                                <h3 style="margin: 0; color: #1e293b;">¡Todo al día!</h3>
-                                <p style="margin-top: 5px;">No hay publicaciones pendientes de revisión en este momento.</p>
-                            </td>
-                        </tr>
+                        <tr><td colspan="6" style="text-align:center; padding:40px;">No hay pendientes.</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -171,167 +149,92 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 
     <div id="modal-preview" class="modal-overlay">
         <div class="modal-box preview-box">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                <h2 class="modal-title" id="preview-titulo" style="margin: 0;">Título</h2>
-                <button onclick="cerrarModal('modal-preview')" style="background:none; border:none; font-size: 1.8rem; cursor:pointer; color: #94a3b8; line-height: 1;">&times;</button>
-            </div>
-            
+            <h2 class="modal-title" id="preview-titulo"></h2>
             <div class="preview-meta">
-                <i class="fas fa-user-edit"></i> <strong id="preview-autor"></strong> &nbsp;|&nbsp;
-                <i class="fas fa-tag"></i> <span id="preview-cat"></span> &nbsp;|&nbsp;
-                <i class="fas fa-calendar"></i> <span id="preview-fecha"></span>
+                <strong id="preview-autor"></strong> | <span id="preview-cat"></span> | <span id="preview-fecha"></span>
             </div>
-
             <div class="preview-content-scroll">
-                <img id="preview-imagen" src="" alt="Imagen adjunta" style="width: 100%; border-radius: 8px; margin-bottom: 15px; display: none; object-fit: contain; max-height: 300px; background: #f8fafc;">
+                <img id="preview-imagen" src="" alt="Imagen" style="width:100%; border-radius:8px; margin-bottom:15px; display:none; max-height:400px; object-fit:contain;">
                 <div id="preview-contenido"></div>
             </div>
-            
-            <div class="modal-buttons" style="margin-top: 25px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-                <button class="btn-modal-cancel" onclick="cerrarModal('modal-preview')">Cerrar Vista Previa</button>
-            </div>
+            <div class="modal-buttons"><button class="btn-modal-cancel" onclick="cerrarModal('modal-preview')">Cerrar</button></div>
         </div>
     </div>
 
     <div id="modal-editar" class="modal-overlay">
         <div class="modal-box preview-box">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 class="modal-title" style="margin: 0; color: #f59e0b;"><i class="fas fa-edit"></i> Editar Publicación</h2>
-                <button onclick="cerrarModal('modal-editar')" style="background:none; border:none; font-size: 1.8rem; cursor:pointer; color: #94a3b8; line-height: 1;">&times;</button>
-            </div>
-
+            <h2 class="modal-title">Editar Publicación</h2>
             <form action="revisar.php" method="POST">
                 <input type="hidden" name="accion" value="editar">
                 <input type="hidden" name="pub_id" id="edit-id">
-
-                <div class="form-group">
-                    <label>Título:</label>
-                    <input type="text" name="titulo" id="edit-titulo" class="form-control-modal" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Categoría:</label>
-                    <select name="categoria" id="edit-cat" class="form-control-modal" required>
-                        <?php foreach($categorias as $cat): ?>
-                            <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['nombre']) ?></option>
-                        <?php endforeach; ?>
+                <div class="form-group"><label>Título:</label><input type="text" name="titulo" id="edit-titulo" class="form-control-modal" required></div>
+                <div class="form-group"><label>Categoría:</label>
+                    <select name="categoria" id="edit-cat" class="form-control-modal">
+                        <?php foreach($categorias as $cat): ?><option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['nombre']) ?></option><?php endforeach; ?>
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label>Contenido:</label>
-                    <textarea name="contenido" id="edit-contenido" class="form-control-modal" required></textarea>
-                </div>
-
-                <div class="modal-buttons" style="margin-top: 25px;">
-                    <button type="button" class="btn-modal-cancel" onclick="cerrarModal('modal-editar')">Cancelar</button>
-                    <button type="submit" class="btn-modal-confirm" style="background: #f59e0b;">Guardar Cambios</button>
-                </div>
+                <div class="form-group"><label>Contenido:</label><textarea name="contenido" id="edit-contenido" class="form-control-modal" required></textarea></div>
+                <div class="modal-buttons"><button type="button" class="btn-modal-cancel" onclick="cerrarModal('modal-editar')">Cancelar</button><button type="submit" class="btn-modal-confirm">Guardar</button></div>
             </form>
         </div>
     </div>
 
     <div id="modal-accion" class="modal-overlay">
         <div class="modal-box">
-            <div class="modal-icon-container" id="modal-icon-bg">
-                <i id="modal-icon" class="fas fa-question"></i>
-            </div>
-            <h2 class="modal-title" id="modal-title">¿Confirmar acción?</h2>
-            <p class="modal-text" id="modal-mensaje">¿Estás seguro?</p>
-            
-            <div class="modal-buttons">
-                <button class="btn-modal-cancel" onclick="cerrarModal('modal-accion')">Cancelar</button>
-                <button class="btn-modal-confirm" id="btn-confirmar-accion">Sí, confirmar</button>
-            </div>
+            <div class="modal-icon-container" id="modal-icon-bg"><i id="modal-icon" class="fas fa-question"></i></div>
+            <h2 class="modal-title" id="modal-title"></h2>
+            <p class="modal-text" id="modal-mensaje"></p>
+            <div class="modal-buttons"><button class="btn-modal-cancel" onclick="cerrarModal('modal-accion')">Cancelar</button><button class="btn-modal-confirm" id="btn-confirmar-accion">Sí, confirmar</button></div>
         </div>
     </div>
 
     <script>
-        // Función unificada para cerrar modales
-        function cerrarModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
+        function cerrarModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        // --- LÓGICA VISTA PREVIA ---
         function abrirModalPreview(id) {
-            document.getElementById('preview-titulo').innerHTML = document.getElementById('data-titulo-' + id).innerHTML;
-            document.getElementById('preview-autor').innerHTML = document.getElementById('data-autor-' + id).innerHTML;
-            document.getElementById('preview-cat').innerHTML = document.getElementById('data-cat-nombre-' + id).innerHTML;
-            document.getElementById('preview-fecha').innerHTML = document.getElementById('data-fecha-' + id).innerHTML;
+            document.getElementById('preview-titulo').textContent = document.getElementById('data-titulo-' + id).textContent;
+            document.getElementById('preview-autor').textContent = document.getElementById('data-autor-' + id).textContent;
+            document.getElementById('preview-cat').textContent = document.getElementById('data-cat-nombre-' + id).textContent;
+            document.getElementById('preview-fecha').textContent = document.getElementById('data-fecha-' + id).textContent;
             document.getElementById('preview-contenido').innerHTML = document.getElementById('data-contenido-html-' + id).innerHTML;
             
-            const imgData = document.getElementById('data-imagen-' + id).innerHTML;
+  
+            const imgName = document.getElementById('data-imagen-' + id).textContent.trim();
             const imgElement = document.getElementById('preview-imagen');
-            if (imgData && imgData.trim() !== '') {
-                imgElement.src = imgData;
+            if (imgName !== '') {
+                imgElement.src = '../../assets/' + imgName; // Ruta hacia tu carpeta de fotos
                 imgElement.style.display = 'block';
             } else {
                 imgElement.style.display = 'none';
-                imgElement.src = '';
             }
             document.getElementById('modal-preview').classList.add('active');
         }
 
-        // --- LÓGICA EDICIÓN ---
         function abrirModalEditar(id) {
             document.getElementById('edit-id').value = id;
-            
-            // Decodificar el HTML entities para los inputs (el navegador lo hace auto si le pasamos el textContent)
             document.getElementById('edit-titulo').value = document.getElementById('data-titulo-' + id).textContent;
             document.getElementById('edit-contenido').value = document.getElementById('data-contenido-raw-' + id).textContent;
-            
-            // Seleccionar categoría correcta
-            const catId = document.getElementById('data-cat-id-' + id).textContent;
-            document.getElementById('edit-cat').value = catId;
-
+            document.getElementById('edit-cat').value = document.getElementById('data-cat-id-' + id).textContent;
             document.getElementById('modal-editar').classList.add('active');
         }
 
-        // --- LÓGICA ACCIÓN (APROBAR/RECHAZAR) ---
         let accionSeleccionada = null;
         let publicacionIdSeleccionada = null;
-        const btnConfirmar = document.getElementById('btn-confirmar-accion');
-
         function abrirModalAccion(accion, id, titulo) {
-            accionSeleccionada = accion;
-            publicacionIdSeleccionada = id;
-
-            const modalTitle = document.getElementById('modal-title');
-            const modalMensaje = document.getElementById('modal-mensaje');
-            const modalIcon = document.getElementById('modal-icon');
-            const modalIconBg = document.getElementById('modal-icon-bg');
-
+            accionSeleccionada = accion; publicacionIdSeleccionada = id;
+            const title = document.getElementById('modal-title');
+            const msg = document.getElementById('modal-mensaje');
+            const btn = document.getElementById('btn-confirmar-accion');
             if (accion === 'aprobar') {
-                modalTitle.textContent = '¿Aprobar publicación?';
-                modalMensaje.innerHTML = `¿Estás seguro de que quieres APROBAR la publicación <strong>"${titulo}"</strong>? Será visible para todos.`;
-                modalIcon.className = 'fas fa-check';
-                modalIcon.style.color = '#10b981';
-                modalIconBg.style.background = '#d1fae5';
-                btnConfirmar.textContent = 'Sí, aprobar';
-                btnConfirmar.style.background = '#10b981';
-            } else if (accion === 'rechazar') {
-                modalTitle.textContent = '¿Rechazar publicación?';
-                modalMensaje.innerHTML = `¿Estás seguro de que quieres RECHAZAR la publicación <strong>"${titulo}"</strong>? Se eliminará permanentemente.`;
-                modalIcon.className = 'fas fa-times';
-                modalIcon.style.color = '#ef4444';
-                modalIconBg.style.background = '#fee2e2';
-                btnConfirmar.textContent = 'Sí, rechazar';
-                btnConfirmar.style.background = '#ef4444';
+                title.textContent = '¿Aprobar?'; msg.textContent = 'Se hará pública.'; btn.style.background = '#10b981';
+            } else {
+                title.textContent = '¿Rechazar?'; msg.textContent = 'Se eliminará.'; btn.style.background = '#ef4444';
             }
             document.getElementById('modal-accion').classList.add('active');
         }
 
-        btnConfirmar.addEventListener('click', function() {
-            if (accionSeleccionada && publicacionIdSeleccionada) {
-                window.location.href = `revisar.php?${accionSeleccionada}=${publicacionIdSeleccionada}`;
-            }
-        });
-
-        // Cerrar modales si se hace clic en el fondo gris
-        window.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal-overlay')) {
-                cerrarModal(e.target.id);
-            }
+        document.getElementById('btn-confirmar-accion').addEventListener('click', () => {
+            window.location.href = `revisar.php?${accionSeleccionada}=${publicacionIdSeleccionada}`;
         });
     </script>
 </body>

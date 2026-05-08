@@ -1,16 +1,24 @@
-/* Heredamos variables de tu style.css principal */
+/* frontend/css_dash/crear_publicacion_styles.css */
+
 .main {
     margin-left: 270px;
     padding: 50px;
 }
 
+/* 🔥 TARJETA NEUBRUTALISTA BLINDADA 🔥 */
 .form-container-card {
-    background: var(--white);
+    background: #ffffff !important; /* Forzamos blanco puro en modo claro */
     padding: 40px;
-    border-radius: var(--radius-banner);
-    border: 1px solid var(--border);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
-    transition: background-color 0.3s, border-color 0.3s;
+    border-radius: 16px;
+    border: 3px solid #000000 !important; /* Borde negro puro inamovible */
+    box-shadow: 8px 8px 0px #000000 !important; /* Sombra negra dura */
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .form-container-card {
+    background: #161b22 !important; /* Gris oscuro para el panel */
+    border: 3px solid #8b949e !important; /* Borde gris visible en modo oscuro */
+    box-shadow: 8px 8px 0px #010409 !important; /* Sombra súper oscura */
 }
 
 .modern-grid-form {
@@ -20,99 +28,120 @@
 }
 
 .field { margin-bottom: 20px; }
-.inline-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.inline-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
 
 label {
     display: block;
     margin-bottom: 10px;
     font-weight: 700;
-    color: var(--text-dark);
-    font-size: 0.9rem;
-    transition: color 0.3s;
+    color: var(--text-dark, #1a2533);
+    font-size: 0.95rem;
 }
 
+/* 🔥 INPUTS Y TEXTAREA NEUBRUTALISTAS 🔥 */
 input[type="text"], select, textarea {
     width: 100%;
     padding: 14px;
-    border: 1px solid var(--border);
+    border: 2px solid #000000 !important;
     border-radius: 12px;
-    background: var(--bg-main);
-    color: var(--text-dark);
+    background: #f8fafc;
+    color: var(--text-dark, #000000);
     font-family: inherit;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+body.dark-mode input[type="text"], 
+body.dark-mode select, 
+body.dark-mode textarea {
+    border: 2px solid #8b949e !important;
+    background: #0d1117 !important; /* Fondo más oscuro para que resalte del panel */
+    color: #e6edf3 !important;
 }
 
 input[type="text"]:focus, select:focus, textarea:focus {
     outline: none;
-    border-color: var(--primary-green);
+    border-color: #27ae60 !important;
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px #27ae60 !important;
 }
 
 textarea { height: 280px; resize: none; }
 
+/* 🔥 ZONA DE CARGA DE IMAGEN (SEPARADA DEL FONDO) 🔥 */
 .upload-zone {
     width: 100%;
     height: 250px;
-    border: 2px dashed var(--border);
-    border-radius: 20px;
+    border: 3px dashed #000000 !important;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background: var(--bg-main);
+    /* Color ligeramente grisáceo/azulado para que destaque sobre el blanco de la tarjeta */
+    background: #f1f5f9 !important; 
     margin-bottom: 25px;
-    transition: 0.3s;
+    transition: all 0.3s;
     overflow: hidden;
 }
 
-.upload-zone:hover { 
-    border-color: var(--primary-green); 
-    background: var(--active-bg); 
+body.dark-mode .upload-zone { 
+    border-color: #8b949e !important; 
+    /* Gris distinto al del panel para que se note el cuadro */
+    background: #21262d !important; 
 }
 
-.preview-content { 
-    text-align: center; 
-    color: var(--text-light); 
-    transition: color 0.3s;
+.upload-zone:hover { 
+    border-color: #27ae60 !important; 
+    background: #ecfdf5 !important; 
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px #27ae60 !important;
 }
+
+body.dark-mode .upload-zone:hover {
+    background: rgba(46, 160, 67, 0.15) !important;
+}
+
+.preview-content { text-align: center; color: var(--text-light, #64748b); transition: color 0.3s; }
 .preview-content i { font-size: 2.5rem; display: block; margin-bottom: 10px; }
 
+/* 🔥 BOTÓN PUBLICAR NEUBRUTALISTA 🔥 */
 .btn-publish {
     width: 100%;
-    background: var(--primary-green);
-    color: white;
-    border: none;
+    background: #27ae60 !important; /* Obligamos a que sea verde */
+    color: #ffffff !important;
+    border: 3px solid #000000 !important;
     padding: 16px;
-    border-radius: 15px;
+    border-radius: 12px;
     font-weight: 800;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.2);
-    transition: transform 0.2s, filter 0.2s;
+    box-shadow: 6px 6px 0px #000000 !important;
+    transition: all 0.2s;
 }
 
-.btn-publish:hover { transform: translateY(-2px); filter: brightness(1.1); }
+body.dark-mode .btn-publish {
+    border: 3px solid #010409 !important;
+    box-shadow: 6px 6px 0px #010409 !important;
+}
 
-/* Alertas y Modo Oscuro */
-.alert {
-    padding: 15px 20px;
-    border-radius: 15px;
-    margin-bottom: 30px;
-    font-weight: 600;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+.btn-publish:hover { 
+    transform: translate(-2px, -2px); 
+    box-shadow: 8px 8px 0px #000000 !important; 
+    filter: brightness(1.1); 
 }
-.alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
-.alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
 
-body.dark-mode .alert-success {
-    background: rgba(46, 160, 67, 0.15);
-    color: #3fb950;
-    border-color: rgba(46, 160, 67, 0.4);
+body.dark-mode .btn-publish:hover {
+    box-shadow: 8px 8px 0px #010409 !important; 
 }
-body.dark-mode .alert-error {
-    background: rgba(248, 81, 73, 0.1);
-    color: #ff7b72;
-    border-color: rgba(248, 81, 73, 0.4);
-}
+
+/* Alertas Blindadas */
+.alert { padding: 15px 20px; border-radius: 12px; margin-bottom: 30px; font-weight: 600; border: 2px solid; }
+.alert-success { background: #ecfdf5 !important; color: #065f46 !important; border-color: #065f46 !important; box-shadow: 3px 3px 0px #065f46 !important; }
+.alert-error { background: #fef2f2 !important; color: #991b1b !important; border-color: #991b1b !important; box-shadow: 3px 3px 0px #991b1b !important; }
+
+body.dark-mode .alert-success { background: rgba(46, 160, 67, 0.15) !important; color: #3fb950 !important; border-color: #3fb950 !important; box-shadow: 3px 3px 0px #3fb950 !important; }
+body.dark-mode .alert-error { background: rgba(248, 81, 73, 0.1) !important; color: #ff7b72 !important; border-color: #ff7b72 !important; box-shadow: 3px 3px 0px #ff7b72 !important; }

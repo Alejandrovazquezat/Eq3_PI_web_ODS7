@@ -10,9 +10,9 @@
             $this->db = $db;
         }
         
-        // ==========================
+
         // OBTENER TODOS LOS USUARIOS (solo admin)
-        // ==========================
+
         public function listarTodos($admin_id) {
             $auth = new AuthController($this->db);
             if (!$auth->tienePermiso($admin_id, 'crear_usuario')) { // admin tiene este permiso
@@ -23,9 +23,9 @@
             return $usuario->obtenerTodos();
         }
         
-        // ==========================
+
         // OBTENER USUARIO POR ID (solo admin)
-        // ==========================
+
         public function obtenerPorId($admin_id, $usuario_id) {
             $auth = new AuthController($this->db);
             if (!$auth->tienePermiso($admin_id, 'editar_usuario')) {
@@ -43,9 +43,9 @@
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
         
-        // ==========================
+
         // CAMBIAR ROL DE USUARIO (solo admin)
-        // ==========================
+
         public function cambiarRol($admin_id, $usuario_id, $nuevo_rol_id) {
             // Validar que el rol exista
             $query = "SELECT id FROM roles WHERE id = :rol_id";
@@ -70,9 +70,9 @@
             return $stmt->execute() ? "Rol actualizado correctamente" : "Error al actualizar rol";
         }
         
-        // ==========================
+
         // ELIMINAR USUARIO (solo admin)
-        // ==========================
+
         public function eliminar($admin_id, $usuario_id) {
             // No permitir eliminarse a sí mismo
             if ($admin_id == $usuario_id) {
@@ -102,9 +102,9 @@
             return $stmt->execute() ? "Usuario eliminado correctamente" : "Error al eliminar usuario";
         }
         
-        // ==========================
+
         // CREAR USUARIO (admin)
-        // ==========================
+
         public function crear($admin_id, $datos) {
             $auth = new AuthController($this->db);
             if (!$auth->tienePermiso($admin_id, 'crear_usuario')) {

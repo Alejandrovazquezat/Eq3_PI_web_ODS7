@@ -70,8 +70,40 @@ if ($usuarioLogueado && !empty($publicaciones)) {
     <link rel="stylesheet" href="../css/navbar-style.css">
     <link rel="stylesheet" href="../css/categoria-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+
+        .titulo-categoria {
+            background-color: var(--blanco);
+            padding: 30px;
+            border-radius: 16px;
+            border: 2px solid #000;
+            box-shadow: 6px 6px 0px #000;
+            margin-bottom: 30px;
+        }
+
+        .cat-description-text {
+            font-size: 1rem;
+            color: var(--texto-meta);
+            margin-top: 15px;
+            line-height: 1.5;
+            max-width: 700px;
+        }
+
+        /* Estilo especial para la descripción de "editor" */
+        .cat-description-editor {
+            font-size: 0.9rem;
+            color: #1e3a8a;
+            font-weight: bold;
+            background-color: #f1f5f9;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 2px dashed #000;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
 </head>
-<!-- QUITA EL STYLE DEL BODY -->
 <body>
     <?php include 'navbar.php'; ?>
 
@@ -88,9 +120,21 @@ if ($usuarioLogueado && !empty($publicaciones)) {
         <?php else: ?>
 
             <div class="titulo-categoria">
-                <i class="fas fa-tag"></i> <?= htmlspecialchars($categoria['nombre']) ?>
+                <h1 style="color: #1e3a8a; font-size: 2.2rem; display: flex; align-items: center; gap: 15px;">
+                    <i class="fas fa-tag"></i> <?= htmlspecialchars($categoria['nombre']) ?>
+                </h1>
+                
                 <?php if (!empty($categoria['descripcion'])): ?>
-                    <p style="font-size: 1rem; color: var(--texto-meta); margin-top: 10px; transition: color 0.3s;"><?= htmlspecialchars($categoria['descripcion']) ?></p>
+                    <?php if(strpos($categoria['descripcion'], 'creada desde editor') !== false): ?>
+                        <div style="margin-top: 20px;">
+                            <p class="cat-description-editor">
+                                <i class="fas fa-feather-alt" style="font-size: 1.1rem; color: var(--color-primario);"></i>
+                                Una nueva sección centrada en soluciones de energía renovable.
+                            </p>
+                        </div>
+                    <?php else: ?>
+                        <p class="cat-description-text"><?= nl2br(htmlspecialchars($categoria['descripcion'])) ?></p>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
 
@@ -111,7 +155,7 @@ if ($usuarioLogueado && !empty($publicaciones)) {
                     <h2 class="publicacion-titulo"><?= htmlspecialchars($pub['titulo']) ?></h2>
                     
                     <div class="publicacion-meta">
-                        <i class="fas fa-user"></i> <?= htmlspecialchars($pub['autor'] ?? 'Desconocido') ?> &nbsp;|&nbsp; 
+                        <i class="fas fa-user"></i> <?= htmlspecialchars($pub['autor_nombre'] ?? $pub['autor'] ?? 'Desconocido') ?> &nbsp;|&nbsp; 
                         <i class="fas fa-calendar"></i> <?= date('d/m/Y', strtotime($pub['fecha_creacion'])) ?>
                     </div>
 
@@ -119,9 +163,7 @@ if ($usuarioLogueado && !empty($publicaciones)) {
                         <?= nl2br(htmlspecialchars($pub['contenido'])) ?>
                     </div>
 
-                    <!-- Contenedor de Acciones (Like y Comentar) -->
                     <div class="post-actions">
-                        <!-- Botón Like -->
                         <button class="like-btn <?= $yaLiked ? 'liked' : '' ?>" data-pubid="<?= $pub['id'] ?>">
                             <svg class="like-icon" viewBox="0 0 24 24" width="24" height="24">
                                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -129,29 +171,23 @@ if ($usuarioLogueado && !empty($publicaciones)) {
                             <span class="like-text">Me gusta</span>
                             <span class="like-count"><?= $likesCount ?></span>
                         </button>
-
-                        <!-- Botón Desplegar Comentarios -->
                         <button class="comment-trigger-btn" data-pubid="<?= $pub['id'] ?>">
                             <i class="fas fa-comment"></i>
                             <span>Comentarios</span>
                         </button>
                     </div>
 
-                    <!-- Sección de Comentarios Colapsable -->
                     <div class="comments-section" id="comments-<?= $pub['id'] ?>">
                         <div class="comments-list">
                             <?php 
-                            // Aquí está la magia: consultamos la BD para esta publicación específica
                             $comentarios_pub = $comentarioController->obtenerComentariosPorPublicacion($pub['id']);
-                            
                             if (count($comentarios_pub) > 0): 
                                 foreach($comentarios_pub as $comentario): 
                             ?>
-                                    <div class="comment-item">
-                                        <!-- Mostrar el nombre del autor real -->
-                                        <div class="comment-user"><?= htmlspecialchars($comentario['autor_nombre'] ?? 'Usuario') ?></div>
-                                        <p><?= nl2br(htmlspecialchars($comentario['contenido'])) ?></p>
-                                    </div>
+                                <div class="comment-item">
+                                    <div class="comment-user"><?= htmlspecialchars($comentario['autor_nombre'] ?? 'Usuario') ?></div>
+                                    <p><?= nl2br(htmlspecialchars($comentario['contenido'])) ?></p>
+                                </div>
                             <?php 
                                 endforeach;
                             else: 
@@ -159,8 +195,6 @@ if ($usuarioLogueado && !empty($publicaciones)) {
                                 <p style="font-size: 0.85rem; color: var(--texto-meta); text-align: center; margin-bottom: 10px;" class="no-comments-msg">Aún no hay comentarios. ¡Sé el primero en opinar!</p>
                             <?php endif; ?>
                         </div>
-
-                        <!-- Input de Uiverse para comentar -->
                         <form class="comment-form" data-pubid="<?= $pub['id'] ?>">
                             <div class="form-control">
                                 <input class="input input-alt" placeholder="Escribe tu opinión..." required="" type="text" name="comentario">
@@ -169,35 +203,28 @@ if ($usuarioLogueado && !empty($publicaciones)) {
                             <button type="submit" style="display:none"></button>
                         </form>
                     </div>
-
                 </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <div class="sin-publicaciones">
+                <div class="sin-publicaciones sin-publicaciones-box">
                     <i class="fas fa-folder-open"></i>
                     <h3>No hay publicaciones en esta categoría</h3>
                     <p>Sé el primero en compartir contenido sobre <?= htmlspecialchars($categoria['nombre']) ?></p>
                     <?php if ($usuarioLogueado): ?>
-                        <!-- Cambié el estilo en línea oscuro para que use var(--color-primario) -->
-                        <a href="../admin/crear_publicacion.php" style="display: inline-block; margin-top: 20px; background-color: var(--color-primario); color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none; transition: background-color 0.3s;">
+                        <a href="../admin/crear_publicacion.php" class="btn-create">
                             <i class="fas fa-plus"></i> Crear publicación
                         </a>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
-
         <?php endif; ?>
-
     </main>
 
     <?php include 'footer.php'; ?>
 
-    <!-- Variables globales para JS -->
     <script>
         const usuarioLogueado = <?= json_encode($usuarioLogueado) ?>;
     </script>
-    
-    <!-- Scripts -->
     <script src="../js/like-logic.js"></script>
     <script src="../js/comentarios.js"></script>
 </body>

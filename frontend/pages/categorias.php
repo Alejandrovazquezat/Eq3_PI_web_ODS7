@@ -23,9 +23,6 @@ if (is_string($categorias_stmt)) {
     $categorias = $categorias_stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// ==========================
-// 4. Iniciar sesión para el navbar
-// ==========================
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -39,14 +36,17 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="../css/categorias-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<!-- LE QUITAMOS EL STYLE EN LÍNEA PARA QUE EL CSS DEL MODO OSCURO HAGA SU MAGIA -->
 <body>
 
     <?php include 'navbar.php'; ?>
 
     <div class="hero-categorias">
-        <h1><i class="fas fa-tags"></i> Categorías</h1>
-        <p>Explora las categorías disponibles</p>
+        <div class="hero-glow-1"></div>
+        <div class="hero-glow-2"></div>
+        <div class="hero-categorias-content">
+            <h1><i class="fas fa-tags" style="font-size: 0.8em; opacity: 0.8;"></i> Categorías</h1>
+            <p>Explora todos los temas sobre energías asequibles y no contaminantes.</p>
+        </div>
     </div>
 
     <main class="categorias-container">
@@ -57,25 +57,30 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php elseif (count($categorias) > 0): ?>
             <div class="categorias-grid">
                 <?php foreach($categorias as $cat): ?>
-                <div class="categoria-card" onclick="window.location.href='categoria.php?id=<?= $cat['id'] ?>'">
-                    <div class="categoria-icono">
-                        <?php 
-                        $iconos = [
-                            'Energia Solar' => 'fas fa-sun',
-                            'Energia Eólica' => 'fas fa-wind',
-                            'Biomasa' => 'fas fa-leaf',
-                            'Innovacion' => 'fas fa-lightbulb'
-                        ];
-                        $icono = $iconos[$cat['nombre']] ?? 'fas fa-tag';
-                        ?>
-                        <i class="<?= $icono ?>"></i>
-                    </div>
-                    <h3><?= htmlspecialchars($cat['nombre']) ?></h3>
-                    <p><?= htmlspecialchars($cat['descripcion'] ?? 'Explora publicaciones sobre ' . $cat['nombre']) ?></p>
-                    <div class="publicaciones-count">
-                        <i class="fas fa-newspaper"></i> Ver publicaciones
+                
+                <div class="categoria-card-wrapper" onclick="window.location.href='categoria.php?id=<?= $cat['id'] ?>'">
+                    <div class="categoria-card-inner">
+                        <div class="categoria-icono">
+                            <?php 
+                            $iconos = [
+                                'Energia Solar' => 'fas fa-sun',
+                                'Energia Eólica' => 'fas fa-wind',
+                                'Biomasa' => 'fas fa-leaf',
+                                'Innovacion' => 'fas fa-lightbulb'
+                            ];
+                            $icono = $iconos[$cat['nombre']] ?? 'fas fa-tag';
+                            ?>
+                            <i class="<?= $icono ?>"></i>
+                        </div>
+                        
+                        <h3><?= htmlspecialchars($cat['nombre']) ?></h3>
+                        
+                        <div class="publicaciones-count">
+                            <span>Ir a las publicaciones</span> <i class="fas fa-arrow-right"></i>
+                        </div>
                     </div>
                 </div>
+
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
@@ -87,6 +92,8 @@ if (session_status() === PHP_SESSION_NONE) {
     </main>
 
     <?php include 'footer.php'; ?>
+
+    <?php include 'mascota.php'; ?>
 
 </body>
 </html>

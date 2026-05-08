@@ -10,9 +10,9 @@ class AuthController {
         $this->db = $db;
     }
 
-    // ==========================
+
     // REGISTRO DE USUARIO
-    // ==========================
+
     public function registrar($nombre, $email, $password){
         
         // Validaciones básicas
@@ -55,9 +55,9 @@ class AuthController {
         return "Error al registrar usuario";
     }
 
-    // ==========================
+
     // LOGIN
-    // ==========================
+
     public function login($email, $password){
         
         if (empty($email) || empty($password)) {
@@ -103,9 +103,9 @@ class AuthController {
         }
     }
 
-    // ==========================
+
     // LOGOUT
-    // ==========================
+
     public function logout(){
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -114,9 +114,9 @@ class AuthController {
         return "Sesion cerrada";
     }
 
-    // ==========================
+
     // VERIFICAR PERMISOS POR ROL
-    // ==========================
+    
     public function tienePermiso($usuario_id, $accion_requerida) {
         
         if (!$usuario_id) return false;
@@ -172,10 +172,9 @@ class AuthController {
         
         return in_array($accion_requerida, $permisos[$rol] ?? []);
     }
-    
-    // ==========================
+
     // OBTENER ROL DEL USUARIO ACTUAL
-    // ==========================
+
     public function obtenerRolActual() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();

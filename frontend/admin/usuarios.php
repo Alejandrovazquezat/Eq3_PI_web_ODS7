@@ -46,7 +46,7 @@ if ($rol_seleccionado > 0) {
     <link rel="stylesheet" href="../css_dash/style.css">
     <link rel="stylesheet" href="../css_dash/dash_usuario_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title>Usuarios - RED-novable</title>
+    <title>Usuarios - Red-novable</title>
 </head>
 <body>
 

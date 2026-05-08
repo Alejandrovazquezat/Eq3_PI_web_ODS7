@@ -1,5 +1,5 @@
 /* ============================================ */
-/* VARIABLES LOCALES PARA CATEGORIAS (GITHUB)   */
+/* VARIABLES LOCALES PARA CATEGORIAS            */
 /* ============================================ */
 :root {
     --borde-tarjeta: #e2e8f0;
@@ -14,154 +14,192 @@
     --icono-bg-1: #1e3a8a;
     --icono-bg-2: #3b82f6;
     
-    /* Scrollbar */
-    --scroll-track: #e2e8f0;
-    --scroll-thumb: #3b82f6;
-    --scroll-thumb-hover: #1e3a8a;
-    
     --sombra-card: rgba(0,0,0,0.1);
+
+    /* Gradientes Neón importados del Index */
+    --uiverse-gradiente: linear-gradient(163deg, #edfff8 0%, #bfc5ce 100%);
+    --uiverse-shadow: rgba(52, 211, 153, 0.4);
 }
 
 body.dark-mode {
     --borde-tarjeta: #30363d;
-    --texto-secundario: #8b949e;
-    --color-enlace: #58a6ff;
+    --texto-secundario: #9ca3af;
+    --color-enlace: #60a5fa;
     
-    /* Hero oscuro, fundiéndose con el fondo de GitHub */
-    --hero-bg-1: #0d1117; 
-    --hero-bg-2: #161b22; 
+    /* Hero oscuro */
+    --hero-bg-1: #0f172a; 
+    --hero-bg-2: #1e1b4b; 
     
     /* Iconos vibrantes para destacar en la oscuridad */
     --icono-bg-1: #1f6feb; 
     --icono-bg-2: #388bfd;
     
-    /* Scrollbar oscuro */
-    --scroll-track: #010409;
-    --scroll-thumb: #30363d;
-    --scroll-thumb-hover: #58a6ff;
-    
     --sombra-card: rgba(0,0,0,0.5);
+
+    /* Gradientes Neón importados del Index Oscuro */
+    --uiverse-gradiente: linear-gradient(163deg, #8097906a 0%, #807d7d6e 100%);
+    --uiverse-shadow: rgba(255, 255, 255, 0.1);
 }
 
 /* ============================================ */
-/* ESTILOS PARA CATEGORIAS.PHP */
+/* HERO REDISEÑADO (DOT MATRIX + ORBES)         */
 /* ============================================ */
-
 .hero-categorias {
+    position: relative;
     background: linear-gradient(135deg, var(--hero-bg-1), var(--hero-bg-2));
-    color: white; /* El texto del banner siempre será blanco por contraste */
-    padding: 60px 5%;
+    color: white; 
+    padding: 80px 5%;
     text-align: center;
     border-radius: 0 0 40px 40px;
-    margin-bottom: 30px;
-    border-bottom: 1px solid var(--borde-tarjeta); /* Ayuda a definir el borde en modo oscuro */
-    transition: background 0.3s ease, border-color 0.3s ease;
+    margin-bottom: 40px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--borde-tarjeta); 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Patrón de puntos tecnológicos */
+.hero-categorias::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.15) 2px, transparent 2px);
+    background-size: 30px 30px;
+    z-index: 1;
+}
+
+/* Luces abstractas de fondo */
+.hero-glow-1 {
+    position: absolute; top: -50px; left: 10%; width: 250px; height: 250px;
+    background: var(--uiverse-shadow); border-radius: 50%; filter: blur(60px); z-index: 0;
+}
+
+.hero-glow-2 {
+    position: absolute; bottom: -80px; right: 15%; width: 300px; height: 300px;
+    background: rgba(59, 130, 246, 0.4); border-radius: 50%; filter: blur(80px); z-index: 0;
+}
+
+.hero-categorias-content {
+    position: relative;
+    z-index: 2;
+    animation: fadeIn 1s ease-out;
 }
 
 .hero-categorias h1 {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
 }
 
 .hero-categorias p {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    font-weight: 500;
     opacity: 0.9;
 }
 
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================ */
+/* CUADRÍCULA DE CATEGORÍAS                     */
+/* ============================================ */
 .categorias-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px;
-    overflow-x: auto;
-    white-space: nowrap;
+    padding: 20px 20px 60px 20px;
 }
 
 .categorias-grid {
-    display: inline-flex;
-    flex-direction: row;
-    gap: 25px;
-    white-space: normal;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
 }
 
-.categoria-card {
-    background-color: var(--blanco); /* Variable global */
-    border-radius: 16px;
-    padding: 25px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s, border-color 0.3s;
+/* ============================================ */
+/* TARJETAS NEÓN UIVERSE (ADAPTADAS)            */
+/* ============================================ */
+.categoria-card-wrapper {
+    width: 100%; 
+    background-image: var(--uiverse-gradiente);
+    border-radius: 20px; 
+    transition: all .3s; 
     cursor: pointer;
-    border: 1px solid var(--borde-tarjeta);
-    width: 280px;
-    flex-shrink: 0;
-    display: inline-block;
-    white-space: normal;
-    word-wrap: break-word;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-.categoria-card:hover {
+.categoria-card-inner {
+    width: 100%; 
+    height: 100%; 
+    background-color: var(--white);
+    border-radius: 20px; 
+    transition: all .2s; 
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    padding: 35px 20px; 
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.categoria-card-wrapper:hover {
+    box-shadow: 0px 0px 25px 2px var(--uiverse-shadow);
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px var(--sombra-card);
+}
+
+.categoria-card-wrapper:hover .categoria-card-inner {
+    transform: scale(0.96); 
+    border-radius: 18px;
 }
 
 .categoria-icono {
-    width: 70px;
-    height: 70px;
+    width: 75px;
+    height: 75px;
     background: linear-gradient(135deg, var(--icono-bg-1), var(--icono-bg-2));
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px;
-    transition: background 0.3s ease;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.categoria-card-wrapper:hover .categoria-icono {
+    transform: scale(1.1) rotate(5deg);
 }
 
 .categoria-icono i {
     font-size: 2rem;
-    color: white; /* El icono en sí siempre blanco */
+    color: white; 
 }
 
-.categoria-card h3 {
-    color: var(--texto-titulos); /* Variable global */
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-    transition: color 0.3s ease;
-}
-
-.categoria-card p {
-    color: var(--texto-secundario);
-    font-size: 0.9rem;
-    line-height: 1.5;
-    transition: color 0.3s ease;
+.categoria-card-inner h3 {
+    color: var(--text-dark); 
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 15px;
 }
 
 .publicaciones-count {
-    margin-top: 15px;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: var(--color-enlace);
-    font-weight: 600;
-    transition: color 0.3s ease;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--fondo-suave);
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: background 0.3s ease;
 }
 
-/* ============================================ */
-/* BARRA DE DESPLAZAMIENTO (SCROLLBAR)          */
-/* ============================================ */
-.categorias-container::-webkit-scrollbar {
-    height: 8px;
-}
-
-.categorias-container::-webkit-scrollbar-track {
-    background-color: var(--scroll-track);
-    border-radius: 10px;
-}
-
-.categorias-container::-webkit-scrollbar-thumb {
-    background-color: var(--scroll-thumb);
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-}
-
-.categorias-container::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scroll-thumb-hover);
+.categoria-card-wrapper:hover .publicaciones-count {
+    background: var(--uiverse-shadow);
+    color: var(--text-dark);
 }
 
 /* ============================================ */
@@ -170,21 +208,22 @@ body.dark-mode {
 .sin-categorias {
     text-align: center;
     padding: 60px;
-    background-color: var(--blanco);
+    background-color: var(--white);
     border-radius: 16px;
     border: 1px solid var(--borde-tarjeta);
-    transition: background-color 0.3s, border-color 0.3s;
 }
+.sin-categorias i { font-size: 4rem; color: var(--texto-secundario); margin-bottom: 20px; }
+.sin-categorias h3 { margin-top: 20px; color: var(--text-dark); }
 
-.sin-categorias i {
-    font-size: 4rem;
-    color: var(--texto-secundario);
-    margin-bottom: 20px;
-    transition: color 0.3s;
+/* ============================================ */
+/* RESPONSIVIDAD (MEDIA QUERIES)                */
+/* ============================================ */
+@media (max-width: 1024px) {
+    .categorias-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-categorias h1 { font-size: 3rem; }
 }
-
-.sin-categorias h3 {
-    margin-top: 20px;
-    color: var(--texto-titulos);
-    transition: color 0.3s;
+@media (max-width: 768px) {
+    .categorias-grid { grid-template-columns: 1fr; }
+    .hero-categorias h1 { font-size: 2.5rem; }
+    .hero-categorias { padding: 50px 5%; }
 }
