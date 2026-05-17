@@ -42,7 +42,6 @@ if ($rol_seleccionado > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css_dash/style.css">
     <link rel="stylesheet" href="../css_dash/dash_usuario_styles.css">
@@ -50,6 +49,9 @@ if ($rol_seleccionado > 0) {
     <title>Usuarios - Red-novable</title>
 </head>
 <body>
+
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
 
     <?php include 'sidebar.php'; ?>
     <main class="main">
@@ -70,31 +72,38 @@ if ($rol_seleccionado > 0) {
             </div>
         <?php endif; ?>
         
-        <div class="filtro-rol">
-            <div class="filtro-label">
-                <i class="fas fa-filter"></i>
-                <label>Filtrar por rol:</label>
+        <div class="filtro-rol-container-card">
+            <div class="filtro-rol">
+                <div class="filtro-label">
+                    <i class="fas fa-filter"></i>
+                    <label>Filtrar por rol:</label>
+                </div>
+                <form method="GET" action="usuarios.php" class="filtro-form">
+                    <select name="rol">
+                        <option value="0">Todos los roles</option>
+                        <?php foreach($roles as $rol): ?>
+                            <option value="<?= $rol['id'] ?>" <?= $rol_seleccionado == $rol['id'] ? 'selected' : '' ?>>
+                                <?= ucfirst($rol['nombre']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <button type="submit" class="btn-primary"><i class="fas fa-sliders-h"></i> Filtrar</button>
+                    <?php if ($rol_seleccionado > 0): ?>
+                        <a href="usuarios.php" class="limpiar">Limpiar</a>
+                    <?php endif; ?>
+                </form>
             </div>
-            <form method="GET" action="usuarios.php" class="filtro-form">
-                <select name="rol">
-                    <option value="0">Todos los roles</option>
-                    <?php foreach($roles as $rol): ?>
-                        <option value="<?= $rol['id'] ?>" <?= $rol_seleccionado == $rol['id'] ? 'selected' : '' ?>>
-                            <?= ucfirst($rol['nombre']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                <button type="submit" class="btn-primary">Filtrar</button>
-                <?php if ($rol_seleccionado > 0): ?>
-                    <a href="usuarios.php" class="limpiar">Limpiar</a>
-                <?php endif; ?>
-            </form>
+
+            <div class="search-box-uiverse">
+                <input type="text" id="input-buscar-usuario" placeholder="Buscar por nombre o correo..." class="input-search-uiverse">
+            </div>
+
             <div class="total-usuarios">
                 Total: <span><?= count($usuarios) ?></span> usuarios
             </div>
         </div>
 
-        <div class="card-table shadow">
+        <div class="table-cristal-wrapper card-table">
             <table class="modern-table">
                 <thead>
                     <tr>
@@ -105,17 +114,17 @@ if ($rol_seleccionado > 0) {
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="table-usuarios-body">
                     <?php if (count($usuarios) > 0): ?>
                         <?php foreach($usuarios as $user): ?>
-                        <tr>
+                        <tr class="user-row-item">
                             <td><span class="text-muted">#<?= $user['id'] ?></span></td>
-                            <td class="font-bold"><?= htmlspecialchars($user['nombre']) ?></td>
-                            <td><?= htmlspecialchars($user['email']) ?></td>
+                            <td class="font-bold user-name-cell"><?= htmlspecialchars($user['nombre']) ?></td>
+                            <td class="user-email-cell"><?= htmlspecialchars($user['email']) ?></td>
                             <td>
                                 <?php if ($user['id'] == 1): ?>
                                     <span class="badge-root">
-                                        <i></i> S.U Admin
+                                        <i class="fas fa-crown"></i> S.U Admin
                                     </span>
                                 <?php else: ?>
                                     <span class="badge-role" 
@@ -129,8 +138,8 @@ if ($rol_seleccionado > 0) {
                                 <?php if ($user['id'] == 1): ?>
                                     <span class="locked-text">Irrevocable</span>
                                 <?php elseif ($user['id'] != ($_SESSION['usuario_id'] ?? 0)): ?>
-                                    <button class="btn-delete-icon" onclick="confirmarEliminar(<?= $user['id'] ?>, '<?= htmlspecialchars($user['nombre']) ?>')">
-                                        <i class="fas fa-trash-alt"></i>
+                                    <button class="btn-delete-uiverse" onclick="confirmarEliminar(<?= $user['id'] ?>, '<?= htmlspecialchars($user['nombre'], ENT_QUOTES) ?>')" title="Eliminar cuenta">
+                                        <svg viewBox="0 0 448 512" class="svgIcon"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg>
                                     </button>
                                 <?php else: ?>
                                     <span class="self-text">Tú</span>
@@ -139,10 +148,13 @@ if ($rol_seleccionado > 0) {
                         </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <tr>
+                        <tr id="no-results-row">
                             <td colspan="5" class="empty-msg">No se encontraron usuarios</td>
                         </tr>
                     <?php endif; ?>
+                    <tr id="js-empty-row" style="display: none;">
+                        <td colspan="5" class="empty-msg">No hay coincidencias con la búsqueda</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -177,11 +189,52 @@ if ($rol_seleccionado > 0) {
             </select>
             <div class="modal-btns">
                 <button onclick="cerrarModalRol()" class="btn-secondary">Cancelar</button>
-                <button onclick="confirmarCambioRol()" class="btn-primary">Guardar Cambios</button>
+                <button onclick="confirmarCambioRol()" class="btn-primary-save">Guardar Cambios</button>
             </div>
         </div>
     </div>
 
+    <script>
+        // Cierre de modales al hacer clic en el fondo gris traslúcido
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                if (document.getElementById('modalConfirmacion').style.display === 'flex') {
+                    cerrarModal();
+                }
+                if (document.getElementById('modalCambioRol').style.display === 'flex') {
+                    cerrarModalRol();
+                }
+            }
+        });
+
+        // Lógica de búsqueda en tiempo real
+        document.getElementById('input-buscar-usuario').addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            const rows = document.querySelectorAll('.user-row-item');
+            const emptyRow = document.getElementById('js-empty-row');
+            let totalVisibles = 0;
+
+            rows.forEach(row => {
+                const nombre = row.querySelector('.user-name-cell').textContent.toLowerCase();
+                const email = row.querySelector('.user-email-cell').textContent.toLowerCase();
+
+                if (nombre.includes(query) || email.includes(query)) {
+                    row.style.display = '';
+                    totalVisibles++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            if (emptyRow) {
+                if (totalVisibles === 0 && rows.length > 0) {
+                    emptyRow.style.display = '';
+                } else {
+                    emptyRow.style.display = 'none';
+                }
+            }
+        });
+    </script>
     <script src="../js/usuarios.js"></script>
 </body>
 </html>

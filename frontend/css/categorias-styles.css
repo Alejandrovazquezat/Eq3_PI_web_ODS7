@@ -16,7 +16,7 @@
     
     --sombra-card: rgba(0,0,0,0.1);
 
-    /* Gradientes Neón importados del Index */
+    /* Gradientes importados del Index */
     --uiverse-gradiente: linear-gradient(163deg, #edfff8 0%, #bfc5ce 100%);
     --uiverse-shadow: rgba(52, 211, 153, 0.4);
 }
@@ -119,23 +119,48 @@ body.dark-mode {
 }
 
 /* ============================================ */
-/* TARJETAS NEÓN UIVERSE (ADAPTADAS)            */
+/* TARJETAS ESTILO CRISTAL (GLASSMORPHISM)      */
 /* ============================================ */
-.categoria-card-wrapper {
-    width: 100%; 
-    background-image: var(--uiverse-gradiente);
-    border-radius: 20px; 
-    transition: all .3s; 
+.uiverse-wrapper {
+    width: 100%; /* Adaptado al ancho de la columna del grid */
+    box-sizing: border-box;
+    background: rgba(217, 217, 217, 0.4);
+    border: 1px solid white;
+    box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 17px;
+    transition: all 0.4s ease;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    text-decoration: none; 
+    display: flex;
+    flex-direction: column; 
+    overflow: hidden;
 }
 
-.categoria-card-inner {
+.uiverse-wrapper:hover {
+    border: 1px solid #94a3b8; 
+    transform: scale(1.02) translateY(-5px); 
+}
+
+.uiverse-wrapper:active {
+    transform: scale(0.98); 
+}
+
+body.dark-mode .uiverse-wrapper {
+    background: rgba(22, 27, 34, 0.58);
+    border: 1px solid #30363d;
+    box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .uiverse-wrapper:hover {
+    border: 1px solid var(--icono-bg-2);
+}
+
+.uiverse-inner {
     width: 100%; 
     height: 100%; 
-    background-color: var(--white);
-    border-radius: 20px; 
-    transition: all .2s; 
+    background-color: transparent; 
     display: flex;
     flex-direction: column; 
     align-items: center; 
@@ -143,16 +168,6 @@ body.dark-mode {
     padding: 35px 20px; 
     box-sizing: border-box;
     text-align: center;
-}
-
-.categoria-card-wrapper:hover {
-    box-shadow: 0px 0px 25px 2px var(--uiverse-shadow);
-    transform: translateY(-5px);
-}
-
-.categoria-card-wrapper:hover .categoria-card-inner {
-    transform: scale(0.96); 
-    border-radius: 18px;
 }
 
 .categoria-icono {
@@ -168,7 +183,7 @@ body.dark-mode {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.categoria-card-wrapper:hover .categoria-icono {
+.uiverse-wrapper:hover .categoria-icono {
     transform: scale(1.1) rotate(5deg);
 }
 
@@ -177,11 +192,16 @@ body.dark-mode {
     color: white; 
 }
 
-.categoria-card-inner h3 {
+.uiverse-inner h3 {
     color: var(--text-dark); 
     font-size: 1.4rem;
     font-weight: 700;
+    margin-top: 0;
     margin-bottom: 15px;
+}
+
+body.dark-mode .uiverse-inner h3 {
+    color: #f3f4f6; /* Texto claro para modo oscuro */
 }
 
 .publicaciones-count {
@@ -191,15 +211,23 @@ body.dark-mode {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: var(--fondo-suave);
+    background: rgba(255, 255, 255, 0.6);
     padding: 8px 16px;
     border-radius: 20px;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
-.categoria-card-wrapper:hover .publicaciones-count {
-    background: var(--uiverse-shadow);
-    color: var(--text-dark);
+body.dark-mode .publicaciones-count {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.uiverse-wrapper:hover .publicaciones-count {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--color-enlace);
+}
+
+body.dark-mode .uiverse-wrapper:hover .publicaciones-count {
+    background: rgba(96, 165, 250, 0.2);
 }
 
 /* ============================================ */
@@ -215,22 +243,16 @@ body.dark-mode {
 .sin-categorias i { font-size: 4rem; color: var(--texto-secundario); margin-bottom: 20px; }
 .sin-categorias h3 { margin-top: 20px; color: var(--text-dark); }
 
+body.dark-mode .sin-categorias {
+    background-color: transparent;
+}
+
 /* ============================================ */
 /* RESPONSIVIDAD (MEDIA QUERIES)                */
 /* ============================================ */
 @media (max-width: 1024px) {
     .categorias-grid { grid-template-columns: repeat(2, 1fr); }
     .hero-categorias h1 { font-size: 3rem; }
-}
-@media (max-width: 768px) {
-    .categorias-grid { grid-template-columns: 1fr; }
-    .hero-categorias h1 { font-size: 2.5rem; }
-    .hero-categorias { padding: 50px 5%; }
-}
-
-/* --- AJUSTES PARA MÓVIL (AGREGAR AL FINAL) --- */
-@media (max-width: 1024px) {
-    .categorias-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -244,7 +266,7 @@ body.dark-mode {
     .hero-categorias h1 { 
         font-size: 2.2rem; /* Letra un poco más pequeña para que no se corte */
     }
-    .categoria-card-inner {
+    .uiverse-inner {
         padding: 25px 15px; /* Menos relleno para que respire en pantallas chicas */
     }
 }

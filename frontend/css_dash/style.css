@@ -28,6 +28,19 @@ body.dark-mode {
     --icon-bg: #21262d;
 }
 
+/* Luces de fondo para potenciar el efecto Glassmorphism */
+.bg-glow-1 {
+    position: fixed; top: -50px; left: 250px; width: 400px; height: 400px;
+    background: rgba(52, 211, 153, 0.15); border-radius: 50%; filter: blur(80px); z-index: 0; pointer-events: none;
+}
+.bg-glow-2 {
+    position: fixed; bottom: -100px; right: -50px; width: 500px; height: 500px;
+    background: rgba(59, 130, 246, 0.15); border-radius: 50%; filter: blur(100px); z-index: 0; pointer-events: none;
+}
+
+body.dark-mode .bg-glow-1 { background: rgba(52, 211, 153, 0.08); }
+body.dark-mode .bg-glow-2 { background: rgba(59, 130, 246, 0.1); }
+
 /* =========================================
    BASE Y SIDEBAR
    ========================================= */
@@ -51,6 +64,7 @@ body {
     display: flex;
     flex-direction: column;
     transition: background-color 0.3s ease, border-color 0.3s ease;
+    z-index: 100;
 }
 
 .logo-box { cursor: pointer; text-align: center; margin-bottom: 40px; }
@@ -65,29 +79,119 @@ body {
 .nav-link:hover { background: var(--hover-bg); color: var(--primary-green); }
 .nav-link.active { background: var(--active-bg); color: var(--primary-green); font-weight: 700; }
 
-.btn-special { background: var(--primary-green) !important; color: white !important; justify-content: center; margin-top: 20px; box-shadow: 0 4px 12px rgba(39, 174, 96, 0.2); }
-
 /* =========================================
    DASHBOARD GENERAL
    ========================================= */
-.main { margin-left: 270px; padding: 50px; width: calc(100% - 270px); }
+.main { 
+    margin-left: 270px; 
+    padding: 50px; 
+    width: calc(100% - 270px); 
+    position: relative;
+    z-index: 5;
+}
 .main-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; color: var(--text-dark); transition: color 0.3s ease; }
 .main-header p { color: var(--text-light); margin-bottom: 40px; transition: color 0.3s ease; }
 
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+/* 🔥 TARJETAS DE ESTADÍSTICA (EFECTO CRISTAL 3D) 🔥 */
 .stat-card {
-    background: var(--white); padding: 35px; border-radius: var(--radius-banner);
-    border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
-    display: flex; align-items: center; gap: 25px; transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    box-sizing: border-box;
+    background: rgba(217, 217, 217, 0.4);
+    border: 1px solid white;
+    box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px); 
+    border-radius: 17px;
+    transition: all 0.5s;
+    cursor: pointer;
+    
+    display: flex; 
+    align-items: center; 
+    gap: 25px; 
+    padding: 35px;
 }
-.stat-card:hover { transform: translateY(-5px); border-color: var(--primary-green); }
+
+.stat-card:hover {
+    border: 1px solid #94a3b8; 
+    transform: scale(1.02);
+}
+
+.stat-card:active {
+    transform: scale(0.95) rotateZ(1.7deg); 
+}
+
+body.dark-mode .stat-card {
+    background: rgba(22, 27, 34, 0.58);
+    border: 1px solid #30363d;
+    box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .stat-card:hover {
+    border: 1px solid #06b6d4; 
+}
+
 .stat-icon {
-    font-size: 2.2rem; background: var(--icon-bg); width: 65px; height: 65px;
+    font-size: 2.2rem; background: rgba(255, 255, 255, 0.5); width: 65px; height: 65px;
     display: flex; align-items: center; justify-content: center; border-radius: 18px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
     transition: background-color 0.3s ease;
 }
+
+body.dark-mode .stat-icon {
+    background: rgba(0, 0, 0, 0.2);
+}
+
 .stat-info p { margin: 0; color: var(--text-light); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s ease; }
 .stat-info h2 { margin: 5px 0 0 0; font-size: 2.4rem; color: var(--text-dark); font-weight: 800; transition: color 0.3s ease; }
+
+/* =========================================
+   BOTONES NEUMÓRFICOS (PARA FUTURO USO)
+   ========================================= */
+.btn-neumorfico {
+    --hover-shadows: 8px 8px 16px #a3a3a3, -8px -8px 16px #ffffff;
+    --accent: #3b82f6; 
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    border: none;
+    border-radius: 1.1em;
+    background-color: #e2e8f0; 
+    cursor: pointer;
+    color: #475569;
+    padding: 12px 24px;
+    transition: box-shadow ease-in-out 0.3s, background-color ease-in-out 0.1s,
+                letter-spacing ease-in-out 0.1s, transform ease-in-out 0.1s, color ease-in-out 0.1s;
+    box-shadow: 5px 5px 10px #b8c1cc, -5px -5px 10px #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1rem;
+}
+
+.btn-neumorfico:hover {
+    box-shadow: var(--hover-shadows);
+}
+
+.btn-neumorfico:active {
+    box-shadow: var(--hover-shadows), var(--accent) 0px 0px 20px 2px;
+    background-color: var(--accent);
+    color: white;
+    transform: scale(0.95);
+}
+
+body.dark-mode .btn-neumorfico {
+    background-color: #1e293b;
+    color: #cbd5e1;
+    --hover-shadows: 8px 8px 16px #0f172a, -8px -8px 16px #2d3b52;
+    box-shadow: 5px 5px 10px #131a26, -5px -5px 10px #293850;
+}
+
+body.dark-mode .btn-neumorfico:active {
+    background-color: var(--accent);
+    color: white;
+}
 
 /* =========================================
    MAGIA: OVERRIDES GLOBALES PARA EL RESTO DEL PANEL
@@ -127,7 +231,6 @@ body.dark-mode .empty-msg { color: var(--text-light); }
         flex-direction: column;
     }
 
-    /* 1. Convertimos el Sidebar en una barra inferior pegada a la pantalla */
     .sidebar {
         width: 100%;
         height: auto;
@@ -143,12 +246,10 @@ body.dark-mode .empty-msg { color: var(--text-light); }
         box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
     }
 
-    /* 2. Ocultamos el logo y la mascota SOLO en el celular para que no estorben */
     .logo-box, .franxx-sidebar-container { 
         display: none !important; 
     }
 
-    /* 3. Acomodamos los enlaces en fila con scroll horizontal */
     .menu-groups {
         display: flex;
         flex-direction: row;
@@ -159,25 +260,22 @@ body.dark-mode .empty-msg { color: var(--text-light); }
         gap: 10px;
     }
 
-    /* Ocultar barra de scroll para que se vea limpio en el iPhone */
     .menu-groups::-webkit-scrollbar {
         display: none;
     }
 
-    /* 4. Estilo de los botones tipo "Píldora" */
     .nav-link {
-        flex: 0 0 auto; /* Evita que los botones se aplasten */
+        flex: 0 0 auto; 
         margin-bottom: 0;
         padding: 10px 18px;
         font-size: 0.9rem;
         border-radius: 20px;
     }
 
-    /* 5. Ajustamos el contenedor principal para que el menú no tape el contenido */
     .main {
         margin-left: 0;
         width: 100%;
-        padding: 20px 15px 90px 15px; /* 90px de margen inferior para que respire */
+        padding: 20px 15px 90px 15px; 
     }
 
     .stats-grid {

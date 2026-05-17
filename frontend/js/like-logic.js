@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // 1. Verificar si el usuario está logueado (esta variable viene de PHP)
             if (typeof usuarioLogueado === 'undefined' || !usuarioLogueado) {
-                window.location.href = 'registro.php';
+                // En lugar de redirigir, mostramos el modal
+                const modal = document.getElementById('modalAuthRequired');
+                if(modal) modal.style.display = 'flex';
                 return;
             }
 

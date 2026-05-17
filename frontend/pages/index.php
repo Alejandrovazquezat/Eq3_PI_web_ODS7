@@ -3,8 +3,16 @@ require_once __DIR__ . '/../../config/Conexion.php';
 require_once __DIR__ . '/../../backend/controllers/PublicacionController.php';
 
 $db = (new Conexion())->getConexion();
-$pubController = new PublicacionController($db);
+// ==========================================
+// LÓGICA DEL CONTADOR DE VISITAS (CON COOKIES)
+// ==========================================
+if (!isset($_COOKIE['visita_registrada'])) {
+    $stmt = $db->prepare("UPDATE contador_visitas SET total_visitas = total_visitas + 1 WHERE id = 1");
+    $stmt->execute();
+    setcookie('visita_registrada', 'true', time() + 86400, '/');
+}
 
+$pubController = new PublicacionController($db);
 $publicaciones_stmt = $pubController->obtenerPublicadas();
 
 if (is_string($publicaciones_stmt)) {
@@ -25,7 +33,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Red-novable</title>
     <link rel="stylesheet" href="../css/navbar-style.css">
     <link rel="stylesheet" href="../css/index-styles.css">
@@ -53,6 +61,9 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="hero-text-box">
                 <h1>Red-novable</h1>
                 <p>Difusión de información sobre energías asequibles y no contaminantes.</p>
+                <a href="#seccion-publicaciones" class="btn-hero-scroll">
+                    Ver las publicaciones más recientes <i class="fas fa-arrow-down"></i>
+                </a>
             </div>
         </div>
 
@@ -66,7 +77,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 
                 <div class="destacados-grid">
                     <?php foreach($destacados as $pub): ?>
-                    <div class="uiverse-wrapper" onclick="window.location.href='categoria.php?id=<?= $pub['categoria_id'] ?>'">
+                    <div class="uiverse-wrapper" onclick="window.location.href='publicacion.php?id=<?= $pub['id'] ?>'">
                         <div class="uiverse-inner">
                             <?php if($pub['imagen']): ?>
                             <div class="destacado-imagen">
@@ -94,7 +105,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 
                 <div class="lista-vertical">
                     <?php foreach($resto as $pub): ?>
-                    <div class="vertical-card-wrapper" onclick="window.location.href='categoria.php?id=<?= $pub['categoria_id'] ?>'">
+                    <div class="vertical-card-wrapper" onclick="window.location.href='publicacion.php?id=<?= $pub['id'] ?>'">
                         <div class="vertical-card-inner">
                             <?php if($pub['imagen']): ?>
                             <div class="vertical-imagen">
@@ -119,7 +130,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
                 
             <?php else: ?>
-                <div style="text-align: center; padding: 60px; background-color: var(--white); border: 1px solid var(--borde-tarjeta); border-radius: 16px;">
+                <div style="text-align: center; padding: 60px; background-color: transparent; border: 1px solid var(--borde-tarjeta); border-radius: 16px;">
                     <i class="fas fa-folder-open" style="font-size: 4rem; color: var(--texto-secundario);"></i>
                     <h3 style="margin-top: 20px; color: var(--text-dark);">No hay publicaciones aún</h3>
                     <p style="color: var(--texto-secundario);">Sé el primero en compartir contenido sobre energías renovables</p>

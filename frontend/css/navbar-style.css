@@ -9,13 +9,12 @@
    ========================================= */
 :root {
     --color-primario: #055220;
-    --color-oscuro: #1e293b; /* Para el footer */
-    --texto-titulos: #1e293b; /* Separado para los h1 y h2 */
-    --texto-oscuro: #334155; /* Texto de párrafos y enlaces */
-    --blanco: #ffffff; /* Fondos de botones y tarjetas */
-    --fondo-suave: #f8fafc; /* Fondo de la página y navbar */
+    --color-oscuro: #1e293b; 
+    --texto-titulos: #1e293b; 
+    --texto-oscuro: #334155; 
+    --blanco: #ffffff; 
+    --fondo-suave: #f8fafc; 
     
-    /* Sombras para los botones */
     --sombra-clara: #ffffff;
     --sombra-oscura: rgba(95, 157, 231, 0.48);
 }
@@ -24,14 +23,13 @@
    PALETA DE COLORES (MODO OSCURO - ESTILO GITHUB)
    ========================================= */
 body.dark-mode {
-    --color-primario: #2ea043; /* El verde característico de los botones de GitHub */
-    --color-oscuro: #010409; /* Footer casi negro puro */
-    --texto-titulos: #e6edf3; /* Blanco suave para títulos */
-    --texto-oscuro: #8b949e; /* Gris tenue de GitHub para texto secundario */
-    --blanco: #161b22; /* Fondo de tarjetas (un tono arriba del fondo general) */
-    --fondo-suave: #0d1117; /* El fondo exacto de la página de GitHub */
+    --color-primario: #2ea043; 
+    --color-oscuro: #010409; 
+    --texto-titulos: #e6edf3; 
+    --texto-oscuro: #8b949e; 
+    --blanco: #161b22; 
+    --fondo-suave: #0d1117; 
     
-    /* Sombras ajustadas para el fondo más oscuro */
     --sombra-clara: rgba(255, 255, 255, 0.01);
     --sombra-oscura: rgba(0, 0, 0, 0.6);
 }
@@ -42,7 +40,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave al cambiar de modo */
+    transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
 .color-primario { color: var(--color-primario); }
@@ -64,7 +62,7 @@ body {
 .nav-auth { display: flex; gap: 15px; align-items: center; }
 
 /* =========================================
-   BOTONES ANIMADOS "ECO" (Estilo Uiverse)
+   BOTONES ANIMADOS "ECO"
    ========================================= */
 .nav-btn-eco {
     position: relative;
@@ -85,9 +83,7 @@ body {
     box-shadow: -4px -2px 16px 0px var(--sombra-clara), 4px 2px 16px 0px var(--sombra-oscura);
 }
 
-.nav-btn-eco i {
-    font-size: 1.1rem;
-}
+.nav-btn-eco i { font-size: 1.1rem; }
 
 .nav-btn-eco:hover {
     transform: translateY(-3px);
@@ -100,179 +96,193 @@ body {
     box-shadow: 0 5px 10px var(--sombra-oscura);
 }
 
-.nav-btn-eco::after {
-    content: "";
-    display: inline-block;
-    height: 100%;
-    width: 100%;
-    border-radius: 100px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    transition: all 0.4s;
-    background-color: var(--blanco);
-}
-
-.nav-btn-eco:hover::after {
-    transform: scaleX(1.4) scaleY(1.6);
-    opacity: 0;
-}
-
-/* Variante para el botón de Registro */
 .nav-btn-eco.primary {
     background-color: var(--color-primario);
-    color: var(--blanco);
+    color: #ffffff;
 }
-.nav-btn-eco.primary::after {
-    background-color: var(--color-primario);
-}
-.nav-btn-eco.primary:hover {
-    color: var(--blanco);
-}
-
-/* Ajuste específico para el icono de 3 rayitas */
-.menu-icon.nav-btn-eco {
-    padding: 0.6em 1em;
-}
-
-/* --- CONTENIDO PRINCIPAL --- */
-.main-content {
-    flex: 1;
-    padding: 60px 5%;
-    text-align: center;
-}
-
-.main-content h1, .main-content h2 {
-    color: var(--texto-titulos);
-    margin-bottom: 20px;
-    transition: color 0.3s ease;
-}
-
-/* Formularios */
-form label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: var(--texto-oscuro);
-}
-
-form input:focus, form textarea:focus {
-    outline: none;
-    border-color: var(--color-primario) !important;
-    box-shadow: 0 0 5px rgba(37, 99, 235, 0.3);
-}
-
-/* --- FOOTER --- */
-.footer {
-    background-color: var(--color-oscuro);
-    color: #cbd5e1; padding: 40px 5% 20px; text-align: center;
-    transition: background-color 0.3s ease;
-}
-.footer-container { margin-bottom: 20px; }
-.footer-links-box a { color: #cbd5e1; text-decoration: none; margin: 0 10px; transition: 0.3s; }
-.footer-links-box a:hover { color: var(--color-primario); }
-.footer-bottom { border-top: 1px solid #334155; padding-top: 20px; font-size: 0.85rem; }
-
-/* --- DISEÑO RESPONSIVE (CELULARES) --- */
-@media (max-width: 768px) {
-    .navbar { flex-direction: column; gap: 15px; padding: 20px; }
-    .nav-links { flex-direction: column; text-align: center; gap: 15px; width: 100%; }
-    .nav-auth { width: 100%; justify-content: center; }
-}
+.nav-btn-eco.primary:hover { color: #ffffff; }
 
 /* =========================================
-   MENÚ DESPLEGABLE (Estilo Uiverse)
+   BOTÓN HAMBURGUESA ANIMADO (ESTILO UIVERSE + CRISTAL)
+   ========================================= */
+.menuButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 6px; /* Distancia fija entre líneas */
+    width: 45px; /* Tamaño fijo del botón */
+    height: 45px;
+    border-radius: 8px; /* Esquinas cuadradas de Uiverse */
+    cursor: pointer;
+    
+    /* Efecto Glassmorphism */
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: all .3s;
+}
+
+body.dark-mode .menuButton {
+    background: rgba(30, 41, 59, 0.5);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.menuButton:hover {
+    border: 1px solid white;
+}
+
+body.dark-mode .menuButton:hover {
+    border-color: #60a5fa;
+}
+
+.menuButton:active {
+    transform: scale(0.95);
+}
+
+.menuButton input[type="checkbox"] {
+    -webkit-appearance: none;
+    display: none;
+    visibility: hidden;
+}
+
+/* Las rayitas del menú */
+.menuButton span {
+    width: 24px; /* Ancho de las líneas */
+    height: 3px; /* Grosor de las líneas */
+    background: var(--texto-oscuro);
+    border-radius: 100px;
+    transition: 0.3s ease;
+}
+
+/* Animación a la "X" al estar clickeado (Valores exactos en px para evitar deformación) */
+.menuButton input[type="checkbox"]:checked ~ span.top {
+    transform: translateY(9px) rotate(45deg); /* Baja exactamente al centro y gira */
+    width: 28px; /* Se alarga un poco la "X" para verse mejor */
+}
+
+.menuButton input[type="checkbox"]:checked ~ span.bot {
+    transform: translateY(-9px) rotate(-45deg); /* Sube exactamente al centro y gira */
+    width: 28px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.menuButton input[type="checkbox"]:checked ~ span.mid {
+    transform: translateX(-20px);
+    opacity: 0;
+}
+/* =========================================
+   MENÚ DESPLEGABLE (CRISTAL ADAPTABLE)
    ========================================= */
 .menu-container {
     position: relative;
     display: inline-block;
+    margin-left: 10px;
 }
 
 .menu-dropdown {
     display: none; 
     position: absolute;
     right: 0;
-    top: calc(100% + 10px);
-    background-color: #0D1117; 
-    min-width: 220px;
-    border-radius: 8px;
+    top: calc(100% + 15px);
+    min-width: 240px;
+    border-radius: 16px;
     z-index: 1000;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    border: 1px solid #30363d;
-    padding: 10px;
     flex-direction: column;
     gap: 5px;
+    padding: 12px;
+    
+    /* Efecto Cristal */
+    background: rgba(217, 217, 217, 0.4) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.9) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12), 0 5px 15px rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .menu-dropdown {
+    background: rgba(22, 27, 34, 0.68) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55), 0 10px 20px rgba(0, 0, 0, 0.35) !important;
 }
 
 .menu-dropdown.show {
     display: flex;
+    animation: fadeInDown 0.3s ease forwards;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .menu-header {
-    color: #8b949e;
+    color: var(--texto-secundario);
     font-size: 0.85rem;
     padding: 5px 10px 10px 10px;
-    border-bottom: 1px solid #21262C;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
     margin-bottom: 5px;
 }
-.menu-header strong {
-    color: #e6edf3;
-}
+body.dark-mode .menu-header { border-bottom-color: rgba(255,255,255,0.1); color: #8b949e; }
 
+.menu-header strong { color: var(--texto-titulos); }
+
+/* Ítems del menú */
 .menu-item {
     background-color: transparent;
     border: none;
     padding: 10px 12px;
-    color: #e6edf3;
+    color: var(--texto-titulos);
     display: flex;
     align-items: center;
     position: relative;
     gap: 12px;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 10px;
     text-decoration: none;
     font-size: 0.95rem;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
 }
 
 .menu-item i {
     width: 20px;
     text-align: center;
-    color: #7D8590;
+    color: var(--texto-secundario);
     font-size: 1.1rem;
 }
 
 .menu-item:not(:active):hover,
 .menu-item:focus {
-    background-color: #21262C;
+    background-color: rgba(255, 255, 255, 0.8);
+    transform: translateX(4px);
 }
 
-.menu-item:focus,
-.menu-item:active {
-    background-color: #1A1F24;
-    outline: none;
+body.dark-mode .menu-item:not(:active):hover,
+body.dark-mode .menu-item:focus {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
+.menu-item:focus, .menu-item:active { outline: none; }
+
+/* Barra azul lateral en hover */
 .menu-item::before {
     content: "";
     position: absolute;
-    top: 10%;
-    left: -10px; 
-    width: 4px;
-    height: 80%;
-    background-color: #2F81F7;
+    top: 10%; left: -12px; 
+    width: 4px; height: 80%;
+    background-color: #3b82f6;
     border-radius: 0 5px 5px 0;
     opacity: 0;
     transition: opacity 0.2s ease;
 }
 
-.menu-item:focus::before,
-.menu-item:active::before,
-.menu-item:hover::before {
-    opacity: 1;
-}
+.menu-item:hover::before { opacity: 1; }
 
+/* Efecto Uiverse: Desenfocar los otros ítems */
 .menu-dropdown:hover > :not(.menu-item:hover):not(.menu-header) {
     transition: 300ms;
     filter: blur(1px);
@@ -280,23 +290,20 @@ form input:focus, form textarea:focus {
     opacity: 0.7;
 }
 
+/* Botón Salir */
 .menu-item.logout {
     margin-top: 5px;
-    border-top: 1px solid #21262C;
-    border-radius: 0 0 6px 6px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
 }
-.menu-item.logout:hover {
-    background-color: rgba(248, 81, 73, 0.1); 
-}
-.menu-item.logout i {
-    color: #f85149;
-}
-.menu-item.logout:hover::before {
-    background-color: #f85149; 
-}
+body.dark-mode .menu-item.logout { border-top-color: rgba(255,255,255,0.1); }
+
+.menu-item.logout:hover { background-color: rgba(239, 68, 68, 0.15); }
+.menu-item.logout i { color: #ef4444; }
+.menu-item.logout:hover::before { background-color: #ef4444; }
 
 /* =========================================
-   TOGGLE MODO OSCURO (Lógica Corregida)
+   TOGGLE MODO OSCURO (CORREGIDO)
    ========================================= */
 .theme-toggle-container {
     justify-content: space-between;
@@ -315,8 +322,7 @@ form input:focus, form textarea:focus {
 
 .switch-label {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     background-color: var(--light); 
     border-radius: 13px;
     cursor: pointer;
@@ -324,31 +330,23 @@ form input:focus, form textarea:focus {
     overflow: hidden;
 }
 
-.checkbox {
-    position: absolute;
-    display: none;
-}
+.checkbox { position: absolute; display: none; }
 
 .slider {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     border-radius: 13px;
     transition: 0.3s;
     background-color: var(--light); 
 }
 
-.checkbox:checked ~ .slider {
-    background-color: var(--dark);
-}
+.checkbox:checked ~ .slider { background-color: var(--dark); }
 
 .slider::before {
     content: "";
     position: absolute;
-    top: 3px;
-    left: 4px;
-    width: 16px;
-    height: 16px;
+    top: 3px; left: 4px;
+    width: 16px; height: 16px;
     border-radius: 50%;
     background-color: var(--dark); 
     box-shadow: none; 
@@ -360,21 +358,9 @@ form input:focus, form textarea:focus {
     background-color: transparent; 
     box-shadow: inset 6px -2px 0px 0px var(--light); 
 }
-.navbar-toggle {
-    margin-right: 15px;
-    /* Alineación vertical perfecta */
-    display: flex;
-    align-items: center;
-}
+
+/* --- RESPONSIVE --- */
 @media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        padding: 15px;
-    }
-    .nav-links {
-        margin-top: 15px;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+    .navbar { flex-direction: column; padding: 15px; }
+    .nav-links { margin-top: 15px; gap: 10px; flex-wrap: wrap; justify-content: center; }
 }

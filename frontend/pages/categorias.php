@@ -59,8 +59,8 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="categorias-grid">
                 <?php foreach($categorias as $cat): ?>
                 
-                <div class="categoria-card-wrapper" onclick="window.location.href='categoria.php?id=<?= $cat['id'] ?>'">
-                    <div class="categoria-card-inner">
+                <a href="categoria.php?id=<?= $cat['id'] ?>" class="uiverse-wrapper">
+                    <div class="uiverse-inner">
                         <div class="categoria-icono">
                             <?php 
                             $iconos = [
@@ -80,7 +80,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             <span>Ir a las publicaciones</span> <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
-                </div>
+                </a>
 
                 <?php endforeach; ?>
             </div>

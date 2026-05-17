@@ -17,6 +17,13 @@ if ($usuario_id > 0) {
         exit;
     }
     
+    // El ID 1 suele ser el Super Admin irrevocable, lo protegemos por seguridad
+    if ($usuario_id == 1) {
+        $_SESSION['mensaje_error'] = "No se puede eliminar al Administrador principal.";
+        header("Location: usuarios.php");
+        exit;
+    }
+    
     try {
         $db = (new Conexion())->getConexion();
         
@@ -25,17 +32,44 @@ if ($usuario_id > 0) {
         $check->execute();
         
         if ($check->fetch()) {
-            $stmt = $db->prepare("DELETE FROM usuarios WHERE id = :id");
-            $stmt->bindParam(':id', $usuario_id);
-            $stmt->execute();
-            $_SESSION['mensaje_exito'] = "Usuario eliminado correctamente.";
+            
+            // 1. Iniciamos la transacción (Todo o nada)
+            $db->beginTransaction();
+            
+            // 2. Eliminar los LIKES que dio el usuario
+            $stmtLikes = $db->prepare("DELETE FROM likes WHERE usuario_id = :id");
+            $stmtLikes->execute([':id' => $usuario_id]);
+            
+            // 3. Eliminar los COMENTARIOS que hizo el usuario
+            $stmtComentarios = $db->prepare("DELETE FROM comentarios WHERE usuario_id = :id");
+            $stmtComentarios->execute([':id' => $usuario_id]);
+            
+            // 4. Conservar PUBLICACIONES: Transferir la autoría al Admin (ID 1)
+            $stmtPubs = $db->prepare("UPDATE publicaciones SET usuario_id = 1 WHERE usuario_id = :id");
+            $stmtPubs->execute([':id' => $usuario_id]);
+            
+            // 5. Eliminar finalmente al USUARIO
+            $stmtUser = $db->prepare("DELETE FROM usuarios WHERE id = :id");
+            $stmtUser->execute([':id' => $usuario_id]);
+            
+            // 6. Si todo salió bien, confirmamos los cambios en la base de datos
+            $db->commit();
+            
+            $_SESSION['mensaje_exito'] = "Usuario eliminado. Sus publicaciones fueron transferidas al Administrador.";
         } else {
             $_SESSION['mensaje_error'] = "Usuario no encontrado.";
         }
     } catch (Exception $e) {
-        $_SESSION['mensaje_error'] = "Error al eliminar usuario: " . $e->getMessage();
+        // Si hay un error, revertimos todos los cambios para no dañar la base de datos
+        if (isset($db) && $db->inTransaction()) {
+            $db->rollBack();
+        }
+        $_SESSION['mensaje_error'] = "Error crítico al eliminar usuario: " . $e->getMessage();
     }
+} else {
+    $_SESSION['mensaje_error'] = "ID de usuario inválido.";
 }
 
+// Redirigir de vuelta al panel de usuarios
 header("Location: usuarios.php");
 exit;

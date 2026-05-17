@@ -10,7 +10,7 @@
     --banner-bg-1: #e0f2fe;
     --banner-bg-2: #15181b;
     
-    /* Fondos de estados (Hover, Delete, Rol) */
+    /* Fondos de estados */
     --bg-hover: #f8fafc;
     --bg-rol: #eff6ff;
     --bg-delete: #fee2e2;
@@ -21,6 +21,11 @@
     /* Variables Neubrutalistas para el modal y botones */
     --color-accion: #06b6d4; 
     --sombra-neubrutal-oscura: rgba(0, 0, 0, 0.4);
+
+    /* Variables adicionales de cristal */
+    --fondo-etiqueta: #cfd0d0;
+    --texto-etiqueta: #1e3a8a;
+    --texto-resumen: #475569;
 }
 
 body.dark-mode {
@@ -39,83 +44,123 @@ body.dark-mode {
     --text-delete: #ff7b72;
     
     --sombra-card: rgba(0,0,0,0.4);
+
+    /* Variables adicionales cristal oscuras */
+    --fondo-etiqueta: rgba(0, 102, 255, 0.2); 
+    --texto-etiqueta: #4ade80; 
+    --texto-resumen: #f3f4f6; 
 }
 
-/* ============================================ */
-/* ESTILOS PARA PERFIL.PHP                      */
-/* ============================================ */
-
-.perfil-container {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
-    font-family: 'Inter', sans-serif;
+/* Luces de fondo para potenciar el efecto Glassmorphism */
+.bg-glow-1 {
+    position: fixed; top: -50px; left: -50px; width: 400px; height: 400px;
+    background: rgba(52, 211, 153, 0.15); border-radius: 50%; filter: blur(80px); z-index: 0; pointer-events: none;
+}
+.bg-glow-2 {
+    position: fixed; bottom: -100px; right: -50px; width: 500px; height: 500px;
+    background: rgba(59, 130, 246, 0.15); border-radius: 50%; filter: blur(100px); z-index: 0; pointer-events: none;
 }
 
-/* --- HEADER DEL PERFIL (Banner y Foto) --- */
-.perfil-header {
+body.dark-mode .bg-glow-1 { background: rgba(52, 211, 153, 0.08); }
+body.dark-mode .bg-glow-2 { background: rgba(59, 130, 246, 0.1); }
+
+
+/* ============================================ */
+/* HEADER A TODO LO ANCHO (FULL WIDTH)          */
+/* ============================================ */
+
+.perfil-header-full {
+    width: 100%;
     background-color: var(--blanco);
-    border-radius: 24px;
-    overflow: hidden;
+    border-bottom: 1px solid var(--borde-tarjeta);
     box-shadow: 0 4px 20px var(--sombra-card);
     margin-bottom: 30px;
-    position: relative;
-    border: 1px solid var(--borde-tarjeta);
     transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    position: relative;
+    z-index: 5;
 }
 
-.perfil-banner {
-    height: 200px;
+.perfil-banner-full {
+    height: 280px; 
+    width: 100%;
     background: linear-gradient(135deg, var(--banner-bg-1) 0%, var(--banner-bg-2) 100%);
-    border-bottom: 1px solid var(--borde-tarjeta);
-    transition: background 0.3s, border-color 0.3s;
+    transition: background 0.3s;
 }
 
-.perfil-info-wrapper {
-    padding: 20px 30px 30px 30px;
+.perfil-info-wrapper-full {
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding: 0 20px 30px 20px;
     display: flex;
     align-items: flex-end;
-    margin-top: -80px;
-}
-
-.foto-perfil-container {
     position: relative;
 }
 
-.foto-perfil {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 6px solid var(--blanco); 
-    object-fit: cover;
-    box-shadow: 0 4px 15px var(--sombra-card);
-    background-color: var(--fondo-suave);
-    transition: border-color 0.3s, background-color 0.3s;
-}
+/* ============================================ */
+/* TARJETA DE CRISTAL PARA EL HEADER PRINCIPAL  */
+/* ============================================ */
 
-.foto-placeholder {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 6px solid var(--blanco);
-    background-color: var(--fondo-suave);
+/* 🔥 SE QUITÓ LA FUNCIONALIDAD DE BOTÓN (SIN CLIC, SIN ACTIVE) 🔥 */
+.profile-main-card {
+    box-sizing: border-box;
+    width: 260px; 
+    height: 290px;
+    background: rgba(217, 217, 217, 0.2); 
+    border: 1px solid white;
+    box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px); 
+    border-radius: 17px;
+    text-align: center;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    font-size: 5rem;
-    box-shadow: 0 4px 15px var(--sombra-card);
-    color: var(--texto-secundario);
-    transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin-top: -160px; 
+    z-index: 10;
+    cursor: default; /* Ya no es manita de clic */
+    transition: all 0.5s;
+    flex-shrink: 0;
 }
 
-.user-details {
-    margin-left: 25px;
+/* Sigue flotando un poco para no perder la vida */
+.profile-main-card:hover {
+    border: 1px solid black;
+    transform: scale(1.05);
+}
+
+body.dark-mode .profile-main-card {
+    background: rgba(22, 27, 34, 0.6);
+    border-color: #30363d;
+}
+body.dark-mode .profile-main-card:hover {
+    border-color: var(--color-accion);
+}
+
+.profile-main-card img {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: border-color 0.3s;
+}
+
+body.dark-mode .profile-main-card img {
+    border-color: #161b22;
+}
+
+.user-details-full {
+    margin-left: 40px;
     flex-grow: 1;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
 }
 
 .user-name {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     font-weight: 800;
     color: var(--texto-titulos);
     margin: 0;
@@ -134,6 +179,18 @@ body.dark-mode {
     transition: color 0.3s, background-color 0.3s;
 }
 
+.user-description {
+    color: var(--texto-oscuro);
+    font-size: 1.05rem;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    line-height: 1.5;
+    max-width: 600px;
+    transition: color 0.3s;
+}
+
+body.dark-mode .user-description { color: var(--texto-titulos); }
+
 .user-joined {
     color: var(--texto-secundario);
     font-size: 0.9rem;
@@ -141,25 +198,36 @@ body.dark-mode {
     transition: color 0.3s;
 }
 
-.btn-edit-perfil {
-    background-color: transparent;
-    border: 1px solid var(--borde-tarjeta);
-    color: var(--texto-titulos);
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s;
-    cursor: pointer;
+/* ============================================ */
+/* ESTILOS DEL CONTENEDOR CENTRAL               */
+/* ============================================ */
+.perfil-container {
+    max-width: 1200px;
+    margin: 10px auto 40px auto;
+    padding: 0 20px;
+    font-family: 'Inter', sans-serif;
 }
 
-.btn-edit-perfil:hover {
-    background-color: var(--bg-hover);
-    border-color: var(--texto-secundario);
+/* Botones Neubrutalistas Generales */
+.btn-p-edit, .btn-p-action, .btn-modal-cancel {
+    position: relative; font-size: 0.9rem; font-weight: 600;
+    text-transform: uppercase; text-decoration: none; padding: 0.8em 1.4em;
+    display: inline-flex; align-items: center; gap: 8px;
+    cursor: pointer; border-radius: 6em; border: none; transition: all 0.2s;
+    box-shadow: 3px 3px 0 var(--sombra-neubrutal-oscura);
+    font-family: 'Inter', sans-serif;
 }
+.btn-p-edit { background-color: var(--blanco); color: var(--texto-oscuro); }
+.btn-p-edit:hover { color: var(--color-accion); transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--sombra-neubrutal-oscura); }
+
+.btn-p-action { background-color: var(--color-accion); color: white; }
+.btn-p-action:hover { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--sombra-neubrutal-oscura); color: white;}
+
+.btn-modal-cancel { background-color: var(--blanco); color: var(--texto-oscuro); }
+.btn-modal-cancel:hover { color: var(--color-accion); transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--sombra-neubrutal-oscura); }
 
 /* =========================================
-   MENÚ DE PESTAÑAS (ESTILO X / TWITTER)
+   MENÚ DE PESTAÑAS
    ========================================= */
 .profile-nav {
     display: flex;
@@ -169,6 +237,8 @@ body.dark-mode {
     border-radius: 16px 16px 0 0;
     border: 1px solid var(--borde-tarjeta);
     transition: background-color 0.3s, border-color 0.3s;
+    position: relative;
+    z-index: 5;
 }
 
 .tab-btn {
@@ -186,9 +256,7 @@ body.dark-mode {
     border-radius: 16px 16px 0 0;
 }
 
-.tab-btn:hover {
-    background-color: var(--bg-hover);
-}
+.tab-btn:hover { background-color: var(--bg-hover); }
 
 .tab-btn.active {
     color: var(--texto-titulos);
@@ -196,15 +264,9 @@ body.dark-mode {
 }
 
 .tab-btn.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0; 
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px; 
-    height: 4px;
-    background-color: var(--color-enlace);
-    border-radius: 4px 4px 0 0;
+    content: ''; position: absolute; bottom: 0; left: 50%;
+    transform: translateX(-50%); width: 60px; height: 4px;
+    background-color: var(--color-enlace); border-radius: 4px 4px 0 0;
     transition: background-color 0.3s;
 }
 
@@ -213,92 +275,132 @@ body.dark-mode {
     animation: fadeIn 0.3s ease;
 }
 
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================ */
+/* TARJETAS CRISTAL LISTA VERTICAL (DEL INDEX)  */
+/* ============================================ */
+.lista-vertical { margin-top: 10px; }
+
+.vertical-card-wrapper {
+    width: 100%; 
+    background: rgba(217, 217, 217, 0.4) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid white !important;
+    border-radius: 20px; 
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+    margin-bottom: 30px; 
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12), 0 5px 15px rgba(0, 0, 0, 0.06) !important;
+    overflow: hidden;
+}
+
+body.dark-mode .vertical-card-wrapper {
+    background: rgba(22, 27, 34, 0.58) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55), 0 10px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+.vertical-card-wrapper:hover {
+    transform: translateY(-4px); 
+    border: 1px solid #94a3b8 !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.18), 0 10px 22px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.dark-mode .vertical-card-wrapper:hover {
+    border-color: rgba(96, 165, 250, 0.3) !important;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.75), 0 12px 28px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Modificador para Tarjetas Rechazadas */
+.vertical-card-wrapper.publicacion-rechazada {
+    border: 1px solid rgba(239, 68, 68, 0.6) !important;
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.15), 0 5px 15px rgba(239, 68, 68, 0.08) !important;
+}
+.vertical-card-wrapper.publicacion-rechazada:hover {
+    border: 1px solid rgba(239, 68, 68, 1) !important;
+}
+body.dark-mode .vertical-card-wrapper.publicacion-rechazada {
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+
+.vertical-card-inner {
+    display: flex; 
+    gap: 25px; 
+    background-color: transparent !important;
+    overflow: hidden;
+}
+
+.vertical-imagen { width: 280px; flex-shrink: 0; overflow: hidden; }
+.vertical-imagen img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.vertical-card-wrapper:hover .vertical-imagen img { transform: scale(1.04); }
+
+.vertical-contenido { padding: 25px; flex: 1; }
+.vertical-categoria { display: inline-block; background: var(--fondo-etiqueta); color: var(--texto-etiqueta); font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 700; }
+.vertical-titulo { font-size: 1.5rem; font-weight: 800; color: var(--text-dark, #0f172a); margin-bottom: 12px; transition: color 0.3s ease; }
+.vertical-titulo:hover { color: var(--color-accion); }
+body.dark-mode .vertical-titulo { color: #f8fafc !important; }
+body.dark-mode .vertical-titulo:hover { color: var(--color-accion) !important; }
+
+.vertical-meta { font-size: 0.8rem; color: var(--texto-secundario); margin-bottom: 15px; font-weight: 500; display:flex; align-items:center; }
+.vertical-resumen { color: var(--texto-resumen); line-height: 1.6; margin-bottom: 15px; }
+body.dark-mode .vertical-resumen { color: #cbd5e1 !important; }
+
 /* =========================================
    LISTA DE COMENTARIOS EN EL PERFIL
    ========================================= */
-.mi-comentario-item {
-    background-color: var(--blanco);
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid var(--borde-tarjeta);
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px var(--sombra-card);
-    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
-}
-
-/* --- AJUSTES DE ALINEACIÓN DEL HEADER --- */
 .comentario-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Asegura centrado vertical */
-    gap: 15px; /* Crea un muro invisible entre texto y botón */
-    margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 10px;
 }
-
 .comentario-meta {
-    font-size: 0.85rem;
-    color: var(--texto-secundario);
-    transition: color 0.3s;
-    flex: 1; /* Permite que el texto tome el espacio sobrante */
-    word-break: break-word; /* Si el título es muy bestia, lo corta hacia abajo */
+    font-size: 0.85rem; color: var(--texto-secundario); transition: color 0.3s; flex: 1; word-break: break-word; 
 }
+.comentario-meta strong { color: var(--color-enlace); transition: color 0.3s; }
+.comentario-texto { color: var(--texto-titulos); line-height: 1.5; font-size: 0.95rem; transition: color 0.3s; font-style: italic;}
 
-.comentario-meta strong {
-    color: var(--color-enlace);
-    transition: color 0.3s;
-}
-
-.comentario-texto {
-    color: var(--texto-oscuro);
-    line-height: 1.5;
-    font-size: 0.95rem;
-    transition: color 0.3s;
-}
-
-/* --- BOTÓN ELIMINAR COMENTARIO (MINI-ECO) --- */
 .btn-delete-com {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.75rem; /* Tamaño más sutil */
-    font-weight: 700;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 0.4em 0.8em; /* Padding más compacto */
-    border-radius: 6em;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: var(--text-delete);
-    background-color: var(--bg-delete);
-    box-shadow: 2px 2px 0 var(--sombra-neubrutal-oscura);
-    flex-shrink: 0; /* IMPIDE que el texto largo aplaste el botón */
+    position: relative; display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; 
+    font-weight: 700; text-transform: uppercase; text-decoration: none; padding: 0.4em 0.8em; 
+    border-radius: 6em; border: none; cursor: pointer; transition: all 0.2s;
+    color: var(--text-delete); background-color: var(--bg-delete);
+    box-shadow: 2px 2px 0 var(--sombra-neubrutal-oscura); flex-shrink: 0; 
 }
-
 .btn-delete-com:hover {
-    transform: translate(1px, 1px);
-    box-shadow: 1px 1px 0 var(--sombra-neubrutal-oscura);
-    background-color: var(--text-delete);
-    color: var(--blanco);
+    transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--sombra-neubrutal-oscura);
+    background-color: var(--text-delete); color: var(--blanco);
 }
 
-.no-pubs {
-    text-align: center;
-    padding: 40px;
-    color: var(--texto-secundario);
-    transition: color 0.3s;
-}
-
-.no-pubs i {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    color: var(--borde-tarjeta);
-    transition: color 0.3s;
-}
+.no-pubs { text-align: center; padding: 40px; color: var(--texto-secundario); transition: color 0.3s; }
+.no-pubs i { font-size: 3rem; margin-bottom: 15px; color: var(--borde-tarjeta); transition: color 0.3s; }
 
 /* =========================================
-   ESTILOS DEL MODAL Y BOTONES NEUBRUTALISTAS
+   BOTON LIKE
+   ========================================= */
+.post-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    border-top: 1px solid var(--borde-tarjeta);
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.like-btn {
+    background: transparent; border: 1px solid var(--borde-tarjeta); padding: 8px 16px;
+    border-radius: 20px; display: flex; align-items: center; gap: 8px; cursor: pointer;
+    font-size: 0.9rem; font-weight: 600; color: var(--texto-secundario); transition: all 0.2s ease;
+}
+.like-btn:hover { background-color: rgba(239, 68, 68, 0.1); border-color: #ef4444; color: #ef4444; }
+.like-icon { fill: none; stroke: currentColor; stroke-width: 2; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.like-btn.liked { background-color: rgba(239, 68, 68, 0.1); border-color: #ef4444; color: #ef4444; }
+.like-btn.liked .like-icon { fill: #ef4444; stroke: #ef4444; transform: scale(1.1); }
+.like-btn:active .like-icon { transform: scale(0.8); }
+
+/* =========================================
+   MODALES GENERALES
    ========================================= */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -320,97 +422,106 @@ body.dark-mode {
     color: var(--texto-titulos); box-sizing: border-box; margin-bottom: 15px;
 }
 
-/* Botones Animados "Eco" (Estilo Uiverse) para Perfil y Modales */
-.btn-p-edit, .btn-p-action, .btn-modal-cancel {
-    position: relative; font-size: 0.9rem; font-weight: 600;
-    text-transform: uppercase; text-decoration: none; padding: 0.8em 1.4em;
-    display: inline-flex; align-items: center; gap: 8px;
-    cursor: pointer; border-radius: 6em; border: none; transition: all 0.2s;
-    box-shadow: -4px -2px 16px 0px var(--blanco), 4px 2px 16px 0px rgba(0,0,0,0.1);
+textarea.form-control-modal { resize: vertical; min-height: 80px; }
+
+.observacion-box {
+    background-color: #fef2f2;
+    border-left: 5px solid #ef4444;
+    padding: 15px 20px;
+    border-radius: 0 8px 8px 0;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    color: #7f1d1d;
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
-.btn-p-action { background-color: var(--color-accion); color: white; }
-.btn-p-action:hover { transform: translateY(-3px); color: white; }
-
-.btn-p-edit, .btn-modal-cancel { background-color: var(--blanco); color: var(--texto-oscuro); }
-.btn-p-edit:hover, .btn-modal-cancel:hover { color: var(--color-accion); transform: translateY(-3px); }
-
-.btn-p-edit, .btn-p-action, .btn-modal-cancel {
-    box-shadow: 3px 3px 0 var(--sombra-neubrutal-oscura);
+body.dark-mode .observacion-box {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
 }
 
-.btn-p-edit:hover, .btn-p-action:hover, .btn-modal-cancel:hover {
-    box-shadow: 1px 1px 0 var(--sombra-neubrutal-oscura);
-    transform: translate(2px, 2px);
+/* ========================================================
+   MODAL DE EDICIÓN DE PERFIL (DOS COLUMNAS)
+   ======================================================== */
+.modal-box.modal-profile-wide {
+    max-width: 850px; 
+    padding: 35px;
 }
 
-/* --- AJUSTES PARA MÓVIL (REEMPLAZA EL ANTERIOR) --- */
+.profile-modal-split {
+    display: flex; gap: 35px; align-items: center; text-align: left;
+}
+
+.profile-modal-left {
+    flex: 1; display: flex; flex-direction: column; align-items: center;    
+    justify-content: center; border-right: 1px solid var(--borde-tarjeta);
+    padding-right: 35px; gap: 15px; 
+}
+
+.profile-modal-right {
+    flex: 1.5; display: flex; flex-direction: column; width: 100%;
+}
+
+.profile-modal-footer {
+    margin-top: 25px; width: 100%; display: flex; justify-content: flex-end; gap: 15px;
+}
+
+.uiverse-photo-card {
+    box-sizing: border-box; width: 240px; height: 300px;
+    background: rgba(217, 217, 217, 0.2); border: 1px solid white;
+    box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22); backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px); border-radius: 17px; text-align: center;
+    cursor: pointer; transition: all 0.5s; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; user-select: none;
+    position: relative; overflow: hidden;
+}
+
+.uiverse-photo-card:hover { border: 1px solid black; transform: scale(1.05); }
+.uiverse-photo-card:active { transform: scale(0.95) rotateZ(1.7deg); }
+
+body.dark-mode .uiverse-photo-card { background: rgba(22, 27, 34, 0.6); border-color: #30363d; }
+body.dark-mode .uiverse-photo-card:hover { border-color: var(--color-accion); }
+
+.uiverse-photo-card img {
+    width: 200px; height: 200px; border-radius: 50%; object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.8); box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: border-color 0.3s;
+}
+
+body.dark-mode .uiverse-photo-card img { border-color: #161b22; }
+
+/* 🔥 SOLO EL MODAL MUESTRA LA CAPA DE "CAMBIAR FOTO" 🔥 */
+.photo-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.7); color: white; display: flex;
+    flex-direction: column; justify-content: center; align-items: center;
+    opacity: 0; transition: opacity 0.3s; border-radius: 17px; font-weight: bolder; gap: 10px;
+}
+
+.uiverse-photo-card:hover .photo-overlay { opacity: 1; }
+
+.readonly-data {
+    background: var(--fondo-suave); padding: 12px 18px; border-radius: 8px;
+    border: 1px solid var(--borde-tarjeta); margin-bottom: 15px; color: var(--texto-titulos);
+    font-weight: 600; display: flex; align-items: center; gap: 12px;
+}
+.readonly-data i { color: var(--texto-secundario); font-size: 1.1rem; }
+
+/* Adaptación Responsiva para el Header Full Width y Modales */
 @media (max-width: 768px) {
-    /* 1. Candado maestro: nada se sale de los lados */
-    body, html {
-        overflow-x: hidden;
-    }
-
-    .perfil-container {
-        padding: 0 15px; /* Menos espacio a los lados */
-        width: 100%;
-        overflow-x: hidden;
-    }
-
-    /* 2. Reducimos un poco la sombra para que no rompa el borde del cel */
-    .perfil-header {
-        box-shadow: 4px 4px 0px var(--texto-titulos);
-    }
-
-    .perfil-info-wrapper {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        margin-top: -60px;
-        padding: 15px;
-    }
-
-    /* 3. Asegura que si el correo o nombre son largos, bajen de renglón */
-    .user-details {
-        margin-left: 0;
-        margin-top: 15px;
-        width: 100%;
-        word-wrap: break-word;
-        overflow-wrap: anywhere;
-    }
-
-    .foto-perfil, .foto-placeholder {
-        width: 120px;
-        height: 120px;
-        font-size: 4rem;
-        box-shadow: 3px 3px 0px var(--texto-titulos); /* Sombra más sutil */
-        border-width: 3px;
-    }
-
-    /* 4. Permite que las pestañas se acomoden libremente */
-    .profile-nav {
-        flex-wrap: wrap;
-    }
+    body, html { overflow-x: hidden; }
+    .perfil-container { padding: 0 15px; width: 100%; }
+    .perfil-info-wrapper-full { flex-direction: column; align-items: center; text-align: center; padding-top: 0; margin-top: -100px; }
+    .profile-main-card { margin-top: 0; }
+    .user-details-full { margin-left: 0; margin-top: 20px; width: 100%; word-wrap: break-word; }
+    .btn-edit-full { margin-top: 15px; }
     
-    .tab-btn {
-        padding: 12px 5px;
-        font-size: 0.85rem;
-        flex: 1 1 33%; /* Ajusta su ancho para que no se aprieten */
-    }
+    .vertical-card-inner { flex-direction: column !important; }
+    .vertical-imagen { width: 100% !important; height: 200px; }
 
-    .comentario-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .btn-delete-com {
-        width: 100%;
-        justify-content: center;
-        margin-top: 10px;
-    }
-
-    .modal-box {
-        width: 90%;
-        padding: 20px;
-    }
+    .modal-box.modal-profile-wide { padding: 20px; }
+    .profile-modal-split { flex-direction: column; gap: 20px; }
+    .profile-modal-left { border-right: none; padding-right: 0; width: 100%; }
+    .profile-modal-right { width: 100%; }
+    .uiverse-photo-card { width: 100%; max-width: 240px; height: 300px; }
 }

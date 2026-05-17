@@ -30,10 +30,13 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="registro.php" class="nav-btn-eco primary"><i class="fas fa-user-plus"></i> Registro</a>
         <?php endif; ?>
 
-        <div class="menu-container">
-            <div class="menu-icon nav-btn-eco" onclick="toggleMenu()">
-                <i class="fas fa-bars"></i>
-            </div>
+            <div class="menu-container">
+            <label class="menuButton">
+                <input id="check-menu" type="checkbox" onclick="toggleMenu()">
+                <span class="top"></span>
+                <span class="mid"></span>
+                <span class="bot"></span>
+            </label>
             
             <div id="userMenu" class="menu-dropdown">
                 <?php if (isset($_SESSION['usuario_id'])): ?>
@@ -55,7 +58,7 @@ if (session_status() === PHP_SESSION_NONE) {
                                 <i class="fas fa-tasks"></i> Panel de Editor
                             </a>
                         <?php endif; ?>
-                        <?php endif; ?>
+                    <?php endif; ?>
                 <?php else: ?>
                     <div class="menu-header">Configuración</div>
                 <?php endif; ?>
@@ -79,21 +82,24 @@ if (session_status() === PHP_SESSION_NONE) {
                 <?php endif; ?>
             </div>
         </div>
+        </div>
     </div>
 </header>
 
 <script>
-    // ... (El script de toggleMenu y DarkMode de tu navbar queda exactamente igual) ...
     function toggleMenu() {
         var menu = document.getElementById('userMenu');
         if(menu) menu.classList.toggle('show');
     }
     
+    // Si hace clic fuera del menú, se cierra y se desmarca el botón animado
     window.onclick = function(event) {
         if (!event.target.closest('.menu-container')) {
             var menu = document.getElementById('userMenu');
+            var checkbox = document.getElementById('check-menu');
             if (menu && menu.classList.contains('show')) {
                 menu.classList.remove('show');
+                if(checkbox) checkbox.checked = false; // Devuelve la "X" a las 3 rayitas
             }
         }
     }

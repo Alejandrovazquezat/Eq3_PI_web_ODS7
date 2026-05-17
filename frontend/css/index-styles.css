@@ -8,7 +8,6 @@
     --texto-secundario: #64748b;
     --texto-resumen: #475569;
     --color-enlace: #3b82f6;
-    /* Tu gradiente claro */
     --uiverse-gradiente: linear-gradient(163deg, #edfff8 0%, #bfc5ce 100%);
     --uiverse-shadow: rgba(52, 211, 153, 0.4);
 }
@@ -16,14 +15,17 @@
 body.dark-mode {
     --borde-tarjeta: #4b5563; 
     --fondo-etiqueta: rgba(0, 102, 255, 0.2); 
-    --texto-etiqueta: #4ade80; /* Un verde más brillante para que contraste */
-    /* 🔥 AQUÍ ESTABA EL ERROR: Cambié tus grises oscuros por grises muy claros/blancos 🔥 */
+    --texto-etiqueta: #4ade80; 
     --texto-secundario: #9ca3af; 
     --texto-resumen: #f3f4f6; 
     --color-enlace: #60a5fa; 
-    /* Tu gradiente oscuro */
     --uiverse-gradiente: linear-gradient(163deg, #8097906a 0%, #807d7d6e 100%);
     --uiverse-shadow: rgba(255, 255, 255, 0.1);
+}
+
+/* 🔥 ESTO ACTIVA EL SCROLL SUAVE EN TODA LA PÁGINA 🔥 */
+html {
+    scroll-behavior: smooth;
 }
 
 .main-content {
@@ -31,13 +33,13 @@ body.dark-mode {
     margin: 0;
     padding: 0;
 }
+
 /* ============================================ */
 /* 1. HERO DEFINITIVO: FLUJO DE ENERGÍA ANIMADO */
 /* ============================================ */
 .hero-abstract {
     position: relative;
     width: 100vw;
-    /* 🔥 CORRECCIÓN: Bajamos la altura de 85vh a 55vh para acercar las tarjetas 🔥 */
     min-height: 90vh; 
     margin-left: calc(-50vw + 50%);
     display: flex;
@@ -51,7 +53,7 @@ body.dark-mode .hero-abstract {
     background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
 }
 
-/* --- Olas abstractas gigantes (Rotando) --- */
+/* Olas abstractas gigantes */
 .wave-layer {
     position: absolute;
     width: 250vw;
@@ -62,14 +64,10 @@ body.dark-mode .hero-abstract {
     z-index: 1;
 }
 
-/* Solar */
 .wave-1 { top: 30%; background: rgba(250, 204, 21, 0.15); animation-duration: 35s; }
-/* Naturaleza */
 .wave-2 { top: 45%; background: rgba(34, 197, 94, 0.2); animation-duration: 25s; animation-direction: reverse; }
-/* Agua */
 .wave-3 { top: 60%; background: rgba(56, 189, 248, 0.25); animation-duration: 20s; }
 
-/* Ajuste de colores para Modo Oscuro (Efecto neón sutil) */
 body.dark-mode .wave-1 { background: rgba(250, 204, 21, 0.05); }
 body.dark-mode .wave-2 { background: rgba(16, 185, 129, 0.1); }
 body.dark-mode .wave-3 { background: rgba(56, 189, 248, 0.1); }
@@ -79,7 +77,7 @@ body.dark-mode .wave-3 { background: rgba(56, 189, 248, 0.1); }
     100% { transform: rotate(360deg); }
 }
 
-/* --- Líneas de Viento veloces --- */
+/* Líneas de Viento */
 .wind-lines {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -113,7 +111,7 @@ body.dark-mode .wind-line {
     100% { transform: translateX(120vw); opacity: 0; }
 }
 
-/* --- Tarjeta Central de Cristal --- */
+/* Tarjeta Central de Cristal */
 .hero-text-box {
     position: relative;
     z-index: 10;
@@ -140,7 +138,7 @@ body.dark-mode .hero-text-box {
     font-weight: 900;
     color: #0f172a;
     margin: 0 0 10px 0;
-    letter-spacing: -1.5px;
+    letter-spacing: -1px;
 }
 
 body.dark-mode .hero-text-box h1 { color: #f8fafc; }
@@ -154,128 +152,208 @@ body.dark-mode .hero-text-box h1 { color: #f8fafc; }
 
 body.dark-mode .hero-text-box p { color: #cbd5e1; }
 
+/* 🔥 BOTÓN HERO GLASSMORPHISM INTERACTIVO 🔥 */
+.btn-hero-scroll {
+    margin-top: 25px;
+    padding: 14px 30px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50px;
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none; /* Quitamos el subrayado del link */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .btn-hero-scroll {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #f8fafc;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.btn-hero-scroll:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-mode .btn-hero-scroll:hover {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: #60a5fa;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+}
+
+.btn-hero-scroll i {
+    animation: bounceArrow 2s infinite ease-in-out;
+}
+
+@keyframes bounceArrow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+}
+
 @keyframes scaleIn {
     from { opacity: 0; transform: scale(0.95) translateY(20px); }
     to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-@media (max-width: 768px) {
-    .hero-text-box { margin: 20px; padding: 30px 20px; }
-    .hero-text-box h1 { font-size: 3.2rem; }
-    .hero-text-box p { font-size: 1.1rem; }
-}
 /* ============================================ */
-/* 2. TARJETAS UIVERSE (PUBLICACIONES)          */
+/* 2. TARJETAS CRISTAL CUADRÍCULA (DESTACADOS)  */
 /* ============================================ */
 .publicaciones-grid {
     max-width: 1200px; 
     margin: 0 auto; 
     padding: 35px 20px 60px 20px;
+    position: relative;
+    z-index: 5;
 }
 .destacados-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin-bottom: 50px;
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 25px; 
+    margin-bottom: 50px;
 }
 
+/* 🔥 Tono Grisáceo Exacto como en Categorías + Efecto 3D 🔥 */
 .uiverse-wrapper {
-    width: 100%; background-image: var(--uiverse-gradiente);
-    border-radius: 20px; transition: all .3s; cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-.uiverse-inner {
-    width: 100%; height: 100%; background-color: var(--white);
-    border-radius: 20px; transition: all .2s; display: flex;
-    flex-direction: column; overflow: hidden;
-}
-.uiverse-wrapper:hover {
-    box-shadow: 0px 0px 25px 2px var(--uiverse-shadow);
-    transform: translateY(-5px);
-}
-.uiverse-wrapper:hover .uiverse-inner {
-    transform: scale(0.98); border-radius: 18px;
+    width: 100%; 
+    background: rgba(217, 217, 217, 0.4) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid white !important;
+    border-radius: 20px; 
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+    cursor: pointer;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12), 0 5px 15px rgba(0, 0, 0, 0.06) !important;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
-.destacado-imagen { width: 100%; height: 180px; overflow: hidden; }
-.destacado-imagen img { width: 100%; height: 100%; object-fit: cover; }
+body.dark-mode .uiverse-wrapper {
+    background: rgba(22, 27, 34, 0.58) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55), 0 10px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+.uiverse-wrapper:hover {
+    transform: translateY(-8px);
+    border: 1px solid #94a3b8 !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2), 0 10px 22px rgba(0, 0, 0, 0.12) !important;
+}
+
+body.dark-mode .uiverse-wrapper:hover {
+    border-color: rgba(96, 165, 250, 0.3) !important;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.75), 0 12px 28px rgba(0, 0, 0, 0.45) !important;
+}
+
+.uiverse-inner {
+    width: 100%; 
+    height: 100%; 
+    background-color: transparent !important;
+    display: flex;
+    flex-direction: column; 
+    overflow: hidden;
+}
+
+.destacado-imagen { width: 100%; height: 180px; overflow: hidden; position: relative; }
+.destacado-imagen img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.uiverse-wrapper:hover .destacado-imagen img { transform: scale(1.06); }
+
 .destacado-contenido { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
 .destacado-categoria {
     display: inline-block; background: var(--fondo-etiqueta); color: var(--texto-etiqueta);
-    font-size: 0.7rem; padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; font-weight: 600; width: fit-content;
+    font-size: 0.7rem; padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; font-weight: 700; width: fit-content;
 }
-.destacado-titulo { font-size: 1.1rem; font-weight: 700; color: var(--text-dark); margin-bottom: 10px; line-height: 1.4; }
-.destacado-fecha { font-size: 0.75rem; color: var(--texto-secundario); margin-bottom: 12px; }
-.destacado-resumen { font-size: 0.85rem; color: var(--texto-resumen); line-height: 1.5; max-height: 3.9em; overflow: hidden; }
+.destacado-titulo { font-size: 1.1rem; font-weight: 800; color: var(--text-dark, #0f172a); margin-bottom: 10px; line-height: 1.4; transition: color 0.3s; }
+body.dark-mode .destacado-titulo { color: #f8fafc !important; }
 
-/* Lista vertical infinita */
+.destacado-fecha { font-size: 0.75rem; color: var(--texto-secundario); margin-bottom: 12px; font-weight: 500; }
+.destacado-resumen { font-size: 0.85rem; color: var(--texto-resumen); line-height: 1.5; max-height: 3.9em; overflow: hidden; }
+body.dark-mode .destacado-resumen { color: #cbd5e1 !important; }
+
+/* ============================================ */
+/* 3. TARJETAS CRISTAL LISTA VERTICAL          */
+/* ============================================ */
 .lista-vertical { margin-top: 50px; }
+
+/* 🔥 Tono Grisáceo Exacto como en Categorías + Efecto 3D 🔥 */
 .vertical-card-wrapper {
-    width: 100%; background-image: var(--uiverse-gradiente);
-    border-radius: 20px; transition: all .3s; margin-bottom: 30px; cursor: pointer;
+    width: 100%; 
+    background: rgba(217, 217, 217, 0.4) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid white !important;
+    border-radius: 20px; 
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+    margin-bottom: 30px; 
+    cursor: pointer;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12), 0 5px 15px rgba(0, 0, 0, 0.06) !important;
+    overflow: hidden;
 }
-.vertical-card-inner {
-    display: flex; gap: 25px; background-color: var(--white);
-    border-radius: 20px; transition: all .2s; overflow: hidden;
+
+body.dark-mode .vertical-card-wrapper {
+    background: rgba(22, 27, 34, 0.58) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55), 0 10px 20px rgba(0, 0, 0, 0.35) !important;
 }
 
 .vertical-card-wrapper:hover {
-    box-shadow: 0px 0px 25px 2px var(--uiverse-shadow);
-    transform: translateX(5px);
-}
-.vertical-card-wrapper:hover .vertical-card-inner {
-    transform: scale(0.985); border-radius: 18px;
+    transform: translateX(8px) translateY(-2px);
+    border: 1px solid #94a3b8 !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.18), 0 10px 22px rgba(0, 0, 0, 0.1) !important;
 }
 
-.vertical-imagen { width: 280px; flex-shrink: 0; }
-.vertical-imagen img { width: 100%; height: 100%; object-fit: cover; }
+body.dark-mode .vertical-card-wrapper:hover {
+    border-color: rgba(96, 165, 250, 0.3) !important;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.75), 0 12px 28px rgba(0, 0, 0, 0.45) !important;
+}
+
+.vertical-card-inner {
+    display: flex; 
+    gap: 25px; 
+    background-color: transparent !important;
+    overflow: hidden;
+}
+
+.vertical-imagen { width: 280px; flex-shrink: 0; overflow: hidden; }
+.vertical-imagen img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.vertical-card-wrapper:hover .vertical-imagen img { transform: scale(1.04); }
+
 .vertical-contenido { padding: 25px; flex: 1; }
-.vertical-categoria { display: inline-block; background: var(--fondo-etiqueta); color: var(--texto-etiqueta); font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; margin-bottom: 12px; font-weight: 600; }
-.vertical-titulo { font-size: 1.5rem; font-weight: 700; color: var(--text-dark); margin-bottom: 12px; }
-.vertical-meta { font-size: 0.8rem; color: var(--texto-secundario); margin-bottom: 15px; }
+.vertical-categoria { display: inline-block; background: var(--fondo-etiqueta); color: var(--texto-etiqueta); font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; margin-bottom: 12px; font-weight: 700; }
+.vertical-titulo { font-size: 1.5rem; font-weight: 800; color: var(--text-dark, #0f172a); margin-bottom: 12px; }
+body.dark-mode .vertical-titulo { color: #f8fafc !important; }
+
+.vertical-meta { font-size: 0.8rem; color: var(--texto-secundario); margin-bottom: 15px; font-weight: 500; }
 .vertical-resumen { color: var(--texto-resumen); line-height: 1.6; margin-bottom: 15px; }
-.vertical-leer-mas { color: var(--color-enlace); font-weight: 600; font-size: 0.9rem; }
+body.dark-mode .vertical-resumen { color: #cbd5e1 !important; }
+.vertical-leer-mas { color: var(--color-enlace); font-weight: 700; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; }
 
 /* Separador */
 .separador { text-align: center; margin: 40px 0; position: relative; }
-.separador span { background-color: var(--bg-main); padding: 0 20px; color: var(--texto-secundario); font-size: 0.9rem; position: relative; z-index: 1; }
+.separador span { background-color: transparent; padding: 0 20px; color: var(--texto-secundario); font-size: 0.9rem; font-weight: 700; position: relative; z-index: 1; }
 .separador::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background-color: var(--borde-tarjeta); z-index: 0; }
 
-@media (max-width: 1024px) { .destacados-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 768px) {
-    .hero-content h1 { font-size: 3.5rem; }
-    .destacados-grid { grid-template-columns: 1fr; }
-    .vertical-card-inner { flex-direction: column; }
-    .vertical-imagen { width: 100%; height: 200px; }
+/* ============================================ */
+/* RESPONSIVIDAD (MEDIA QUERIES)                */
+/* ============================================ */
+@media (max-width: 1024px) { 
+    .destacados-grid { grid-template-columns: repeat(2, 1fr); } 
 }
-/* Para pantallas menores a 768px (celulares y tablets) */
+
 @media (max-width: 768px) {
-    .destacados-grid, .publicaciones-grid {
-        grid-template-columns: 1fr !important; /* Fuerza una sola columna */
-        gap: 15px;
-    }
-
-    .hero-text-box h1 {
-        font-size: 2rem; /* Reduce el tamaño del título para que no se corte */
-    }
-}
-/* --- AJUSTES PARA MÓVIL --- */
-@media (max-width: 768px) {
-    /* Hacemos que la cuadrícula de destacados sea de 1 sola columna */
-    .destacados-grid {
-        grid-template-columns: 1fr !important;
-        gap: 20px;
-    }
-
-    /* Las tarjetas verticales ahora se apilan hacia abajo */
-    .vertical-card-inner {
-        flex-direction: column !important;
-    }
-
-    /* La imagen ocupa todo el ancho en lugar de 280px */
-    .vertical-imagen {
-        width: 100% !important;
-        height: 200px;
-    }
-
-    .hero-text-box h1 {
-        font-size: 2.5rem; /* Un poco más pequeño para que no se corte */
-    }
+    .hero-text-box h1 { font-size: 2.8rem; }
+    .destacados-grid { grid-template-columns: 1fr !important; gap: 20px; }
+    .vertical-card-inner { flex-direction: column !important; }
+    .vertical-imagen { width: 100% !important; height: 200px; }
 }

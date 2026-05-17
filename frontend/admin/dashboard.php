@@ -13,18 +13,24 @@ $u = $db->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
 $p = $db->query("SELECT COUNT(*) FROM publicaciones")->fetchColumn();
 $total_comentarios = $db->query("SELECT COUNT(*) FROM comentarios")->fetchColumn();
 $total_likes = $db->query("SELECT COUNT(*) FROM likes")->fetchColumn();
+
+// Obtener el total de visitas de la nueva tabla
+$total_visitas = $db->query("SELECT total_visitas FROM contador_visitas WHERE id = 1")->fetchColumn();
+if (!$total_visitas) $total_visitas = 0; // Por si acaso
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css_dash/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <title>Dashboard - Red-novable</title>
 </head>
 <body>
+
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
 
     <?php include 'sidebar.php'; ?>
 
@@ -34,32 +40,39 @@ $total_likes = $db->query("SELECT COUNT(*) FROM likes")->fetchColumn();
             <p>Resumen general de la plataforma</p>
         </header>
         <section class="stats-grid">
-            <div class="card stat-card">
+            <div class="stat-card">
                 <div class="stat-icon">👥</div>
                 <div class="stat-info">
                     <p>Usuarios Registrados</p>
                     <h2><?= number_format($u) ?></h2>
                 </div>
             </div>
-            <div class="card stat-card">
+            <div class="stat-card">
                 <div class="stat-icon">🍃</div>
                 <div class="stat-info">
                     <p>Publicaciones Totales</p>
                     <h2><?= number_format($p) ?></h2>
                 </div>
             </div>
-            <div class="card stat-card">
+            <div class="stat-card">
                 <div class="stat-icon">💬</div>
                 <div class="stat-info">
                     <p>Comentarios Totales</p>
                     <h2><?= number_format($total_comentarios) ?></h2>
                 </div>
             </div>
-            <div class="card stat-card">
+            <div class="stat-card">
                 <div class="stat-icon">❤️</div>
                 <div class="stat-info">
                     <p>Likes Totales</p>
                     <h2><?= number_format($total_likes) ?></h2>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👀</div>
+                <div class="stat-info">
+                    <p>Visitas Totales</p>
+                    <h2><?= number_format($total_visitas) ?></h2>
                 </div>
             </div>
         </section>

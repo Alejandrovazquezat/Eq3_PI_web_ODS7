@@ -118,14 +118,60 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     resetearInactividad();
 
+    // --- SINTETIZADOR DE VOZ 8-BIT (FRANXX-ESE) ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function sonarLetra() {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        // Onda triangular para un sonido suave tipo 8-bits
+        osc.type = 'triangle'; 
+        
+        // Frecuencia entre 650 y 800Hz para una voz masculina joven y no tan grave
+        osc.frequency.setValueAtTime(650 + Math.random() * 150, audioCtx.currentTime);
+
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime); // Volumen
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.1);
+    }
+
+    function emitirSonidoTexto(mensaje) {
+        let i = 0;
+        const intervalo = setInterval(() => {
+            if (i < mensaje.length) {
+                // Solo suena en las letras, no en los espacios
+                if (mensaje[i] !== " ") {
+                    sonarLetra();
+                }
+                i++;
+            } else {
+                clearInterval(intervalo);
+            }
+        }, 60); // Ajusta este valor si quieres que hable más rápido o más lento
+    }
+
     // --- FUNCIÓN HABLAR ---
     function hablar(mensaje, duracion = 5000, esError = false, accionAlTerminar = "nada") {
         estaHablando = true;
         resetearInactividad(); 
         
+        // Desbloquear el audioContext si el navegador lo suspendió
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+
         mensajeElem.textContent = mensaje;
         globo.style.display = "block";
         franxxImg.src = uriHablando;
+        
+        // Ejecutar la voz al mostrar el texto
+        emitirSonidoTexto(mensaje);
         
         if (esError) {
             globo.style.borderColor = "#ff4757";
@@ -186,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 container.classList.add("mascota-visible");
                 container.classList.remove("mascota-oculto");
-                setTimeout(() => { hablar("¿Eres nuevo en Red-novable? ¡Bienvenido a la plataforma!", 4000, false, "irse"); }, 600);
+                setTimeout(() => { hablar("¿Primera ves en Red-novable?, te damos la bienvenida!!", 4000, false, "irse"); }, 600);
             }, 500);
         }
     } else {

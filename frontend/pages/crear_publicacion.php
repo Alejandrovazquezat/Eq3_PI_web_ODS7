@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($error) || $es_edicion)) {
     // LÓGICA PARA CREAR NUEVA CATEGORÍA
     if (isset($_POST['categoria_id']) && $_POST['categoria_id'] === 'nueva' && !empty($_POST['nueva_categoria'])) {
         $nombre_cat = trim($_POST['nueva_categoria']);
-        // Insertamos la categoría directamente en la DB (Aceptado porque ya validamos que es Autor/Editor/Admin)
+        // Insertamos la categoría directamente en la DB
         $stmt_cat = $db->prepare("INSERT INTO categorias (nombre, descripcion) VALUES (?, 'Categoría creada desde el editor')");
         if($stmt_cat->execute([$nombre_cat])) {
             $categoria_id = $db->lastInsertId(); // Tomamos el ID de la categoría recién creada
@@ -103,15 +103,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($error) || $es_edicion)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/navbar-style.css"> 
-    <link rel="stylesheet" href="../css_dash/crear_publicacion_styles.css"> 
+    <link rel="stylesheet" href="../css/crear_publicacion_styles.css"> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title><?= $es_edicion ? 'Editar' : 'Nueva' ?> Publicación - RED-novable</title>
     <style>
-        .container-crear { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .container-crear { max-width: 1000px; margin: 40px auto; padding: 0 20px; position: relative; z-index: 2; }
     </style>
 </head>
 <body>
+
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
 
     <?php include 'navbar.php'; ?>
 
@@ -155,12 +158,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($error) || $es_edicion)) {
                                         <?= htmlspecialchars($cat['nombre']) ?>
                                     </option>
                                 <?php endforeach; ?>
-                                <option value="nueva" style="font-weight: bold; color: var(--primary-green);">+ Crear nueva categoría</option>
+                                <option value="nueva" style="font-weight: bold; color: #10b981;">+ Crear nueva categoría</option>
                             </select>
                         </div>
 
                         <div class="field" id="div-nueva-cat" style="display: none;">
-                            <label style="color: var(--primary-green);">Nombre de la nueva categoría</label>
+                            <label style="color: #10b981;">Nombre de la nueva categoría</label>
                             <input type="text" name="nueva_categoria" id="input-nueva-cat" placeholder="Ej. Biomasa">
                         </div>
                     </div>

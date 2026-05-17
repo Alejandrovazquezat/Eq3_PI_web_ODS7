@@ -5,8 +5,6 @@
 require_once __DIR__ . '/../../config/Conexion.php';
 require_once __DIR__ . '/../../backend/controllers/CategoriesController.php';
 require_once __DIR__ . '/../../backend/controllers/PublicacionController.php';
-require_once __DIR__ . '/../../backend/models/Like.php';
-require_once __DIR__ . '/../../backend/controllers/ComentarioController.php';
 
 // ==========================
 // 2. Conexión e instancias
@@ -14,12 +12,17 @@ require_once __DIR__ . '/../../backend/controllers/ComentarioController.php';
 $db = (new Conexion())->getConexion();
 $catController = new CategoriesController($db);
 $pubController = new PublicacionController($db);
-$comentarioController = new ComentarioController($db);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$usuarioLogueado = isset($_SESSION['usuario_id']);
 
 // ==========================
-// 3. Obtener ID de categoría
+// 3. Obtener ID de categoría y Término de búsqueda
 // ==========================
 $categoria_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$buscar = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
 
 if ($categoria_id <= 0) {
     header("Location: categorias.php");
@@ -40,25 +43,18 @@ if (!$categoria) {
     $error = "Categoría no encontrada";
 } else {
     // ==========================
-    // 5. Obtener publicaciones de esta categoría
+    // 5. Obtener publicaciones y filtrar si hay búsqueda
     // ==========================
     $pub_stmt = $pubController->obtenerPorCategoria($categoria_id);
     $publicaciones = is_string($pub_stmt) ? [] : $pub_stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-// ==========================
-// 6. Iniciar sesión y obtener likes del usuario
-// ==========================
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-$usuarioLogueado = isset($_SESSION['usuario_id']);
-$likedPorUsuario = [];
-
-if ($usuarioLogueado && !empty($publicaciones)) {
-    $likeModel = new Like($db);
-    $likedPorUsuario = $likeModel->obtenerIdsPublicacionesLikedPorUsuario($_SESSION['usuario_id']);
+    
+    // Lógica del buscador en PHP
+    if (!empty($buscar)) {
+        $publicaciones = array_filter($publicaciones, function($pub) use ($buscar) {
+            return stripos(strtolower($pub['titulo']), strtolower($buscar)) !== false || 
+                   stripos(strtolower($pub['contenido']), strtolower($buscar)) !== false;
+        });
+    }
 }
 ?>
 
@@ -71,150 +67,96 @@ if ($usuarioLogueado && !empty($publicaciones)) {
     <link rel="stylesheet" href="../css/navbar-style.css">
     <link rel="stylesheet" href="../css/categoria-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-
-        .titulo-categoria {
-            background-color: var(--blanco);
-            padding: 30px;
-            border-radius: 16px;
-            border: 2px solid #000;
-            box-shadow: 6px 6px 0px #000;
-            margin-bottom: 30px;
-        }
-
-        .cat-description-text {
-            font-size: 1rem;
-            color: var(--texto-meta);
-            margin-top: 15px;
-            line-height: 1.5;
-            max-width: 700px;
-        }
-
-        /* Estilo especial para la descripción de "editor" */
-        .cat-description-editor {
-            font-size: 0.9rem;
-            color: #1e3a8a;
-            font-weight: bold;
-            background-color: #f1f5f9;
-            padding: 15px 20px;
-            border-radius: 12px;
-            border: 2px dashed #000;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-    </style>
 </head>
 <body>
     <?php include 'navbar.php'; ?>
 
-    <main class="publicaciones-container">
-        
+    <header class="categoria-header-full">
         <a href="categorias.php" class="volver">
             <i class="fas fa-arrow-left"></i> Volver a categorías
         </a>
 
         <?php if (isset($error)): ?>
-            <div style="background: #fee2e2; color: #ef4444; padding: 20px; border-radius: 10px; text-align: center;">
+            <div style="background: #fee2e2; color: #ef4444; padding: 20px; border-radius: 10px; text-align: center; max-width: 600px; margin: 0 auto;">
                 <i class="fas fa-exclamation-triangle"></i> <?= htmlspecialchars($error) ?>
             </div>
         <?php else: ?>
-
-            <div class="titulo-categoria">
-                <h1 style="color: #1e3a8a; font-size: 2.2rem; display: flex; align-items: center; gap: 15px;">
+            <div class="titulo-categoria-full">
+                <h1>
                     <i class="fas fa-tag"></i> <?= htmlspecialchars($categoria['nombre']) ?>
                 </h1>
                 
                 <?php if (!empty($categoria['descripcion'])): ?>
                     <?php if(strpos($categoria['descripcion'], 'creada desde editor') !== false): ?>
-                        <div style="margin-top: 20px;">
-                            <p class="cat-description-editor">
-                                <i class="fas fa-feather-alt" style="font-size: 1.1rem; color: var(--color-primario);"></i>
-                                Una nueva sección centrada en soluciones de energía renovable.
-                            </p>
+                        <div class="cat-description-editor">
+                            <i class="fas fa-feather-alt"></i>
+                            Una nueva sección centrada en soluciones de energía renovable.
                         </div>
                     <?php else: ?>
                         <p class="cat-description-text"><?= nl2br(htmlspecialchars($categoria['descripcion'])) ?></p>
                     <?php endif; ?>
                 <?php endif; ?>
-            </div>
 
-            <?php if (count($publicaciones) > 0): ?>
-                <?php foreach($publicaciones as $pub): 
-                    $likeModelTemp = new Like($db);
-                    $likesCount = $likeModelTemp->contarLikes($pub['id']);
-                    $yaLiked = $usuarioLogueado && in_array($pub['id'], $likedPorUsuario);
-                ?>
-                <div class="publicacion-card" data-pub-id="<?= $pub['id'] ?>">
-                    
-                    <?php if($pub['imagen']): ?>
-                    <div class="publicacion-imagen">
-                        <img src="../../assets/<?= htmlspecialchars($pub['imagen']) ?>" alt="Imagen de publicación">
-                    </div>
-                    <?php endif; ?>
-
-                    <h2 class="publicacion-titulo"><?= htmlspecialchars($pub['titulo']) ?></h2>
-                    
-                    <div class="publicacion-meta">
-                        <i class="fas fa-user"></i> <?= htmlspecialchars($pub['autor_nombre'] ?? $pub['autor'] ?? 'Desconocido') ?> &nbsp;|&nbsp; 
-                        <i class="fas fa-calendar"></i> <?= date('d/m/Y', strtotime($pub['fecha_creacion'])) ?>
-                    </div>
-
-                    <div class="publicacion-contenido">
-                        <?= nl2br(htmlspecialchars($pub['contenido'])) ?>
-                    </div>
-
-                    <div class="post-actions">
-                        <button class="like-btn <?= $yaLiked ? 'liked' : '' ?>" data-pubid="<?= $pub['id'] ?>">
-                            <svg class="like-icon" viewBox="0 0 24 24" width="24" height="24">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                            </svg>
-                            <span class="like-text">Me gusta</span>
-                            <span class="like-count"><?= $likesCount ?></span>
-                        </button>
-                        <button class="comment-trigger-btn" data-pubid="<?= $pub['id'] ?>">
-                            <i class="fas fa-comment"></i>
-                            <span>Comentarios</span>
-                        </button>
-                    </div>
-
-                    <div class="comments-section" id="comments-<?= $pub['id'] ?>">
-                        <div class="comments-list">
-                            <?php 
-                            $comentarios_pub = $comentarioController->obtenerComentariosPorPublicacion($pub['id']);
-                            if (count($comentarios_pub) > 0): 
-                                foreach($comentarios_pub as $comentario): 
-                            ?>
-                                <div class="comment-item">
-                                    <div class="comment-user"><?= htmlspecialchars($comentario['autor_nombre'] ?? 'Usuario') ?></div>
-                                    <p><?= nl2br(htmlspecialchars($comentario['contenido'])) ?></p>
-                                </div>
-                            <?php 
-                                endforeach;
-                            else: 
-                            ?>
-                                <p style="font-size: 0.85rem; color: var(--texto-meta); text-align: center; margin-bottom: 10px;" class="no-comments-msg">Aún no hay comentarios. ¡Sé el primero en opinar!</p>
-                            <?php endif; ?>
-                        </div>
-                        <form class="comment-form" data-pubid="<?= $pub['id'] ?>">
-                            <div class="form-control">
-                                <input class="input input-alt" placeholder="Escribe tu opinión..." required="" type="text" name="comentario">
-                                <span class="input-border input-border-alt"></span>
-                            </div>
-                            <button type="submit" style="display:none"></button>
-                        </form>
-                    </div>
+                <div class="search-container">
+                    <form method="GET" action="categoria.php" style="width: 100%;">
+                        <input type="hidden" name="id" value="<?= $categoria_id ?>">
+                        <input type="text" name="buscar" class="input-search" placeholder="Buscar entre publicaciones..." value="<?= htmlspecialchars($buscar) ?>">
+                    </form>
                 </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="sin-publicaciones sin-publicaciones-box">
-                    <i class="fas fa-folder-open"></i>
-                    <h3>No hay publicaciones en esta categoría</h3>
-                    <p>Sé el primero en compartir contenido sobre <?= htmlspecialchars($categoria['nombre']) ?></p>
-                    <?php if ($usuarioLogueado): ?>
-                        <a href="../admin/crear_publicacion.php" class="btn-create">
-                            <i class="fas fa-plus"></i> Crear publicación
+            </div>
+        <?php endif; ?>
+    </header>
+
+    <main class="publicaciones-grid">
+        <?php if (!isset($error)): ?>
+            <?php if (count($publicaciones) > 0): ?>
+                
+                <div class="destacados-grid">
+                    <?php foreach($publicaciones as $pub): ?>
+                        
+                        <a href="publicacion.php?id=<?= $pub['id'] ?>" class="uiverse-wrapper">
+                            <div class="uiverse-inner">
+                                <?php if($pub['imagen']): ?>
+                                <div class="destacado-imagen">
+                                    <img src="../../assets/<?= htmlspecialchars($pub['imagen']) ?>" alt="<?= htmlspecialchars($pub['titulo']) ?>">
+                                </div>
+                                <?php endif; ?>
+                                
+                                <div class="destacado-contenido">
+                                    <span class="destacado-categoria"><?= htmlspecialchars($categoria['nombre']) ?></span>
+                                    
+                                    <h3 class="destacado-titulo"><?= htmlspecialchars($pub['titulo']) ?></h3>
+                                    
+                                    <div class="destacado-fecha">
+                                        <i class="fas fa-user"></i> <?= htmlspecialchars($pub['autor_nombre'] ?? $pub['autor'] ?? 'Autor') ?> <br>
+                                        <i class="fas fa-calendar" style="margin-top: 5px;"></i> <?= date('d/m/Y', strtotime($pub['fecha_creacion'])) ?>
+                                    </div>
+                                    
+                                    <p class="destacado-resumen">
+                                        <?= htmlspecialchars(substr($pub['contenido'], 0, 120)) ?>...
+                                    </p>
+                                </div>
+                            </div>
                         </a>
+                        
+                    <?php endforeach; ?>
+                </div>
+
+            <?php else: ?>
+                <div class="sin-publicaciones">
+                    <i class="fas fa-search-minus" style="font-size: 4rem; color: var(--texto-secundario);"></i>
+                    <?php if (!empty($buscar)): ?>
+                        <h3>No hay resultados para "<?= htmlspecialchars($buscar) ?>"</h3>
+                        <p>Intenta con otras palabras clave.</p>
+                        <a href="categoria.php?id=<?= $categoria_id ?>" class="volver" style="margin-top: 15px;">Ver todas las publicaciones</a>
+                    <?php else: ?>
+                        <h3>No hay publicaciones en esta categoría</h3>
+                        <p>Sé el primero en compartir contenido sobre <?= htmlspecialchars($categoria['nombre']) ?></p>
+                        <?php if ($usuarioLogueado): ?>
+                            <a href="../admin/crear_publicacion.php" class="btn-create">
+                                <i class="fas fa-plus"></i> Crear publicación
+                            </a>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -222,11 +164,5 @@ if ($usuarioLogueado && !empty($publicaciones)) {
     </main>
 
     <?php include 'footer.php'; ?>
-
-    <script>
-        const usuarioLogueado = <?= json_encode($usuarioLogueado) ?>;
-    </script>
-    <script src="../js/like-logic.js"></script>
-    <script src="../js/comentarios.js"></script>
 </body>
 </html>
