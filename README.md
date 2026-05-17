@@ -1,6 +1,6 @@
 # Red-novable
 
-## Descripción
+## Descripción:
 
 Red-novable es una plataforma web de publicación y gestión de contenidos digitales enfocada en la difusión de información sobre energías asequibles y no contaminantes.
 
@@ -13,8 +13,6 @@ Proyecto desarrollado como parte del **Proyecto Integrador de Ingeniería de Sof
 Diseñar e implementar una plataforma web que permita la creación, gestión y moderación de contenidos digitales, fomentando la interacción comunitaria y la difusión de energías sostenibles.
 
 ---
-
-## Vista Previa
 
 ### Página Principal
 ![Página principal con la mascota Franxx](/assets/pagina_principal.png)
@@ -30,7 +28,7 @@ Diseñar e implementar una plataforma web que permita la creación, gestión y m
 
 ---
 
-## Funcionalidades Implementadas
+## Funcionalidades del proyecto
 
 ### Módulo de Autenticación y Usuarios
 - Registro e inicio de sesión con validación segura (contraseña hasheada con `password_hash`).
@@ -123,14 +121,14 @@ Eq3_PI_web_ODS7/
 | **Autor**         | Crear nuevas publicaciones, editar/eliminar sus propias publicaciones (quedan pendientes de aprobación), subir imágenes. |
 | **Usuario**       | Visualizar publicaciones aprobadas, dar "me gusta", comentar, editar su perfil (nombre y foto). |
 
-## Instalación Local
+## Pasos para la instalación Local
 
 ### Requisitos Previos
 - XAMPP (o cualquier servidor con PHP 8.0+, MySQL).
 - Composer (para instalar la librería de Google API Client).
 - Cuenta de Google Developer para obtener `client_id` y `client_secret` (opcional si no se usa Google Login).
 
-### Pasos
+### Pasos:
 
 1. **Clonar el repositorio**
    ```bash
