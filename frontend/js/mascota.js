@@ -27,12 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     franxxImg.src = uriBase;
 
-    // Prevención de errores si data-php-mensaje viene nulo
-    const phpError = container.getAttribute("data-php-mensaje") || "";
+    // Obtención de mensajes desde PHP
+    const phpMensaje = container.getAttribute("data-php-mensaje") || "";
+    const phpTipo = container.getAttribute("data-php-tipo") || ""; 
     const currentPath = window.location.pathname.toLowerCase();
     const isAuthPage = currentPath.includes("iniciosesion") || currentPath.includes("registro");
 
-    // BASE DE DATOS - ODS 7
+    // BASE DE DATOS - ODS 7 (Se quitaron los tecnicismos de programación y se agregaron datos generales)
     const ecoTipsOriginales = [
         "El Sol envía a la Tierra en una sola hora más energía de la que la humanidad entera consume en un año.",
         "La energía geotérmica aprovecha el calor del subsuelo terrestre, logrando un suministro ininterrumpido 24/7.",
@@ -46,44 +47,44 @@ document.addEventListener("DOMContentLoaded", () => {
         "La arquitectura bioclimática reduce el consumo de los edificios en un 60% al orientar bien las ventanas.",
         "Las baterías de estado sólido prometen revolucionar el almacenamiento renovable.",
         "Sustituir la iluminación por tecnología LED industrial reduce el consumo eléctrico hasta en un 80%.",
-        "Los centros de datos modernos migran hacia zonas frías para aprovechar el 'free cooling'.",
+        "El uso de bicicletas eléctricas en la ciudad reduce drásticamente la contaminación del aire.",
         "Dinamarca y Costa Rica son pioneros en la integración de redes eléctricas inteligentes y eólicas.",
         "El silicio utilizado en celdas solares es el segundo elemento más abundante en la corteza terrestre.",
-        "La Smart Grid permite que los hogares con paneles solares vendan su excedente de energía.",
+        "Las redes inteligentes permiten que los hogares con paneles solares compartan su excedente de energía.",
         "El reciclaje de aluminio requiere un 95% menos de energía que extraerlo desde cero.",
-        "Las micro-redes hidroeléctricas electrifican zonas rurales sin construir presas invasivas.",
-        "Eficiencia energética es optimizar los sistemas para hacer más utilizando menos recursos.",
+        "Las pequeñas turbinas en ríos pueden dar electricidad a zonas rurales sin alterar el ecosistema.",
+        "Eficiencia energética es optimizar los recursos que tenemos en casa para hacer más con menos.",
         "Costa Rica mantuvo su red eléctrica funcionando solo con renovables durante 300 días seguidos.",
         "Los aerogeneradores modernos superan los 200 metros de altura para captar vientos más fuertes.",
-        "El efecto termoeléctrico convierte el calor residual de maquinarias directamente en electricidad.",
+        "Aprovechar la luz natural durante el día es el paso más sencillo para cuidar la energía.",
         "La energía termosolar usa espejos para fundir sales que almacenan calor para generar energía de noche.",
-        "Optimizar código fuente (Green Computing) reduce ciclos de CPU y consumo energético de servidores.",
+        "Desconectar los aparatos eléctricos que no usas evita el consumo de energía 'vampiro'.",
         "La fusión nuclear experimental promete energía limpia casi ilimitada replicando las estrellas.",
-        "Un metro cuadrado de bosque de algas marinas secuestra más carbono que un bosque terrestre.",
-        "La cogeneración industrial produce simultáneamente electricidad y calor útil.",
-        "Los inversores solares transforman la corriente continua en alterna sincronizada con la red.",
-        "El biogás de vertederos evita que el metano llegue a la atmósfera.",
-        "La energía undimotriz aprovecha el movimiento oscilatorio de las olas del mar.",
+        "Un metro cuadrado de bosque de algas marinas ayuda a limpiar los océanos de manera natural.",
+        "El transporte público eléctrico es una de las mejores alternativas para reducir emisiones en las ciudades.",
+        "Los inversores solares transforman la energía del sol en corriente que puedes usar en tus enchufes.",
+        "El biogás de vertederos evita que el metano dañe la capa de ozono.",
+        "La energía undimotriz aprovecha el movimiento constante de las olas del mar para generar luz.",
         "La movilidad eléctrica reduce emisiones de CO2 y elimina la contaminación acústica urbana.",
-        "Apagar equipos en lugar de suspenderlos evita un masivo consumo de energía de reserva mundial.",
-        "Las turbinas hidrocinéticas operan como aerogeneradores bajo el agua sin bloquear ríos.",
-        "Las redes HVDC transportan electricidad limpia a miles de kilómetros con pérdidas mínimas.",
-        "Materiales con cambio de fase (PCM) en construcción absorben y liberan calor pasivamente.",
+        "Apagar los equipos en la oficina o escuela ahorra muchísima energía a nivel mundial.",
+        "Las turbinas bajo el agua funcionan de manera silenciosa para no molestar a los peces.",
+        "Transmitir energía limpia requiere cables especiales para que no se pierda en el camino.",
+        "Pintar los techos de colores claros ayuda a mantener las casas frescas sin usar ventiladores.",
         "Las granjas solares flotantes reducen la evaporación del agua y se refrigeran naturalmente.",
-        "La economía circular en paneles solares recupera hasta el 95% de su silicio y metales.",
-        "El estándar 'Passivhaus' reduce la demanda energética de un edificio en más del 80%.",
-        "Las bombas de calor geotérmicas son 400% más eficientes que las calefacciones tradicionales.",
-        "Los sistemas EMS con IA predicen picos de demanda y ajustan el suministro en milisegundos.",
-        "Motores eléctricos de alta eficiencia (IE4 o IE5) reducen pérdidas electromagnéticas en la industria.",
-        "Ventanas con celdas fotovoltaicas transparentes convierten rascacielos en generadores verticales.",
-        "Compilar software de manera eficiente contribuye directamente a la meta del ODS 7.",
-        "La energía azul aprovecha la presión osmótica de los ríos al desembocar en el mar.",
-        "La piezoelectricidad genera corriente en baldosas aprovechando el paso de los peatones.",
-        "Los sistemas V2G permiten que las baterías de autos eléctricos actúen como respaldo de la ciudad.",
-        "La descarbonización es vital para limitar el aumento de la temperatura global a 1.5°C.",
-        "Los cables superconductores tienen resistencia eléctrica cero, revolucionando la transmisión de energía.",
-        "Las microalgas producen biocombustibles de aviación sin usar suelo agrícola fértil.",
-        "La meteorología satelital permite a parques eólicos ajustar sus aspas con anticipación."
+        "Los paneles solares al final de su vida útil se pueden reciclar para crear nuevas tecnologías.",
+        "Tener un buen aislamiento térmico en el hogar reduce la necesidad de usar calefacción.",
+        "El calor interno de la tierra se puede usar para mantener la temperatura de grandes edificios.",
+        "Ajustar el termostato un par de grados puede hacer una gran diferencia en el recibo de luz.",
+        "Utilizar electrodomésticos con sello de bajo consumo ayuda de forma directa al planeta.",
+        "Las ventanas modernas pueden diseñarse para dejar pasar la luz pero bloquear el calor del verano.",
+        "La educación sobre el medio ambiente es la herramienta más fuerte para el cambio climático.",
+        "La energía azul aprovecha la mezcla de agua dulce y salada en la desembocadura de los ríos.",
+        "Se está investigando cómo generar energía en las banquetas simplemente con los pasos de la gente.",
+        "Los autos eléctricos del futuro podrán prestar energía a las casas durante un apagón.",
+        "Reducir las emisiones de carbono es vital para proteger los ecosistemas que nos rodean.",
+        "La tecnología avanza muy rápido para encontrar formas de almacenar energía renovable a bajo costo.",
+        "Algunas algas especiales se estudian para crear combustibles amigables con la naturaleza.",
+        "Conocer de dónde viene la energía que usamos nos hace consumidores más responsables."
     ];
 
     let tipsDisponibles = [...ecoTipsOriginales];
@@ -92,11 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return tipsDisponibles.splice(Math.floor(Math.random() * tipsDisponibles.length), 1)[0];
     }
 
-    // --- PARPADEO A PRUEBA DE BALAS ---
+    // --- PARPADEO NORMAL ---
     setInterval(() => {
         if (isDragging) return;
         
-        let srcOriginal = franxxImg.src;
         if (estaHablando) {
             franxxImg.src = uriHablandoClose;
             setTimeout(() => { if(estaHablando) franxxImg.src = uriHablando; }, 300);
@@ -118,20 +118,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     resetearInactividad();
 
-    // --- SINTETIZADOR DE VOZ 8-BIT (FRANXX-ESE) ---
+    // --- SINTETIZADOR ESTILO ANIMAL CROSSING ---
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    function sonarLetra() {
+    function sonarPalabra() {
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
 
-        // Onda triangular para un sonido suave tipo 8-bits
-        osc.type = 'triangle'; 
+        osc.type = 'square'; 
         
-        // Frecuencia entre 650 y 800Hz para una voz masculina joven y no tan grave
-        osc.frequency.setValueAtTime(650 + Math.random() * 150, audioCtx.currentTime);
+        // Frecuencia aleatoria para el tono característico
+        const frecuenciaAleatoria = 500 + Math.random() * 150;
+        osc.frequency.setValueAtTime(frecuenciaAleatoria, audioCtx.currentTime);
 
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime); // Volumen
+        // Subida y bajada de volumen
+        gain.gain.setValueAtTime(0.0, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.02);
         gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1);
 
         osc.connect(gain);
@@ -141,27 +147,26 @@ document.addEventListener("DOMContentLoaded", () => {
         osc.stop(audioCtx.currentTime + 0.1);
     }
 
-    function emitirSonidoTexto(mensaje) {
+    function emitirSonidoTexto(palabras, velocidadPalabra) {
         let i = 0;
         const intervalo = setInterval(() => {
-            if (i < mensaje.length) {
-                // Solo suena en las letras, no en los espacios
-                if (mensaje[i] !== " ") {
-                    sonarLetra();
-                }
+            if (i < palabras.length && estaHablando) {
+                sonarPalabra();
                 i++;
             } else {
                 clearInterval(intervalo);
+                if (estaHablando) {
+                    franxxImg.src = uriBase;
+                }
             }
-        }, 60); // Ajusta este valor si quieres que hable más rápido o más lento
+        }, velocidadPalabra);
     }
 
-    // --- FUNCIÓN HABLAR ---
-    function hablar(mensaje, duracion = 5000, esError = false, accionAlTerminar = "nada") {
+    // --- FUNCIÓN HABLAR CON CÁLCULO DE TIEMPO DINÁMICO ---
+    function hablar(mensaje, esError = false, accionAlTerminar = "nada") {
         estaHablando = true;
         resetearInactividad(); 
         
-        // Desbloquear el audioContext si el navegador lo suspendió
         if (audioCtx.state === 'suspended') {
             audioCtx.resume();
         }
@@ -170,9 +175,11 @@ document.addEventListener("DOMContentLoaded", () => {
         globo.style.display = "block";
         franxxImg.src = uriHablando;
         
-        // Ejecutar la voz al mostrar el texto
-        emitirSonidoTexto(mensaje);
+        const palabras = mensaje.trim().split(/\s+/);
+        const velocidadPalabra = 110; 
+        emitirSonidoTexto(palabras, velocidadPalabra);
         
+        // CORRECCIÓN DEL PARPADEO ROJO: Solo si es error
         if (esError) {
             globo.style.borderColor = "#ff4757";
             container.classList.add("shake-anim", "modo-alerta"); 
@@ -180,6 +187,10 @@ document.addEventListener("DOMContentLoaded", () => {
             globo.style.borderColor = "#000000";
             container.classList.remove("shake-anim", "modo-alerta");
         }
+
+        const tiempoHablando = palabras.length * velocidadPalabra;
+        const tiempoParaLeer = 2000; 
+        const duracionTotalGlobo = tiempoHablando + tiempoParaLeer;
 
         setTimeout(() => {
             globo.style.display = "none";
@@ -192,10 +203,11 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (accionAlTerminar === "irse") {
                 container.classList.remove("mascota-visible");
                 container.classList.add("mascota-oculto-v"); 
+                estaHablando = false;
             } else {
                 estaHablando = false;
             }
-        }, duracion);
+        }, duracionTotalGlobo);
     }
 
     function animarCambio() {
@@ -220,19 +232,66 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1000); 
     }
 
-    // --- LÓGICA DE INICIO ---
+    // --- ARREGLOS DE FRASES NEUTRAS POR PÁGINA ---
+    const saludosRegistro = [
+        "¡Red-novable te da la bienvenida! Únete para aprender juntos sobre energías limpias.",
+        "Qué gusto tenerte por aquí. ¡Crea una cuenta para ser parte de la comunidad!"
+    ];
+
+    const saludosIndex = [
+        "¡Hola, soy Franxx! Red-novable te da la bienvenida.",
+        "¡Hola, soy Franxx!, explora las publicaciones para aprender sobre energías limpias.",
+        "¡Nos da gusto tenerte en Red-novable! Soy Franxx, tu acompañante en Red-novable."
+    ];
+
+    const saludosCrear = [
+        "¡Qué gran idea! Comparte tus conocimientos con toda la comunidad.",
+        "Tu aporte es muy valioso para inspirar a otras personas.",
+        "Comparte tus conocimientos sobre energías renovables y ayuda a que más personas aprendan.",
+        "¡Crear contenido de calidad es la mejor forma de contribuir al ODS 7!"
+    ];
+
+    const saludosCategorias = [
+        "Encuentra el tema que más te apasione sobre energía renovable.",
+        "Cada categoría tiene información increíble lista para ser descubierta.",
+        "Navega entre los temas para aprender datos fascinantes del ODS 7."
+    ];
+
+    const saludosPerfil = [
+        "Desde aquí es posible administrar la información personal.",
+        "Este es tu espacio personal. ¡Mantenlo al día y comparte más ideas!",
+        "Revisa las interacciones y el historial de tus publicaciones.",
+        "¡Personaliza tu perfil para que otros usuarios te conozcan mejor!"
+    ];
+
+    const saludosPublicacion = [
+        "Tómate tu tiempo para leer y no olvides dejar un 'Me gusta'.",
+        "¡Es un gran artículo! La sección de comentarios te espera.",
+        "Aprender un dato nuevo cada día hace una gran diferencia.",
+        "Si te gusta lo que ves, no dudes en recomendar red-novable.com a tus amigos.",
+        "Cada publicación es una oportunidad para aprender algo nuevo sobre energías limpias.",
+        "¡Deja un comentario para compartir tu opinión o hacer preguntas sobre el artículo!"
+    ];
+
+    function obtenerFraseAleatoria(arreglo) {
+        return arreglo[Math.floor(Math.random() * arreglo.length)];
+    }
+
+    // --- LÓGICA DE INICIO Y LLAMADAS AUTOMÁTICAS ---
     if (isAuthPage) {
-        if (phpError !== "") {
+        if (phpMensaje !== "") {
             setTimeout(() => {
                 container.classList.add("mascota-visible");
                 container.classList.remove("mascota-oculto");
-                setTimeout(() => { hablar("Cuidado, ingresa tus datos correctamente.", 5000, true, "irse"); }, 600);
+                // Corrección: limpiar espacios extra del tipo de php para garantizar que la alerta se ponga en rojo
+                let isErr = (phpTipo.trim().toLowerCase() === "error");
+                setTimeout(() => { hablar(phpMensaje, isErr, "irse"); }, 600);
             }, 500);
         } else if (currentPath.includes("registro")) {
             setTimeout(() => {
                 container.classList.add("mascota-visible");
                 container.classList.remove("mascota-oculto");
-                setTimeout(() => { hablar("¿Primera ves en Red-novable?, te damos la bienvenida!!", 4000, false, "irse"); }, 600);
+                setTimeout(() => { hablar(obtenerFraseAleatoria(saludosRegistro), false, "irse"); }, 600);
             }, 500);
         }
     } else {
@@ -240,30 +299,32 @@ document.addEventListener("DOMContentLoaded", () => {
             container.classList.add("mascota-visible");
             container.classList.remove("mascota-oculto");
             
-            if (!sessionStorage.getItem("franxx_intro")) {
-                setTimeout(() => { hablar("¡Hola! Soy Franxx, ¡Bienvenido a red-novable!.", 4000); }, 1000);
+            if (phpMensaje !== "") {
+                let isErr = (phpTipo.trim().toLowerCase() === "error");
+                setTimeout(() => hablar(phpMensaje, isErr), 1000);
+            } else if (!sessionStorage.getItem("franxx_intro")) {
+                setTimeout(() => { hablar(obtenerFraseAleatoria(saludosIndex)); }, 1000);
                 sessionStorage.setItem("franxx_intro", "true");
-            } else if (phpError !== "") {
-                setTimeout(() => hablar(phpError, 6000, true), 1000);
             } else {
                 setTimeout(() => {
-                    if (currentPath.includes("crear_publicacion")) hablar("¡Genial! Comparte tu información y asegúrate de citar fuentes confiables.", 4000);
-                    else if (currentPath.includes("categorias")) hablar("Explora el directorio de temas especializados en tecnologías sostenibles.", 4000);
-                    else if (currentPath.includes("perfil")) hablar("Este es tu perfil. Mantén tu información actualizada.", 4000);
-                    else if (currentPath.includes("categoria")) hablar("Revisa todaslas publicaciones asociadas a esta categoría.", 4000);
+                    if (currentPath.includes("crear_publicacion")) hablar(obtenerFraseAleatoria(saludosCrear));
+                    else if (currentPath.includes("categorias")) hablar(obtenerFraseAleatoria(saludosCategorias));
+                    else if (currentPath.includes("perfil")) hablar(obtenerFraseAleatoria(saludosPerfil));
+                    else if (currentPath.includes("categoria")) hablar(obtenerFraseAleatoria(saludosCategorias)); // Reusamos las de categorías
+                    else if (currentPath.includes("publicacion")) hablar(obtenerFraseAleatoria(saludosPublicacion));
                 }, 1000);
             }
         }, 500);
     }
 
-    // --- EVENTOS ---
+    // --- EVENTOS MANUALES ---
     franxxImg.addEventListener("click", () => {
         if (isAuthPage || estaHablando) return; 
         resetearInactividad(); 
         clickCount++;
         const tip = obtenerTipSinRepetir(); 
         const debeMoverse = (clickCount % 3 === 0); 
-        hablar(tip, 6000, false, debeMoverse ? "cambiar" : "nada");
+        hablar(tip, false, debeMoverse ? "cambiar" : "nada");
     });
 
     // --- DRAG & DROP (Ratón y Táctil) ---
@@ -277,7 +338,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const moverArrastre = (e, x, y) => {
         if (!isDragging) return;
-        e.preventDefault(); // Evita que la pantalla haga scroll al mover la mascota
+        e.preventDefault(); 
         currentX = x - startX;
         currentY = y - startY;
         container.style.transform = `translate(${currentX}px, ${currentY}px)`;
@@ -296,12 +357,10 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => { container.style.transition = "none"; }, 400);
     };
 
-    // Eventos para Computadora (Ratón)
     franxxImg.addEventListener("mousedown", (e) => iniciarArrastre(e.clientX, e.clientY));
     document.addEventListener("mousemove", (e) => moverArrastre(e, e.clientX, e.clientY));
     document.addEventListener("mouseup", soltarArrastre);
 
-    // Eventos para Celular (Táctil)
     franxxImg.addEventListener("touchstart", (e) => iniciarArrastre(e.touches[0].clientX, e.touches[0].clientY), {passive: false});
     document.addEventListener("touchmove", (e) => moverArrastre(e, e.touches[0].clientX, e.touches[0].clientY), {passive: false});
     document.addEventListener("touchend", soltarArrastre);

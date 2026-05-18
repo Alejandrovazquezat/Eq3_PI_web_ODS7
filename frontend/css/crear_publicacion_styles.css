@@ -1,6 +1,15 @@
 /* frontend/css_dash/crear_publicacion_styles.css */
 
-/* Luces de fondo para potenciar el efecto Glassmorphism */
+.container-crear {
+    width: 95%;
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Luces de fondo */
 .bg-glow-1 {
     position: fixed; top: -50px; left: -50px; width: 400px; height: 400px;
     background: rgba(52, 211, 153, 0.2); border-radius: 50%; filter: blur(80px); z-index: 0; pointer-events: none;
@@ -9,11 +18,10 @@
     position: fixed; bottom: -100px; right: -50px; width: 500px; height: 500px;
     background: rgba(59, 130, 246, 0.2); border-radius: 50%; filter: blur(100px); z-index: 0; pointer-events: none;
 }
-
 body.dark-mode .bg-glow-1 { background: rgba(52, 211, 153, 0.1); }
 body.dark-mode .bg-glow-2 { background: rgba(59, 130, 246, 0.15); }
 
-/* 🔥 TARJETA ESTILO CRISTAL (GLASSMORPHISM) CON EFECTO 3D 🔥 */
+/* TARJETA CRISTAL */
 .form-container-card {
     background: rgba(255, 255, 255, 0.4) !important;
     backdrop-filter: blur(12px);
@@ -21,21 +29,19 @@ body.dark-mode .bg-glow-2 { background: rgba(59, 130, 246, 0.15); }
     border: 1px solid rgba(255, 255, 255, 0.8) !important;
     border-radius: 20px;
     padding: 40px;
-    /* Sombra doble: una profunda general + una densa inferior para resaltar el 3D */
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15), 0 5px 15px rgba(0, 0, 0, 0.08) !important;
     transition: all 0.4s ease;
+    overflow: hidden;
 }
 
 body.dark-mode .form-container-card {
     background: rgba(22, 27, 34, 0.58) !important;
     border: 1px solid rgba(255, 255, 255, 0.05) !important;
-    /* Sombras más intensas para modo oscuro */
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 8px 20px rgba(0, 0, 0, 0.4) !important;
 }
 
 .form-container-card:hover {
     border-color: rgba(255, 255, 255, 1) !important;
-    /* Al hacer hover, la tarjeta "flota" más alto */
     transform: translateY(-5px);
     box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2), 0 10px 20px rgba(0, 0, 0, 0.1) !important;
 }
@@ -49,180 +55,194 @@ body.dark-mode .form-container-card:hover {
 /* LAYOUT DEL FORMULARIO */
 .modern-grid-form {
     display: grid;
-    grid-template-columns: 1.8fr 1fr;
+    grid-template-columns: 2fr 1fr;
     gap: 40px;
 }
 
-.field { margin-bottom: 20px; }
-.inline-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.main-fields, .side-fields { min-width: 0; }
+
+/* 🔥 SOLUCIÓN ALINEACIÓN: flex-start obliga a que inicien exactamente igual a la izquierda 🔥 */
+.field { 
+    margin-bottom: 25px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-start; /* Todo alineado a la izquierda */
+    width: 100%; 
+}
+.inline-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; min-width: 0; }
 
 label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: 700;
-    color: var(--text-dark, #1e293b);
-    font-size: 0.95rem;
+    display: block; margin-bottom: 10px; font-weight: 700; color: var(--text-dark, #1e293b);
+    font-size: 0.95rem; width: 100%;
+}
+body.dark-mode label { color: #f8fafc; }
+
+/* 🔥 INPUTS EXPANSIBLES ALINEADOS A LA IZQUIERDA 🔥 */
+.input-expand-glass {
+    display: block; color: var(--text-dark, #0f172a);
+    background: linear-gradient(142.99deg, rgba(217, 217, 217, 0.6) 15.53%, rgba(243, 243, 243, 0.6) 88.19%) !important;
+    box-shadow: 0px 12px 24px -1px rgba(0, 0, 0, 0.1) !important; border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    border-radius: 16px; outline: none; 
+    width: 95%; /* Inicia ligeramente más corto de la DERECHA */
+    margin: 0; /* Sin margin auto, anclado a la izquierda */
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 14px 15px; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.95rem; box-sizing: border-box;
 }
 
-body.dark-mode label {
-    color: #f8fafc;
+body.dark-mode .input-expand-glass {
+    background: linear-gradient(142.99deg, rgba(30, 41, 59, 0.5) 15.53%, rgba(15, 23, 42, 0.5) 88.19%) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important; color: #e2e8f0; box-shadow: 0px 12px 24px -1px rgba(0, 0, 0, 0.4) !important;
+}
+body.dark-mode select.input-expand-glass option { background-color: #0f172a; color: #e2e8f0; }
+
+.input-expand-glass:hover { width: 98%; }
+.input-expand-glass:focus, .input-expand-glass:focus-within { width: 100%; border-color: #64748b !important; transform: translateY(-2px); }
+body.dark-mode .input-expand-glass:focus, body.dark-mode .input-expand-glass:focus-within { border-color: #60a5fa !important; }
+
+
+/* 🔥 EDITOR WYSIWYG (QUILL.JS) Y SOLUCIÓN ANTI-RUPTURA 🔥 */
+.quill-wrapper {
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
 }
 
-/* 🔥 INPUTS Y TEXTAREA CRISTAL 3D 🔥 */
-input[type="text"], select, textarea {
+.ql-toolbar.ql-snow {
+    border: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 16px 16px 0 0;
+    padding: 12px !important;
+}
+
+body.dark-mode .ql-toolbar.ql-snow { border-bottom-color: rgba(255, 255, 255, 0.1) !important; background: rgba(0, 0, 0, 0.2); }
+
+.ql-container.ql-snow {
+    border: none !important;
+    border-radius: 0 0 16px 16px;
+    height: 350px;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 1rem !important;
+}
+
+/* ANTI-ROTURA DE CAJA: Si escriben AAAAAAAA, hace salto de línea */
+.ql-editor {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
     width: 100%;
-    padding: 14px;
-    background: rgba(255, 255, 255, 0.45) !important;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.9) !important;
-    border-radius: 12px;
-    color: var(--text-dark, #0f172a);
-    font-family: inherit;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-    /* Sombra externa para que resalten sobre la tarjeta principal */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 3px 6px rgba(0, 0, 0, 0.04) !important;
 }
 
-body.dark-mode input[type="text"], 
-body.dark-mode select, 
-body.dark-mode textarea {
-    background: rgba(15, 23, 42, 0.5) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    color: #e2e8f0 !important;
-    /* Sombra externa fuerte para modo oscuro */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 4px 10px rgba(0, 0, 0, 0.3) !important;
-}
-
-/* Efecto al hacer clic para escribir (Focus) */
-input[type="text"]:focus, select:focus, textarea:focus {
-    outline: none;
-    background: rgba(255, 255, 255, 0.85) !important;
-    border-color: #3b82f6 !important;
-    transform: translateY(-2px); /* Se levanta un poco */
-    /* Sombra más amplia + un aro de luz azul */
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12), 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
-}
-
-body.dark-mode input[type="text"]:focus, 
-body.dark-mode select:focus, 
-body.dark-mode textarea:focus {
-    background: rgba(30, 41, 59, 0.85) !important;
-    border-color: #60a5fa !important;
-    transform: translateY(-2px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 0 4px rgba(96, 165, 250, 0.15) !important;
-}
-
-textarea { height: 280px; resize: none; }
+body.dark-mode .ql-snow .ql-stroke { stroke: #cbd5e1; }
+body.dark-mode .ql-snow .ql-fill, body.dark-mode .ql-snow .ql-stroke.ql-fill { fill: #cbd5e1; }
+body.dark-mode .ql-snow .ql-picker { color: #cbd5e1; }
 
 /* 🔥 ZONA DE CARGA DE IMAGEN (SOFT GLASS) 🔥 */
 .upload-zone {
-    width: 100%;
-    height: 250px;
-    border: 2px dashed rgba(59, 130, 246, 0.6) !important;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.35) !important;
-    margin-bottom: 25px;
-    transition: all 0.3s ease;
-    overflow: hidden;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    width: 100%; height: 250px; border: 2px dashed rgba(59, 130, 246, 0.6) !important; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; background: rgba(255, 255, 255, 0.35) !important;
+    margin-bottom: 25px; transition: all 0.3s ease; overflow: hidden; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 3px 6px rgba(0, 0, 0, 0.04) !important;
 }
+body.dark-mode .upload-zone { border-color: rgba(96, 165, 250, 0.5) !important; background: rgba(15, 23, 42, 0.4) !important; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 4px 10px rgba(0, 0, 0, 0.3) !important; }
+.upload-zone:hover { border-color: #3b82f6 !important; background: rgba(255, 255, 255, 0.65) !important; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), 0 5px 15px rgba(0, 0, 0, 0.08) !important; }
+body.dark-mode .upload-zone:hover { background: rgba(30, 41, 59, 0.7) !important; border-color: #60a5fa !important; transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 8px 20px rgba(0, 0, 0, 0.4) !important; }
 
-body.dark-mode .upload-zone { 
-    border-color: rgba(96, 165, 250, 0.5) !important; 
-    background: rgba(15, 23, 42, 0.4) !important; 
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 4px 10px rgba(0, 0, 0, 0.3) !important;
-}
-
-.upload-zone:hover { 
-    border-color: #3b82f6 !important; 
-    background: rgba(255, 255, 255, 0.65) !important; 
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), 0 5px 15px rgba(0, 0, 0, 0.08) !important;
-}
-
-body.dark-mode .upload-zone:hover {
-    background: rgba(30, 41, 59, 0.7) !important;
-    border-color: #60a5fa !important;
-    transform: translateY(-3px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 8px 20px rgba(0, 0, 0, 0.4) !important;
-}
-
-.preview-content { text-align: center; color: var(--text-light, #64748b); transition: color 0.3s; }
+.preview-content { text-align: center; color: var(--text-light, #64748b); transition: color 0.3s; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .preview-content i { font-size: 2.5rem; display: block; margin-bottom: 10px; color: #3b82f6; }
 body.dark-mode .preview-content i { color: #60a5fa; }
 
 /* 🔥 BOTÓN PUBLICAR NEÓN 🔥 */
 .btn-publish {
-    width: 100%;
-    background: linear-gradient(135deg, #10b981, #059669) !important;
-    color: #ffffff !important;
-    border: none !important;
-    padding: 16px;
-    border-radius: 12px;
-    font-weight: 800;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4) !important;
-    transition: all 0.3s ease;
+    width: 100%; background: linear-gradient(135deg, #10b981, #059669) !important; color: #ffffff !important;
+    border: none !important; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4) !important; transition: all 0.3s ease;
 }
-
-.btn-publish:hover { 
-    transform: translateY(-3px); 
-    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5) !important; 
-    filter: brightness(1.1); 
-}
-
-.btn-publish:active {
-    transform: translateY(0);
-}
+.btn-publish:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5) !important; filter: brightness(1.1); }
+.btn-publish:active { transform: translateY(0); }
 
 /* Alertas estilo Cristal */
-.alert { 
-    padding: 15px 20px; 
-    border-radius: 12px; 
-    margin-bottom: 30px; 
-    font-weight: 600; 
-    backdrop-filter: blur(4px);
-}
-.alert-success { 
-    background: rgba(209, 250, 229, 0.8) !important; 
-    color: #065f46 !important; 
-    border: 1px solid #10b981 !important; 
-}
-.alert-error { 
-    background: rgba(254, 226, 226, 0.8) !important; 
-    color: #991b1b !important; 
-    border: 1px solid #ef4444 !important; 
+.alert { padding: 15px 20px; border-radius: 12px; margin-bottom: 30px; font-weight: 600; backdrop-filter: blur(4px); }
+.alert-success { background: rgba(209, 250, 229, 0.8) !important; color: #065f46 !important; border: 1px solid #10b981 !important; }
+.alert-error { background: rgba(254, 226, 226, 0.8) !important; color: #991b1b !important; border: 1px solid #ef4444 !important; }
+body.dark-mode .alert-success { background: rgba(6, 95, 70, 0.3) !important; color: #34d399 !important; border-color: #059669 !important; }
+body.dark-mode .alert-error { background: rgba(153, 27, 27, 0.3) !important; color: #f87171 !important; border-color: #dc2626 !important; }
+
+/* =========================================
+   🔥 TOOLTIPS ELEGANTES (Traducidos de Tailwind) 🔥
+   ========================================= */
+[data-tooltip] {
+    position: relative;
+    cursor: pointer;
 }
 
-body.dark-mode .alert-success { 
-    background: rgba(6, 95, 70, 0.3) !important; 
-    color: #34d399 !important; 
-    border-color: #059669 !important; 
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px); 
+    left: 50%;
+    transform: translateX(-50%) scale(0.5);
+    background-color: var(--blanco, #ffffff);
+    color: var(--texto-titulos, #1e293b);
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transform-origin: bottom center;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 999999;
+    pointer-events: none;
+    border: 1px solid var(--borde-tarjeta, #cbd5e1);
 }
-body.dark-mode .alert-error { 
-    background: rgba(153, 27, 27, 0.3) !important; 
-    color: #f87171 !important; 
-    border-color: #dc2626 !important; 
+
+[data-tooltip]::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 1px);
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: var(--borde-tarjeta, #cbd5e1) transparent transparent transparent;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 999999;
+    pointer-events: none;
 }
+
+[data-tooltip]:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
+}
+
+[data-tooltip]:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+body.dark-mode [data-tooltip]::after {
+    background-color: var(--color-oscuro, #0f172a);
+    color: #ffffff;
+    border-color: rgba(255,255,255,0.15);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+body.dark-mode [data-tooltip]::before {
+    border-color: rgba(255,255,255,0.15) transparent transparent transparent;
+}
+
 
 /* Responsividad */
 @media (max-width: 768px) {
-    .modern-grid-form {
-        grid-template-columns: 1fr;
-    }
-    .inline-fields {
-        grid-template-columns: 1fr;
-    }
+    .modern-grid-form { grid-template-columns: 1fr; }
+    .inline-fields { grid-template-columns: 1fr; }
+    .input-expand-glass, .field label { width: 100% !important; }
 }

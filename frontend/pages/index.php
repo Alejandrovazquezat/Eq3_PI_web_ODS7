@@ -91,7 +91,7 @@ if (session_status() === PHP_SESSION_NONE) {
                                     <i class="fas fa-calendar"></i> <?= date('d/m/Y', strtotime($pub['fecha_creacion'])) ?>
                                 </div>
                                 <p class="destacado-resumen">
-                                    <?= htmlspecialchars(substr($pub['contenido'], 0, 100)) ?>...
+                                    <?= htmlspecialchars(mb_substr(strip_tags(html_entity_decode($pub['contenido'])), 0, 100)) ?>...
                                 </p>
                             </div>
                         </div>
@@ -120,7 +120,7 @@ if (session_status() === PHP_SESSION_NONE) {
                                     <i class="fas fa-calendar"></i> <?= date('d/m/Y', strtotime($pub['fecha_creacion'])) ?>
                                 </div>
                                 <p class="vertical-resumen">
-                                    <?= htmlspecialchars(substr($pub['contenido'], 0, 200)) ?>...
+                                    <?= htmlspecialchars(mb_substr(strip_tags(html_entity_decode($pub['contenido'])), 0, 200)) ?>...
                                 </p>
                                 <span class="vertical-leer-mas">Leer más <i class="fas fa-arrow-right"></i></span>
                             </div>

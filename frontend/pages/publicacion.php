@@ -72,6 +72,9 @@ if (!$pub) {
             margin: 40px auto 80px auto;
             padding: 0 20px;
             font-family: 'Inter', sans-serif;
+            /* Para que no se desborde en celular */
+            box-sizing: border-box; 
+            width: 100%;
         }
 
         .volver {
@@ -96,22 +99,41 @@ if (!$pub) {
         }
         body.dark-mode .post-category { background: rgba(0, 102, 255, 0.2); color: #4ade80; }
 
-        .post-title { font-size: 3rem; color: var(--texto-titulos); margin: 0 0 20px 0; line-height: 1.2; font-weight: 900; }
+        .post-title { font-size: 3rem; color: var(--texto-titulos); margin: 0 0 20px 0; line-height: 1.2; font-weight: 900; word-break: break-word; }
         
-        .post-meta { color: #64748b; font-size: 1rem; display: flex; justify-content: center; gap: 20px; }
+        .post-meta { color: #64748b; font-size: 1rem; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
         body.dark-mode .post-meta { color: #9ca3af; }
 
         .post-image-container { width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .post-image-container img { width: 100%; max-height: 550px; object-fit: cover; display: block; }
 
+        /* 🔥 AJUSTES RESPONSIVOS PARA EL CONTENIDO HTML 🔥 */
         .post-content {
             font-size: 1.15rem;
             color: var(--texto-titulos);
             line-height: 1.8;
             margin-bottom: 50px;
+            word-wrap: break-word; /* Evita que palabras largas rompan el diseño en celular */
+            overflow-wrap: break-word;
+            width: 100%;
         }
+        
+        /* Evitar que las imágenes o videos insertados desde el editor desborden la pantalla */
+        .post-content img, .post-content video, .post-content iframe {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: block;
+        }
+        
+        .post-content a { color: #3b82f6; text-decoration: none; font-weight: 600; word-break: break-all; }
+        .post-content a:hover { text-decoration: underline; }
+        .post-content ul, .post-content ol { padding-left: 20px; margin-bottom: 20px; }
+        .post-content h1, .post-content h2, .post-content h3 { margin-top: 30px; margin-bottom: 15px; color: var(--texto-titulos); word-break: break-word; }
 
-        .interaction-bar { display: flex; align-items: center; gap: 15px; padding-top: 20px; border-top: 1px solid #e2e8f0; margin-bottom: 40px; }
+        .interaction-bar { display: flex; align-items: center; gap: 15px; padding-top: 20px; border-top: 1px solid #e2e8f0; margin-bottom: 40px; flex-wrap: wrap; }
         body.dark-mode .interaction-bar { border-color: #30363d; }
 
         /* =========================================
@@ -181,62 +203,29 @@ if (!$pub) {
         }
         body.dark-mode .comments-section { background: #010409; border-color: #30363d; }
 
-        /* Añadimos padding al contenedor para que el scale(1.05) del hover no se corte */
         .comments-list { max-height: 400px; overflow-y: auto; overflow-x: hidden; margin-bottom: 20px; padding: 10px; }
         .comments-list::-webkit-scrollbar { width: 6px; }
         .comments-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-        /* --- AQUÍ ESTÁ LA MAGIA DE TU TARJETA APLICADA AL COMENTARIO --- */
         .comment-item {
-            box-sizing: border-box;
-            width: 100%; /* Ocupa todo el ancho en lugar de 190px */
-            background: rgba(217, 217, 217, 0.4); /* Un poco más tenue para leer bien */
-            border: 1px solid white;
-            box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.1); /* Sombra suavizada */
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            border-radius: 17px;
-            transition: all 0.5s;
-            cursor: pointer;
-            
-            /* Alineación adaptada para texto (no centrada como el original) */
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            text-align: left;
-            
-            padding: 20px;
-            margin-bottom: 15px;
-            color: #334155;
-            font-size: 0.95rem;
+            box-sizing: border-box; width: 100%; background: rgba(217, 217, 217, 0.4); 
+            border: 1px solid white; box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.1); 
+            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-radius: 17px;
+            transition: all 0.5s; cursor: pointer; display: flex; flex-direction: column;
+            align-items: flex-start; justify-content: flex-start; text-align: left; padding: 20px;
+            margin-bottom: 15px; color: #334155; font-size: 0.95rem; word-break: break-word;
         }
 
-        .comment-item:hover {
-            border: 1px solid #94a3b8; /* Borde sutil gris al pasar el mouse */
-            transform: scale(1.02); /* Escala más suave que 1.05 para que no maree leyendo */
-        }
+        .comment-item:hover { border: 1px solid #94a3b8; transform: scale(1.02); }
+        .comment-item:active { transform: scale(0.95) rotateZ(1.7deg); }
 
-        /* La divertida rotación que pediste al hacer click */
-        .comment-item:active {
-            transform: scale(0.95) rotateZ(1.7deg);
-        }
-
-        /* Estilos Uiverse para el modo oscuro */
-        body.dark-mode .comment-item { 
-            background: rgba(22, 27, 34, 0.58); /* Gris azulado oscuro transparente */
-            border: 1px solid #30363d;
-            color: #c9d1d9; 
-            box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.4);
-        }
-        body.dark-mode .comment-item:hover {
-            border: 1px solid var(--color-accion); /* Se ilumina en azul al hacer hover en oscuro */
-        }
+        body.dark-mode .comment-item { background: rgba(22, 27, 34, 0.58); border: 1px solid #30363d; color: #c9d1d9; box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.4); }
+        body.dark-mode .comment-item:hover { border: 1px solid var(--color-accion); }
 
         .comment-user { font-weight: bold; color: #3b82f6; font-size: 0.9rem; margin-bottom: 8px; }
         
         .form-control { position: relative; width: 100%; }
-        .input { color: inherit; font-size: 1rem; background: transparent; width: 100%; padding: 12px; border: none; border-bottom: 2px solid #cbd5e1; transition: 0.3s; }
+        .input { color: inherit; font-size: 1rem; background: transparent; width: 100%; padding: 12px; border: none; border-bottom: 2px solid #cbd5e1; transition: 0.3s; box-sizing: border-box; }
         body.dark-mode .input { border-bottom-color: #30363d; }
         .input:focus { outline: none; }
         .input-border-alt { position: absolute; background: linear-gradient(90deg, #FF6464 0%, #FFBF59 50%, #47C9FF 100%); width: 0%; height: 3px; bottom: 0; left: 0; transition: 0.4s; }
@@ -245,20 +234,73 @@ if (!$pub) {
         .comment-form-container { display: flex; gap: 15px; align-items: flex-end; }
 
         /* =========================================
-           MODAL DE SEGURIDAD
+           🔥 MODAL DE SEGURIDAD (DISEÑO CRISTAL 3D GRIS) 🔥
            ========================================= */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 3000; }
-        .modal-card { background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 450px; width: 90%; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .modal-icon { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem; background: #e0f2fe; color: #0ea5e9; }
-        .modal-btns { display: flex; gap: 12px; justify-content: center; margin-top: 25px; flex-wrap: wrap; }
-        .btn-secondary { background: #f1f5f9; color: #475569; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; }
-        .btn-primary-modal { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; }
-        .btn-close-modal { background: transparent; color: #94a3b8; border: 1px solid #cbd5e1; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; }
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            display: flex; justify-content: center; align-items: center; z-index: 3000;
+        }
 
+        .modal-card {
+            background: rgba(255, 255, 255, 0.5) !important; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8) !important; padding: 40px; border-radius: 24px;
+            max-width: 450px; width: 90%; text-align: center; 
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 10px 25px rgba(0, 0, 0, 0.05) !important;
+            transform: translateY(30px) scale(0.96); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: slideUpModal 0.4s forwards;
+        }
+
+        body.dark-mode .modal-card {
+            background: rgba(22, 27, 34, 0.75) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6) !important;
+        }
+
+        @keyframes slideUpModal {
+            to { transform: translateY(0) scale(1); }
+        }
+
+        .modal-icon {
+            width: 75px; height: 75px; border-radius: 50%; display: flex; justify-content: center; align-items: center; 
+            margin: 0 auto 20px auto; background: rgba(56, 139, 253, 0.15) !important; color: #58a6ff !important;
+            font-size: 2.2rem;
+        }
+        body.dark-mode .modal-icon { color: #58a6ff !important; }
+
+        .modal-card h3 { color: var(--texto-titulos); font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; }
+        .modal-card p { color: var(--texto-oscuro); font-size: 1rem; margin-bottom: 25px; line-height: 1.6; }
+
+        .modal-btns { display: flex !important; justify-content: center !important; align-items: center; gap: 15px; width: 100% !important; box-sizing: border-box; flex-wrap: wrap; }
+
+        /* Botones de Modal Cristal */
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.6); color: #000000; border: 1px solid rgba(0,0,0,0.05); padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-size: 0.95rem; width: 100%;
+        }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.9); color: #0f172a; transform: translateY(-2px); }
+        body.dark-mode .btn-secondary { background: rgba(255,255,255,0.05); color: #cbd5e1; border-color: rgba(255,255,255,0.1); }
+        
+        .btn-primary-modal {
+            background: #000000; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); width: 100%;
+        }
+        .btn-primary-modal:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+        .btn-close-modal {
+            background: transparent; color: #000000; border: none; font-size: 1rem; cursor: pointer; transition: 0.3s; padding: 10px; font-weight: 600; margin-top: 10px;
+        }
+        .btn-close-modal:hover { color: #ef4444; }
+
+        /* =========================================
+           RESPONSIVIDAD PARA CELULAR (iPhone 15 Pro Max)
+           ========================================= */
         @media (max-width: 768px) {
-            .post-title { font-size: 2rem; }
-            .interaction-bar { flex-direction: column; align-items: stretch; }
+            .post-title { font-size: 2.2rem; }
+            .interaction-bar { flex-direction: column; align-items: stretch; gap: 10px; }
             .btn-uiverse { width: 100%; }
+            .comment-form-container { flex-direction: column; align-items: stretch; gap: 10px; }
+            .btn-send { width: 100%; }
+            
+            .modal-card { padding: 30px 20px; width: 95%; }
+            .modal-btns { flex-direction: column; gap: 10px; }
         }
     </style>
 </head>
@@ -295,7 +337,7 @@ if (!$pub) {
             <?php endif; ?>
 
             <div class="post-content">
-                <?= nl2br(htmlspecialchars($pub['contenido'])) ?>
+                <?= strip_tags(html_entity_decode($pub['contenido']), '<p><br><a><b><strong><i><em><u><s><ul><ol><li><img><h1><h2><h3><h4><h5><h6><blockquote><span><div>') ?>
             </div>
 
             <div class="interaction-bar">
@@ -354,19 +396,19 @@ if (!$pub) {
                 <div class="modal-icon info">
                     <i class="fas fa-user-lock"></i>
                 </div>
-                <h3 style="margin-bottom: 10px; color: #1e293b;">Acción requerida</h3>
-                <p style="color: #64748b; font-size: 0.95rem; line-height: 1.5;">Para interactuar con las publicaciones, necesitas iniciar sesión o crear una cuenta.</p>
+                <h3>Acción requerida</h3>
+                <p>Para interactuar con las publicaciones y dejar tus opiniones, necesitas iniciar sesión o crear una cuenta gratuita en Red-novable.</p>
                 
                 <div class="modal-btns">
-                    <button onclick="window.location.href='inicioSesion.php'" class="btn-secondary">
+                    <button type="button" onclick="window.location.href='inicioSesion.php'" class="btn-secondary">
                         <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                     </button>
-                    <button onclick="window.location.href='registro.php'" class="btn-primary-modal">
+                    <button type="button" onclick="window.location.href='registro.php'" class="btn-primary-modal">
                         <i class="fas fa-user-plus"></i> Registrarse
                     </button>
                 </div>
                 <div style="margin-top: 15px;">
-                    <button onclick="document.getElementById('modalAuthRequired').style.display='none'" class="btn-close-modal">
+                    <button type="button" onclick="document.getElementById('modalAuthRequired').style.display='none'" class="btn-close-modal">
                         Cancelar
                     </button>
                 </div>
@@ -434,6 +476,14 @@ if (!$pub) {
                     inputComentario.focus();
                 });
             });
+        });
+
+        // Cerrar modal al dar clic fuera
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('modalAuthRequired');
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
         });
     </script>
     <script src="../js/like-logic.js"></script>

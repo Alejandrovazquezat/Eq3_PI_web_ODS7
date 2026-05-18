@@ -51,8 +51,8 @@ if (!$categoria) {
     // Lógica del buscador en PHP
     if (!empty($buscar)) {
         $publicaciones = array_filter($publicaciones, function($pub) use ($buscar) {
-            return stripos(strtolower($pub['titulo']), strtolower($buscar)) !== false || 
-                   stripos(strtolower($pub['contenido']), strtolower($buscar)) !== false;
+            return stripos(strtolower(strip_tags(html_entity_decode($pub['titulo']))), strtolower($buscar)) !== false || 
+                   stripos(strtolower(strip_tags(html_entity_decode($pub['contenido']))), strtolower($buscar)) !== false;
         });
     }
 }
@@ -100,7 +100,7 @@ if (!$categoria) {
                 <div class="search-container">
                     <form method="GET" action="categoria.php" style="width: 100%;">
                         <input type="hidden" name="id" value="<?= $categoria_id ?>">
-                        <input type="text" name="buscar" class="input-search" placeholder="Buscar entre publicaciones..." value="<?= htmlspecialchars($buscar) ?>">
+                        <input type="text" name="buscar" class="input-search" placeholder="Buscar publicación 🔎" value="<?= htmlspecialchars($buscar) ?>">
                     </form>
                 </div>
             </div>
@@ -133,7 +133,7 @@ if (!$categoria) {
                                     </div>
                                     
                                     <p class="destacado-resumen">
-                                        <?= htmlspecialchars(substr($pub['contenido'], 0, 120)) ?>...
+                                        <?= htmlspecialchars(mb_substr(strip_tags(html_entity_decode($pub['contenido'])), 0, 120)) ?>...
                                     </p>
                                 </div>
                             </div>

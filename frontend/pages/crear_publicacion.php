@@ -57,7 +57,7 @@ if ($edit_id) {
 // --- PROCESAR FORMULARIO (CREAR O EDITAR) ---
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($error) || $es_edicion)) {
     $titulo = trim($_POST['titulo'] ?? '');
-    $contenido = trim($_POST['contenido'] ?? '');
+    $contenido = trim($_POST['contenido_html'] ?? ''); // Recibimos el HTML generado por Quill
     
     // LÓGICA PARA CREAR NUEVA CATEGORÍA
     if (isset($_POST['categoria_id']) && $_POST['categoria_id'] === 'nueva' && !empty($_POST['nueva_categoria'])) {
@@ -106,10 +106,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($error) || $es_edicion)) {
     <link rel="stylesheet" href="../css/crear_publicacion_styles.css"> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title><?= $es_edicion ? 'Editar' : 'Nueva' ?> Publicación - RED-novable</title>
-    <style>
-        .container-crear { max-width: 1000px; margin: 40px auto; padding: 0 20px; position: relative; z-index: 2; }
-    </style>
+    
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    
+    <title><?= $es_edicion ? 'Editar' : 'Nueva' ?> Publicación - Red-novable</title>
 </head>
 <body>
 
@@ -131,27 +132,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($error) || $es_edicion)) {
                 </div>
                 <script>setTimeout(() => window.location.href = "crear_publicacion.php", 2000);</script>
             <?php endif; ?>
+            
             <?php if ($error): ?>
                 <div class="alert alert-error">
                     <i class="fas fa-exclamation-circle"></i> <?= htmlspecialchars($error) ?>
                 </div>
             <?php endif; ?>
+
+            <div id="custom-validation-alert" class="alert alert-error" style="display: none;"></div>
             
-            <form method="POST" enctype="multipart/form-data" class="modern-grid-form">
+            <form method="POST" enctype="multipart/form-data" class="modern-grid-form" id="form-publicacion" novalidate>
                 <?php if($es_edicion): ?>
                     <input type="hidden" name="edit_id" value="<?= $edit_id ?>">
                 <?php endif; ?>
 
                 <div class="main-fields">
-                    <div class="field">
+                    <div class="field" data-tooltip="Escribe un título llamativo para tu artículo">
                         <label>Título del artículo</label>
-                        <input type="text" name="titulo" placeholder="Escribe el título aquí..." required value="<?= htmlspecialchars($titulo) ?>">
+                        <input type="text" name="titulo" id="input-titulo" class="input-expand-glass" placeholder="Escribe el título aquí..." value="<?= htmlspecialchars($titulo) ?>">
                     </div>
 
                     <div class="inline-fields">
-                        <div class="field">
+                        <div class="field" data-tooltip="Clasifica tu artículo">
                             <label>Categoría</label>
-                            <select name="categoria_id" id="select-categoria" required onchange="checkNuevaCategoria()">
+                            <select name="categoria_id" id="select-categoria" class="input-expand-glass" onchange="checkNuevaCategoria()">
                                 <option value="">Seleccionar...</option>
                                 <?php foreach ($categorias as $cat): ?>
                                     <option value="<?= $cat['id'] ?>" <?= ($categoria_id == $cat['id']) ? 'selected' : '' ?>>
@@ -162,21 +166,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($error) || $es_edicion)) {
                             </select>
                         </div>
 
-                        <div class="field" id="div-nueva-cat" style="display: none;">
+                        <div class="field" id="div-nueva-cat" style="display: none;" data-tooltip="Nombra la nueva temática">
                             <label style="color: #10b981;">Nombre de la nueva categoría</label>
-                            <input type="text" name="nueva_categoria" id="input-nueva-cat" placeholder="Ej. Biomasa">
+                            <input type="text" name="nueva_categoria" id="input-nueva-cat" class="input-expand-glass" placeholder="Ej. Biomasa">
                         </div>
                     </div>
 
                     <div class="field">
                         <label>Contenido detallado</label>
-                        <textarea name="contenido" placeholder="Desarrolla tu publicación..." required><?= htmlspecialchars($contenido) ?></textarea>
+                        <div class="quill-wrapper input-expand-glass">
+                            <div id="editor-container"><?= $contenido ?></div>
+                        </div>
+                        <input type="hidden" name="contenido_html" id="contenido-hidden">
                     </div>
                 </div>
 
                 <div class="side-fields">
-                    <label>Imagen de portada <?= $es_edicion ? '(Opcional)' : '' ?></label>
-                    <div class="upload-zone" onclick="document.getElementById('imagen').click()">
+                    <label style="margin-bottom: 25px;">Imagen de portada <?= $es_edicion ? '(Opcional)' : '' ?></label>
+                    <div class="upload-zone" onclick="document.getElementById('imagen').click()" data-tooltip="Sube una imagen ilustrativa">
                         <input type="file" id="imagen" name="imagen" accept="image/jpeg, image/png, image/webp" onchange="previewImage(this)" hidden>
                         
                         <div id="preview" class="preview-content">
@@ -188,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($error) || $es_edicion)) {
                             <?php endif; ?>
                         </div>
                     </div>
-                    <button type="submit" class="btn-publish">
+                    <button type="submit" class="btn-publish" data-tooltip="Enviar al panel de revisión">
                         <i class="fas <?= $es_edicion ? 'fa-save' : 'fa-paper-plane' ?>"></i> <?= $es_edicion ? 'Guardar Cambios' : 'Publicar ahora' ?>
                     </button>
                     <?php if(!$es_edicion): ?>
@@ -211,10 +218,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($error) || $es_edicion)) {
             
             if (select.value === "nueva") {
                 divNueva.style.display = "block";
-                inputNueva.required = true;
             } else {
                 divNueva.style.display = "none";
-                inputNueva.required = false;
                 inputNueva.value = "";
             }
         }
@@ -229,6 +234,115 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($error) || $es_edicion)) {
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        // INICIALIZACIÓN DEL EDITOR QUILL CON MANEJADOR DE IMÁGENES 
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Desarrolla tu publicación enriquecida aquí...',
+            modules: {
+                toolbar: {
+                    container: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                        ['link', 'image', 'video'],
+                        ['clean']
+                    ],
+                    handlers: {
+                        image: imageHandler // Interceptamos el botón de imagen
+                    }
+                }
+            }
+        });
+
+        // FUNCIÓN PARA SUBIR LA IMAGEN AL SERVIDOR Y NO A LA BASE DE DATOS 
+        function imageHandler() {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.click();
+
+            input.onchange = async () => {
+                const file = input.files[0];
+                const formData = new FormData();
+                formData.append('imagen_quill', file);
+
+                try {
+                    // Enviamos la imagen al nuevo archivo PHP
+                    const response = await fetch('../../backend/controllers/upload_quill.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await response.json();
+                    
+                    if(data.success) {
+                        // Insertamos la URL de la imagen física en el texto
+                        const range = quill.getSelection(true);
+                        quill.insertEmbed(range.index, 'image', data.url);
+                        quill.setSelection(range.index + 1);
+                    } else {
+                        alert("Error al subir imagen: " + data.error);
+                    }
+                } catch(e) {
+                    console.error(e);
+                    alert("Error de conexión al subir la imagen.");
+                }
+            };
+        }
+
+        //  APLICAR TOOLTIPS A LOS BOTONES DE QUILL 
+        document.addEventListener("DOMContentLoaded", function() {
+            const quillTooltips = {
+                '.ql-bold': 'Negrita',
+                '.ql-italic': 'Cursiva',
+                '.ql-underline': 'Subrayado',
+                '.ql-strike': 'Tachado',
+                '.ql-header': 'Tamaño de título',
+                '.ql-color': 'Color del texto',
+                '.ql-background': 'Fondo del texto',
+                '.ql-list[value="ordered"]': 'Lista numerada',
+                '.ql-list[value="bullet"]': 'Lista de viñetas',
+                '.ql-align': 'Alineación',
+                '.ql-link': 'Insertar enlace',
+                '.ql-image': 'Insertar imagen',
+                '.ql-video': 'Insertar video',
+                '.ql-clean': 'Limpiar formato'
+            };
+
+            for (const [selector, text] of Object.entries(quillTooltips)) {
+                const el = document.querySelector(selector);
+                if (el) {
+                    el.setAttribute('data-tooltip', text);
+                }
+            }
+        });
+
+        //  VALIDACIÓN MANUAL JS PARA EVITAR EL TOOLTIP NEGRO NATIVO 
+        document.getElementById('form-publicacion').onsubmit = function(e) {
+            const titulo = document.getElementById('input-titulo').value.trim();
+            const categoria = document.getElementById('select-categoria').value;
+            const inputNuevaCat = document.getElementById('input-nueva-cat').value.trim();
+            
+            const qlEditor = document.querySelector('#editor-container .ql-editor');
+            const contenidoText = qlEditor.innerText.trim();
+            const html = qlEditor.innerHTML;
+
+            const isNuevaCatEmpty = (categoria === 'nueva' && inputNuevaCat === '');
+
+            if (!titulo || !categoria || isNuevaCatEmpty || contenidoText === "") {
+                e.preventDefault(); // Detenemos el envío nativo
+                const alertBox = document.getElementById('custom-validation-alert');
+                alertBox.style.display = 'block';
+                alertBox.innerHTML = '<i class="fas fa-exclamation-circle"></i> Por favor, completa todos los campos obligatorios para continuar.';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return false;
+            }
+
+            // Si está todo correcto, pasamos el HTML y enviamos
+            document.getElementById('contenido-hidden').value = html;
+        };
     </script>
     
     <?php include 'mascota.php'; ?>

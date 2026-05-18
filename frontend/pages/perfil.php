@@ -206,6 +206,9 @@ $misComentarios = $stmtComentarios->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="../css/perfil-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 </head>
 <body>
     
@@ -310,7 +313,7 @@ $misComentarios = $stmtComentarios->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                     
                                     <p class="vertical-resumen">
-                                        <?= htmlspecialchars(substr($pub['contenido'], 0, 200)) ?>...
+                                        <?= htmlspecialchars(mb_substr(strip_tags(html_entity_decode($pub['contenido'])), 0, 200)) ?>...
                                     </p>
 
                                     <div class="post-actions" style="margin-top: 15px;">
@@ -362,7 +365,7 @@ $misComentarios = $stmtComentarios->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                     
                                     <p class="vertical-resumen">
-                                        <?= htmlspecialchars(substr($pub['contenido'], 0, 200)) ?>...
+                                        <?= htmlspecialchars(mb_substr(strip_tags(html_entity_decode($pub['contenido'])), 0, 200)) ?>...
                                     </p>
 
                                     <div class="post-actions" style="margin-top: 15px;">
@@ -486,7 +489,6 @@ $misComentarios = $stmtComentarios->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="profile-modal-split">
                 <div class="profile-modal-left">
-                    
                     <div class="uiverse-photo-card" onclick="document.getElementById('input_foto_oculto').click();" title="Haz clic para subir foto">
                         <?php if ($userData['foto_perfil']): ?>
                             <img src="../../assets/<?= htmlspecialchars($userData['foto_perfil']) ?>" alt="Foto de perfil" id="perfil-preview">
@@ -512,11 +514,9 @@ $misComentarios = $stmtComentarios->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         <?php endif; ?>
                     </div>
-
                 </div>
 
                 <div class="profile-modal-right">
-                    
                     <?php if (!isset($_SESSION['edicion_desbloqueada'])): ?>
                         <div class="readonly-data">
                             <i class="fas fa-user-circle"></i> <?= htmlspecialchars($userData['nombre']) ?>
@@ -538,7 +538,7 @@ $misComentarios = $stmtComentarios->fetchAll(PDO::FETCH_ASSOC);
                                 <label style="color: #f59e0b;"><i class="fas fa-key"></i> Autorización requerida para datos sensibles:</label>
                                 <p style="font-size: 0.85rem; color: var(--texto-secundario); margin-bottom: 10px;">Introduce tu contraseña actual para habilitar la modificación de Correo y Contraseña.</p>
                                 <div style="position: relative; display: flex; align-items: center;">
-                                    <input type="password" name="password_actual" id="password_actual" class="form-control-modal" placeholder="Tu contraseña actual" required style="margin-bottom: 0;">
+                                    <input type="password" name="password_actual" id="password_actual" class="input-expand-glass" placeholder="Tu contraseña actual" required style="margin-bottom: 0;">
                                 </div>
                             </div>
                             <div style="text-align: right; margin-top: 15px;">
@@ -554,26 +554,26 @@ $misComentarios = $stmtComentarios->fetchAll(PDO::FETCH_ASSOC);
 
                             <div class="form-group">
                                 <label>Nombre Completo:</label>
-                                <input type="text" name="nombre" value="<?= htmlspecialchars($userData['nombre']) ?>" class="form-control-modal" required>
+                                <input type="text" name="nombre" value="<?= htmlspecialchars($userData['nombre']) ?>" class="input-expand-glass" required>
                             </div>
 
                             <div class="form-group">
                                 <label>Breve Descripción:</label>
-                                <textarea name="descripcion" class="form-control-modal" placeholder="Cuéntanos un poco sobre ti (máx 255 caracteres)" maxlength="255"><?= htmlspecialchars($userData['descripcion']) ?></textarea>
+                                <textarea name="descripcion" class="input-expand-glass" placeholder="Cuéntanos un poco sobre ti (máx 255 caracteres)" maxlength="255" style="resize:vertical; min-height:80px;"><?= htmlspecialchars($userData['descripcion']) ?></textarea>
                             </div>
 
                             <div style="border-top: 1px dashed var(--color-accion); margin: 20px 0;"></div>
 
                             <div class="form-group">
                                 <label style="color: var(--color-accion);"><i class="fas fa-envelope"></i> Correo Electrónico (Sensible):</label>
-                                <input type="email" name="email" value="<?= htmlspecialchars($userData['email']) ?>" class="form-control-modal" required style="border-color: var(--color-accion);">
+                                <input type="email" name="email" value="<?= htmlspecialchars($userData['email']) ?>" class="input-expand-glass" required style="border-color: var(--color-accion) !important;">
                             </div>
 
                             <div class="form-group">
                                 <label style="color: var(--color-accion);"><i class="fas fa-key"></i> Nueva Contraseña (Sensible):</label>
-                                <div style="position: relative; display: flex; align-items: center;">
-                                    <input type="password" name="password" id="perfil-pass" class="form-control-modal" placeholder="Mínimo 8 caracteres" style="margin-bottom: 0; padding-right: 45px; border-color: var(--color-accion);">
-                                    <i class="fas fa-eye" onclick="togglePass('perfil-pass', this)" style="position: absolute; right: 15px; cursor: pointer; color: #64748b; font-size: 1.1rem; z-index: 10;"></i>
+                                <div style="position: relative; display: flex; align-items: center; width: 100%;">
+                                    <input type="password" name="password" id="perfil-pass" class="input-expand-glass" placeholder="Mínimo 8 caracteres" style="margin-bottom: 0; padding-right: 45px; border-color: var(--color-accion) !important;">
+                                    <i class="fas fa-eye" onclick="togglePass('perfil-pass', this)" style="position: absolute; right: 25px; cursor: pointer; color: #64748b; font-size: 1.1rem; z-index: 10;"></i>
                                 </div>
                             </div>
                         </form>
@@ -601,24 +601,24 @@ $misComentarios = $stmtComentarios->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <div id="modal-editar-post" class="modal-overlay">
-        <div class="modal-box">
+        <div class="modal-box modal-edit-wide">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 style="margin: 0; color: #f59e0b;"><i class="fas fa-pencil-alt"></i> Editar Publicación</h2>
-                <button onclick="cerrarModal('modal-editar-post')" style="background:none; border:none; font-size: 1.8rem; cursor:pointer; color: #94a3b8; line-height: 1;">&times;</button>
+                <button type="button" onclick="cerrarModal('modal-editar-post')" style="background:none; border:none; font-size: 1.8rem; cursor:pointer; color: #94a3b8; line-height: 1;">&times;</button>
             </div>
 
-            <form action="perfil.php" method="POST" enctype="multipart/form-data">
+            <form action="perfil.php" method="POST" enctype="multipart/form-data" id="form-editar-post-perfil">
                 <input type="hidden" name="accion" value="editar">
                 <input type="hidden" name="pub_id" id="edit-id-post">
 
                 <div class="form-group">
                     <label>Título:</label>
-                    <input type="text" name="titulo" id="edit-titulo-post" class="form-control-modal" required>
+                    <input type="text" name="titulo" id="edit-titulo-post" class="input-expand-glass" required>
                 </div>
 
                 <div class="form-group">
                     <label>Categoría:</label>
-                    <select name="categoria" id="edit-cat-post" class="form-control-modal" required>
+                    <select name="categoria" id="edit-cat-post" class="input-expand-glass" required>
                         <?php foreach($categorias as $cat): ?>
                             <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['nombre']) ?></option>
                         <?php endforeach; ?>
@@ -627,12 +627,15 @@ $misComentarios = $stmtComentarios->fetchAll(PDO::FETCH_ASSOC);
 
                 <div class="form-group">
                     <label>Actualizar Imagen (Opcional):</label>
-                    <input type="file" name="imagen" class="form-control-modal" accept="image/jpeg, image/png, image/webp">
+                    <input type="file" name="imagen" class="input-expand-glass" accept="image/jpeg, image/png, image/webp" style="padding: 10px;">
                 </div>
 
                 <div class="form-group">
                     <label>Contenido:</label>
-                    <textarea name="contenido" id="edit-contenido-post" class="form-control-modal" required style="min-height: 150px; resize: vertical;"></textarea>
+                    <div class="quill-wrapper input-expand-glass" style="padding: 0 !important; width: 100%;">
+                        <div id="editor-container-perfil"></div>
+                    </div>
+                    <input type="hidden" name="contenido" id="edit-contenido-post-hidden">
                 </div>
 
                 <div class="modal-buttons" style="margin-top: 25px;">
@@ -679,16 +682,71 @@ $misComentarios = $stmtComentarios->fetchAll(PDO::FETCH_ASSOC);
             if(passInput) passInput.focus();
         }
 
+        // 🔥 QUILL.JS CONFIGURACIÓN PARA PERFIL 🔥
+        function imageHandlerPerfil() {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.click();
+
+            input.onchange = async () => {
+                const file = input.files[0];
+                const formData = new FormData();
+                formData.append('imagen_quill', file);
+
+                try {
+                    const response = await fetch('../../backend/controllers/upload_quill.php', { method: 'POST', body: formData });
+                    const data = await response.json();
+                    
+                    if(data.success) {
+                        const range = quillPerfil.getSelection(true);
+                        quillPerfil.insertEmbed(range.index, 'image', data.url);
+                        quillPerfil.setSelection(range.index + 1);
+                    } else {
+                        alert("Error al subir imagen: " + data.error);
+                    }
+                } catch(e) {
+                    console.error(e);
+                    alert("Error de conexión al subir la imagen.");
+                }
+            };
+        }
+
+        var quillPerfil = new Quill('#editor-container-perfil', {
+            theme: 'snow',
+            modules: {
+                toolbar: {
+                    container: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                        ['link', 'image', 'video'],
+                        ['clean']
+                    ],
+                    handlers: { image: imageHandlerPerfil }
+                }
+            }
+        });
+
         function abrirModalEditarPost(id) {
             document.getElementById('edit-id-post').value = id;
             document.getElementById('edit-titulo-post').value = document.getElementById('data-titulo-' + id).textContent;
-            document.getElementById('edit-contenido-post').value = document.getElementById('data-contenido-' + id).textContent;
+            
+            // Cargar el HTML crudo al editor Quill
+            quillPerfil.root.innerHTML = document.getElementById('data-contenido-' + id).textContent;
             
             const catId = document.getElementById('data-cat-id-' + id).textContent;
             document.getElementById('edit-cat-post').value = catId;
 
             document.getElementById('modal-editar-post').classList.add('active');
         }
+
+        // Sincronizar contenido Quill antes de enviar
+        document.getElementById('form-editar-post-perfil').onsubmit = function() {
+            document.getElementById('edit-contenido-post-hidden').value = document.querySelector('#editor-container-perfil .ql-editor').innerHTML;
+        };
 
         function cerrarModal(modalId) {
             document.getElementById(modalId).classList.remove('active');

@@ -48,7 +48,7 @@ if (!$total_visitas) $total_visitas = 0; // Por si acaso
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">🍃</div>
+                <div class="stat-icon">📄</div>
                 <div class="stat-info">
                     <p>Publicaciones Totales</p>
                     <h2><?= number_format($p) ?></h2>
@@ -69,7 +69,7 @@ if (!$total_visitas) $total_visitas = 0; // Por si acaso
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">👀</div>
+                <div class="stat-icon">📈</div>
                 <div class="stat-info">
                     <p>Visitas Totales</p>
                     <h2><?= number_format($total_visitas) ?></h2>

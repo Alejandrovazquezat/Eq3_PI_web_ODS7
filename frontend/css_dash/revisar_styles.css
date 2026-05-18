@@ -130,51 +130,25 @@ body.dark-mode .input-search-uiverse {
 .input-search-uiverse:hover { width: 240px; }
 .input-search-uiverse:focus { width: 280px; border-color: #64748b !important; }
 
-/* =========================================
-   ESTILOS DE BOTONES ACCIÓN (3D INTERACTIVOS)
-   ========================================= */
 .actions-group { display: flex; gap: 8px; }
 
 .btn-info, .btn-warning, .btn-success, .btn-danger {
-    color: white; 
-    padding: 10px 14px; 
-    border-radius: 10px; 
-    font-size: 0.9em; 
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); 
-    border: none; 
-    cursor: pointer; 
-    font-family: 'Inter', sans-serif;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    color: white; padding: 10px 14px; border-radius: 10px; font-size: 0.9em; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); border: none; cursor: pointer; font-family: 'Inter', sans-serif; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
-
-.btn-info:hover, .btn-warning:hover, .btn-success:hover, .btn-danger:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-}
-
-.btn-info:active, .btn-warning:active, .btn-success:active, .btn-danger:active {
-    transform: translateY(-1px);
-}
+.btn-info:hover, .btn-warning:hover, .btn-success:hover, .btn-danger:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.15); }
+.btn-info:active, .btn-warning:active, .btn-success:active, .btn-danger:active { transform: translateY(-1px); }
 
 .btn-info { background: #64748b; }
 .btn-info:hover { background: #475569; }
-
 .btn-warning { background: #f59e0b; }
 .btn-warning:hover { background: #d97706; }
-
 .btn-success { background: #10b981; }
 .btn-success:hover { background: #059669; }
-
 .btn-danger { background: #ef4444; }
 .btn-danger:hover { background: #dc2626; }
 
 .btn-danger-action {
-    background: #ef4444;
-    color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 .btn-danger-action:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(239, 68, 68, 0.4); filter: brightness(1.1); }
 
@@ -182,87 +156,60 @@ body.dark-mode .input-search-uiverse {
    ESTILOS DEL CONTENEDOR PRINCIPAL Y MODALES
    ========================================= */
 .main-content {
-    flex-grow: 1;
-    padding: 50px;
-    margin-left: 270px; 
-    width: calc(100% - 270px);
-    position: relative;
-    z-index: 5;
+    flex-grow: 1; padding: 50px; margin-left: 270px; width: calc(100% - 270px); position: relative; z-index: 5;
 }
-
 .container { max-width: 1200px; margin: 0 auto; }
 .header-admin { margin-bottom: 30px; }
 
 .modal-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(15, 23, 42, 0.4);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    display: flex; justify-content: center; align-items: center;
-    z-index: 9999;
-    opacity: 0; visibility: hidden;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    display: flex; justify-content: center; align-items: center; z-index: 9999;
+    opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 .modal-overlay.active { opacity: 1; visibility: visible; }
 
+/* 🔥 Ajuste para que los modales tengan Scroll si son muy grandes 🔥 */
 .modal-box {
-    background: rgba(255, 255, 255, 0.5) !important;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.8) !important;
-    padding: 40px;
-    border-radius: 24px;
-    max-width: 500px;
-    width: 90%;
-    text-align: center; 
+    background: rgba(255, 255, 255, 0.5) !important; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.8) !important; padding: 40px; border-radius: 24px;
+    max-width: 500px; width: 90%; text-align: center; 
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 10px 25px rgba(0, 0, 0, 0.05) !important;
-    transform: translateY(30px) scale(0.96);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(30px) scale(0.96); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    max-height: 90vh; /* Límite de altura para la pantalla */
+    overflow-y: auto; /* Muestra el scroll de forma elegante */
 }
+.modal-box::-webkit-scrollbar { width: 6px; }
+.modal-box::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.3); border-radius: 4px; }
 
 body.dark-mode .modal-box {
-    background: rgba(22, 27, 34, 0.75) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    background: rgba(22, 27, 34, 0.75) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6) !important;
 }
-
 .modal-overlay.active .modal-box { transform: translateY(0) scale(1); }
 
-.modal-icon-container {
-    width: 75px; height: 75px;
-    border-radius: 50%;
-    display: flex; justify-content: center; align-items: center;
-    margin: 0 auto 20px auto;
-    background: rgba(100, 116, 139, 0.15) !important; 
-    color: #64748b !important;
+/* 🔥 MODAL DE EDICIÓN AMPLIO Y ANCHO PARA QUILL 🔥 */
+.modal-edit-wide {
+    max-width: 950px !important; /* Más ancho */
+    text-align: left;
 }
 
+/* Reducimos la altura de Quill dentro del modal para que encaje perfecto */
+.modal-edit-wide .ql-container.ql-snow {
+    height: 250px !important; 
+}
+
+.modal-icon-container { width: 75px; height: 75px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px auto; background: rgba(100, 116, 139, 0.15) !important; color: #64748b !important; }
 .modal-icon-container i { font-size: 2.2rem; }
 .modal-title { color: var(--text-dark); font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; }
 .modal-text { color: var(--text-light); font-size: 1rem; margin-bottom: 25px; line-height: 1.6; }
+.modal-buttons { display: flex !important; justify-content: center !important; align-items: center; gap: 15px; width: 100% !important; box-sizing: border-box; margin-top: 25px; }
 
-.modal-buttons {
-    display: flex !important; 
-    justify-content: center !important; 
-    align-items: center;
-    gap: 15px;
-    width: 100% !important;
-    box-sizing: border-box;
-    margin-top: 25px;
-}
-
-.btn-modal-cancel {
-    background: rgba(255, 255, 255, 0.6); color: #334155; border: 1px solid rgba(0,0,0,0.05); padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-size: 0.95rem;
-}
+.btn-modal-cancel { background: rgba(255, 255, 255, 0.6); color: #334155; border: 1px solid rgba(0,0,0,0.05); padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-size: 0.95rem; }
 .btn-modal-cancel:hover { background: rgba(255, 255, 255, 0.9); color: #0f172a; }
 body.dark-mode .btn-modal-cancel { background: rgba(255,255,255,0.05); color: #cbd5e1; border-color: rgba(255,255,255,0.1); }
-
-.btn-modal-confirm {
-    border: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif; font-size: 0.95rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
+.btn-modal-confirm { border: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 .btn-modal-confirm:hover { transform: translateY(-2px); }
 
 .confirm-green { background: #10b981; color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
@@ -270,38 +217,55 @@ body.dark-mode .btn-modal-cancel { background: rgba(255,255,255,0.05); color: #c
 .confirm-orange { background: #f59e0b; color: white; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
 .confirm-orange:hover { box-shadow: 0 6px 18px rgba(245, 158, 11, 0.4); filter: brightness(1.1); }
 
-/* MODAL DE VISTA PREVIA ESPECÍFICO */
-.modal-box.preview-box { max-width: 700px; text-align: left; }
+/* VISTA PREVIA */
+.modal-box.preview-box { max-width: 750px; text-align: left; }
 .preview-meta { font-size: 0.85rem; color: var(--text-light); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
 .preview-content-scroll { max-height: 420px; overflow-y: auto; padding-right: 12px; color: var(--text-dark); line-height: 1.7; font-size: 1rem; }
 .preview-content-scroll::-webkit-scrollbar { width: 6px; }
 .preview-content-scroll::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.3); border-radius: 4px; }
 
-/* FORMULARIOS DENTRO DEL MODAL */
+/* 🔥 FORMULARIOS E INPUTS EXPANSIBLES 🔥 */
 .form-group { margin-bottom: 18px; text-align: left; }
 .form-group label { display: block; margin-bottom: 6px; font-weight: 700; color: var(--text-dark); font-size: 0.9rem; }
-.form-control-modal {
-    width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.95rem; box-sizing: border-box; transition: all 0.3s;
-    background: rgba(255, 255, 255, 0.4) !important; color: var(--text-dark);
+
+/* Inputs Expansibles de Modal (Cristal 3D) */
+.input-expand-glass {
+    display: block; color: var(--text-dark, #0f172a);
+    background: linear-gradient(142.99deg, rgba(217, 217, 217, 0.6) 15.53%, rgba(243, 243, 243, 0.6) 88.19%) !important;
+    box-shadow: 0px 12px 24px -1px rgba(0, 0, 0, 0.1) !important; border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    border-radius: 16px; outline: none; width: 100%; margin: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 14px 15px; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.95rem; box-sizing: border-box;
 }
+body.dark-mode .input-expand-glass { background: linear-gradient(142.99deg, rgba(30, 41, 59, 0.5) 15.53%, rgba(15, 23, 42, 0.5) 88.19%) !important; border-color: rgba(255, 255, 255, 0.1) !important; color: #e2e8f0; box-shadow: 0px 12px 24px -1px rgba(0, 0, 0, 0.4) !important; }
+body.dark-mode select.input-expand-glass option { background-color: #0f172a; color: #e2e8f0; }
+.input-expand-glass:focus, .input-expand-glass:focus-within { border-color: #64748b !important; transform: translateY(-2px); }
+body.dark-mode .input-expand-glass:focus, body.dark-mode .input-expand-glass:focus-within { border-color: #60a5fa !important; }
+
+/* El input-expand no necesita .form-control-modal, pero si hay algun textarea: */
+.form-control-modal { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.95rem; box-sizing: border-box; transition: all 0.3s; background: rgba(255, 255, 255, 0.4) !important; color: var(--text-dark); }
 body.dark-mode .form-control-modal { background: rgba(15, 23, 42, 0.4) !important; }
-.form-control-modal:focus { outline: none; border-color: #64748b; background: rgba(255, 255, 255, 0.8) !important; box-shadow: 0 0 0 4px rgba(100, 116, 139, 0.15); }
 textarea.form-control-modal { resize: vertical; min-height: 140px; }
+
+/* 🔥 QUILL.JS OVERRIDES 🔥 */
+.quill-wrapper { padding: 0 !important; display: flex; flex-direction: column; min-width: 0; }
+.ql-toolbar.ql-snow { border: none !important; border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important; background: rgba(255, 255, 255, 0.3); border-radius: 16px 16px 0 0; padding: 12px !important; }
+body.dark-mode .ql-toolbar.ql-snow { border-bottom-color: rgba(255, 255, 255, 0.1) !important; background: rgba(0, 0, 0, 0.2); }
+.ql-container.ql-snow { border: none !important; border-radius: 0 0 16px 16px; height: 350px; font-family: 'Inter', sans-serif !important; font-size: 1rem !important; }
+.ql-editor { word-break: break-word; overflow-wrap: break-word; white-space: pre-wrap; width: 100%; }
+body.dark-mode .ql-snow .ql-stroke { stroke: #cbd5e1; }
+body.dark-mode .ql-snow .ql-fill, body.dark-mode .ql-snow .ql-stroke.ql-fill { fill: #cbd5e1; }
+body.dark-mode .ql-snow .ql-picker { color: #cbd5e1; }
 
 .alert-review { padding: 15px; border-radius: 12px; margin-bottom: 25px; font-weight: 600; font-size: 0.95rem; }
 .alert-success-review { background: rgba(209, 250, 229, 0.8); color: #065f46; border: 1px solid #10b981; }
 .alert-danger-review { background: rgba(254, 226, 226, 0.8); color: #991b1b; border: 1px solid #ef4444; }
 .alert-info-review { background: rgba(219, 234, 254, 0.8); color: #1e40af; border: 1px solid #3b82f6; }
 
-/* =========================================
-   RESPONSIVIDAD
-   ========================================= */
 @media (max-width: 1024px) {
     .filtro-publicaciones-container-card { flex-direction: column; align-items: stretch; gap: 15px; padding: 20px; }
     .filtro-categoria-box { justify-content: space-between; }
     .input-search-uiverse { width: 100% !important; }
 }
-
 @media (max-width: 768px) {
     .main-content { margin-left: 0; width: 100%; padding: 20px 15px 90px 15px; }
     .header-admin { flex-direction: column; align-items: flex-start; gap: 10px; }

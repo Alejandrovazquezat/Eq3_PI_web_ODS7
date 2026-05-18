@@ -19,7 +19,7 @@
     --sombra-card: rgba(0,0,0,0.05);
 
     /* Variables Neubrutalistas para el modal y botones */
-    --color-accion: #06b6d4; 
+    --color-accion: #303030; 
     --sombra-neubrutal-oscura: rgba(0, 0, 0, 0.4);
 
     /* Variables adicionales de cristal */
@@ -99,8 +99,6 @@ body.dark-mode .bg-glow-2 { background: rgba(59, 130, 246, 0.1); }
 /* ============================================ */
 /* TARJETA DE CRISTAL PARA EL HEADER PRINCIPAL  */
 /* ============================================ */
-
-/* 🔥 SE QUITÓ LA FUNCIONALIDAD DE BOTÓN (SIN CLIC, SIN ACTIVE) 🔥 */
 .profile-main-card {
     box-sizing: border-box;
     width: 260px; 
@@ -120,12 +118,11 @@ body.dark-mode .bg-glow-2 { background: rgba(59, 130, 246, 0.1); }
     overflow: hidden;
     margin-top: -160px; 
     z-index: 10;
-    cursor: default; /* Ya no es manita de clic */
+    cursor: default; 
     transition: all 0.5s;
     flex-shrink: 0;
 }
 
-/* Sigue flotando un poco para no perder la vida */
 .profile-main-card:hover {
     border: 1px solid black;
     transform: scale(1.05);
@@ -400,45 +397,45 @@ body.dark-mode .vertical-resumen { color: #cbd5e1 !important; }
 .like-btn:active .like-icon { transform: scale(0.8); }
 
 /* =========================================
-   MODALES GENERALES
+   MODALES GENERALES GLASSMORPHISM GRIS 3D
    ========================================= */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(15, 23, 42, 0.7); display: none;
-    justify-content: center; align-items: center; z-index: 1000;
+    background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    display: flex; justify-content: center; align-items: center; z-index: 9999;
+    opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
+.modal-overlay.active { opacity: 1; visibility: visible; }
 
-.modal-overlay.active { display: flex; }
-
+/* 🔥 Ajuste para que los modales tengan Scroll si son muy grandes 🔥 */
 .modal-box {
-    background: var(--blanco); padding: 30px; border-radius: 16px;
-    width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-    color: var(--texto-titulos); border: 1px solid var(--borde-tarjeta);
+    background: rgba(255, 255, 255, 0.5) !important; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.8) !important; padding: 40px; border-radius: 24px;
+    max-width: 500px; width: 90%; text-align: center; 
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 10px 25px rgba(0, 0, 0, 0.05) !important;
+    transform: translateY(30px) scale(0.96); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    max-height: 90vh; /* Límite de altura para la pantalla */
+    overflow-y: auto; /* Muestra el scroll de forma elegante */
+}
+.modal-box::-webkit-scrollbar { width: 6px; }
+.modal-box::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.3); border-radius: 4px; }
+
+body.dark-mode .modal-box {
+    background: rgba(22, 27, 34, 0.75) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6) !important;
+}
+.modal-overlay.active .modal-box { transform: translateY(0) scale(1); }
+
+/* 🔥 MODAL DE EDICIÓN AMPLIO Y ANCHO PARA QUILL 🔥 */
+.modal-edit-wide {
+    max-width: 950px !important; /* Más ancho */
+    text-align: left;
 }
 
-.form-control-modal {
-    width: 100%; padding: 12px; border: 1px solid var(--borde-tarjeta); 
-    border-radius: 8px; font-family: inherit; background: var(--fondo-suave);
-    color: var(--texto-titulos); box-sizing: border-box; margin-bottom: 15px;
-}
-
-textarea.form-control-modal { resize: vertical; min-height: 80px; }
-
-.observacion-box {
-    background-color: #fef2f2;
-    border-left: 5px solid #ef4444;
-    padding: 15px 20px;
-    border-radius: 0 8px 8px 0;
-    margin-top: 15px;
-    margin-bottom: 20px;
-    color: #7f1d1d;
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-
-body.dark-mode .observacion-box {
-    background-color: rgba(239, 68, 68, 0.1);
-    color: #fca5a5;
+/* Reducimos la altura de Quill dentro del modal para que encaje perfecto */
+.modal-edit-wide .ql-container.ql-snow {
+    height: 250px !important; 
 }
 
 /* ========================================================
@@ -447,6 +444,7 @@ body.dark-mode .observacion-box {
 .modal-box.modal-profile-wide {
     max-width: 850px; 
     padding: 35px;
+    text-align: left;
 }
 
 .profile-modal-split {
@@ -506,6 +504,39 @@ body.dark-mode .uiverse-photo-card img { border-color: #161b22; }
     font-weight: 600; display: flex; align-items: center; gap: 12px;
 }
 .readonly-data i { color: var(--texto-secundario); font-size: 1.1rem; }
+
+
+/* 🔥 FORMULARIOS E INPUTS EXPANSIBLES 🔥 */
+.form-group { margin-bottom: 18px; text-align: left; }
+.form-group label { display: block; margin-bottom: 6px; font-weight: 700; color: var(--text-dark); font-size: 0.9rem; }
+.form-control-modal { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.95rem; box-sizing: border-box; transition: all 0.3s; background: rgba(255, 255, 255, 0.4) !important; color: var(--text-dark); }
+body.dark-mode .form-control-modal { background: rgba(15, 23, 42, 0.4) !important; }
+.form-control-modal:focus { outline: none; border-color: #64748b; background: rgba(255, 255, 255, 0.8) !important; box-shadow: 0 0 0 4px rgba(100, 116, 139, 0.15); }
+textarea.form-control-modal { resize: vertical; min-height: 140px; }
+
+/* Inputs Expansibles de Modal (Cristal 3D) */
+.input-expand-glass {
+    display: block; color: var(--text-dark, #0f172a);
+    background: linear-gradient(142.99deg, rgba(217, 217, 217, 0.6) 15.53%, rgba(243, 243, 243, 0.6) 88.19%) !important;
+    box-shadow: 0px 12px 24px -1px rgba(0, 0, 0, 0.1) !important; border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    border-radius: 16px; outline: none; width: 100%; margin: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 14px 15px; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.95rem; box-sizing: border-box;
+}
+body.dark-mode .input-expand-glass { background: linear-gradient(142.99deg, rgba(30, 41, 59, 0.5) 15.53%, rgba(15, 23, 42, 0.5) 88.19%) !important; border-color: rgba(255, 255, 255, 0.1) !important; color: #e2e8f0; box-shadow: 0px 12px 24px -1px rgba(0, 0, 0, 0.4) !important; }
+body.dark-mode select.input-expand-glass option { background-color: #0f172a; color: #e2e8f0; }
+.input-expand-glass:focus, .input-expand-glass:focus-within { border-color: #64748b !important; transform: translateY(-2px); }
+body.dark-mode .input-expand-glass:focus, body.dark-mode .input-expand-glass:focus-within { border-color: #60a5fa !important; }
+
+/* 🔥 QUILL.JS OVERRIDES 🔥 */
+.quill-wrapper { padding: 0 !important; display: flex; flex-direction: column; min-width: 0; }
+.ql-toolbar.ql-snow { border: none !important; border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important; background: rgba(255, 255, 255, 0.3); border-radius: 16px 16px 0 0; padding: 12px !important; }
+body.dark-mode .ql-toolbar.ql-snow { border-bottom-color: rgba(255, 255, 255, 0.1) !important; background: rgba(0, 0, 0, 0.2); }
+.ql-container.ql-snow { border: none !important; border-radius: 0 0 16px 16px; height: 350px; font-family: 'Inter', sans-serif !important; font-size: 1rem !important; }
+.ql-editor { word-break: break-word; overflow-wrap: break-word; white-space: pre-wrap; width: 100%; }
+body.dark-mode .ql-snow .ql-stroke { stroke: #cbd5e1; }
+body.dark-mode .ql-snow .ql-fill, body.dark-mode .ql-snow .ql-stroke.ql-fill { fill: #cbd5e1; }
+body.dark-mode .ql-snow .ql-picker { color: #cbd5e1; }
+
 
 /* Adaptación Responsiva para el Header Full Width y Modales */
 @media (max-width: 768px) {

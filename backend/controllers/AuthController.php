@@ -111,8 +111,8 @@ class AuthController {
             $mail->SMTPAuth   = true;
             // CAMBIA ESTO: Tu correo creado en IONOS
             $mail->Username   = 'no-reply@red-novable.com'; 
-            // CAMBIA ESTO: La contraseña del correo
-            $mail->Password   = 'a65981bn32h9ri0sdsdadadda'; 
+            // La contraseña del correo de ionos
+            $mail->Password   = 'TContraseñaDeCorreo'; 
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // TLS
             $mail->Port       = 587; // Puerto para TLS
             $mail->CharSet    = 'UTF-8';

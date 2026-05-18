@@ -190,18 +190,32 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <div id="modal-editar" class="modal-overlay">
-        <div class="modal-box preview-box">
+        <div class="modal-box preview-box modal-edit-wide">
             <h2 class="modal-title">Editar Publicación</h2>
-            <form action="revisar.php" method="POST">
+            <form action="revisar.php" method="POST" id="form-editar-revisar">
                 <input type="hidden" name="accion" value="editar">
                 <input type="hidden" name="pub_id" id="edit-id">
-                <div class="form-group"><label>Título:</label><input type="text" name="titulo" id="edit-titulo" class="form-control-modal" required></div>
-                <div class="form-group"><label>Categoría:</label>
-                    <select name="categoria" id="edit-cat" class="form-control-modal">
+                
+                <div class="form-group">
+                    <label>Título:</label>
+                    <input type="text" name="titulo" id="edit-titulo" class="input-expand-glass" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Categoría:</label>
+                    <select name="categoria" id="edit-cat" class="input-expand-glass">
                         <?php foreach($categorias as $cat): ?><option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['nombre']) ?></option><?php endforeach; ?>
                     </select>
                 </div>
-                <div class="form-group"><label>Contenido:</label><textarea name="contenido" id="edit-contenido" class="form-control-modal" required></textarea></div>
+                
+                <div class="form-group">
+                    <label>Contenido:</label>
+                    <div class="quill-wrapper input-expand-glass" style="padding: 0 !important; width: 100%;">
+                        <div id="editor-container-revisar"></div>
+                    </div>
+                    <input type="hidden" name="contenido" id="edit-contenido-hidden">
+                </div>
+                
                 <div class="modal-buttons">
                     <button type="button" class="btn-modal-cancel" onclick="cerrarModal('modal-editar')">Cancelar</button>
                     <button type="submit" class="btn-modal-confirm confirm-orange">Guardar Cambios</button>
@@ -226,7 +240,7 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
         <div class="modal-box">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 style="margin: 0; color: #ef4444;"><i class="fas fa-exclamation-triangle"></i> Devolver Publicación</h2>
-                <button onclick="cerrarModal('modal-rechazar')" style="background:none; border:none; font-size: 1.8rem; cursor:pointer; color: #94a3b8; line-height: 1;">&times;</button>
+                <button type="button" onclick="cerrarModal('modal-rechazar')" style="background:none; border:none; font-size: 1.8rem; cursor:pointer; color: #94a3b8; line-height: 1;">&times;</button>
             </div>
             <p style="text-align: left; color: var(--text-dark); margin-bottom: 15px;">Estás devolviendo la publicación: <strong id="rechazar-titulo-texto" style="color: var(--text-dark);"></strong></p>
             <form action="revisar.php" method="POST">
@@ -244,17 +258,17 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
         function cerrarModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        // Cierra los modales al dar clic afuera en el fondo translúcido
         window.addEventListener('click', function(e) {
             if (e.target.classList.contains('modal-overlay')) {
                 cerrarModal(e.target.id);
             }
         });
 
-        // LÓGICA DE FILTRADO DUAL COMBINADO EN TIEMPO REAL
         const inputBuscar = document.getElementById('input-buscar-publicacion');
         const selectCategoria = document.getElementById('select-filtro-categoria');
         const rows = document.querySelectorAll('.publicacion-row-item');
@@ -294,7 +308,9 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
             document.getElementById('preview-autor').textContent = document.getElementById('data-autor-' + id).textContent;
             document.getElementById('preview-cat').textContent = document.getElementById('data-cat-nombre-' + id).textContent;
             document.getElementById('preview-fecha').textContent = document.getElementById('data-fecha-' + id).textContent;
-            document.getElementById('preview-contenido').innerHTML = document.getElementById('data-contenido-html-' + id).innerHTML;
+            
+            // 🔥 CORRECCIÓN: Renderizar HTML de forma nativa leyendo el textContent del div crudo 🔥
+            document.getElementById('preview-contenido').innerHTML = document.getElementById('data-contenido-raw-' + id).textContent;
             
             const imgName = document.getElementById('data-imagen-' + id).textContent.trim();
             const imgElement = document.getElementById('preview-imagen');
@@ -307,13 +323,69 @@ $pendientes = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
             document.getElementById('modal-preview').classList.add('active');
         }
 
+        // 🔥 QUILL.JS CONFIGURACIÓN PARA REVISAR 🔥
+        function imageHandler() {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.click();
+
+            input.onchange = async () => {
+                const file = input.files[0];
+                const formData = new FormData();
+                formData.append('imagen_quill', file);
+
+                try {
+                    const response = await fetch('../../backend/controllers/upload_quill.php', { method: 'POST', body: formData });
+                    const data = await response.json();
+                    
+                    if(data.success) {
+                        const range = quillRevisar.getSelection(true);
+                        quillRevisar.insertEmbed(range.index, 'image', data.url);
+                        quillRevisar.setSelection(range.index + 1);
+                    } else {
+                        alert("Error al subir imagen: " + data.error);
+                    }
+                } catch(e) {
+                    console.error(e);
+                    alert("Error de conexión al subir la imagen.");
+                }
+            };
+        }
+
+        var quillRevisar = new Quill('#editor-container-revisar', {
+            theme: 'snow',
+            modules: {
+                toolbar: {
+                    container: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                        ['link', 'image', 'video'],
+                        ['clean']
+                    ],
+                    handlers: { image: imageHandler }
+                }
+            }
+        });
+
         function abrirModalEditar(id) {
             document.getElementById('edit-id').value = id;
             document.getElementById('edit-titulo').value = document.getElementById('data-titulo-' + id).textContent;
-            document.getElementById('edit-contenido').value = document.getElementById('data-contenido-raw-' + id).textContent;
+            
+            // Cargar el HTML crudo al editor Quill
+            quillRevisar.root.innerHTML = document.getElementById('data-contenido-raw-' + id).textContent;
+            
             document.getElementById('edit-cat').value = document.getElementById('data-cat-id-' + id).textContent;
             document.getElementById('modal-editar').classList.add('active');
         }
+
+        // Sincronizar contenido Quill antes de enviar
+        document.getElementById('form-editar-revisar').onsubmit = function() {
+            document.getElementById('edit-contenido-hidden').value = document.querySelector('#editor-container-revisar .ql-editor').innerHTML;
+        };
 
         let accionSeleccionada = null;
         let publicacionIdSeleccionada = null;
